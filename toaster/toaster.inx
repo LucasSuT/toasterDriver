@@ -1,0 +1,53 @@
+;Copyright (c) Microsoft Corporation.  All rights reserved.
+
+[Version]
+Signature = "$WINDOWS NT$"
+Class = System
+ClassGuid = {4D36E97D-E325-11CE-BFC1-08002BE10318}
+Provider = Contoso
+DriverVer = 06/16/1999, 5.00.2064
+CatalogFile = toaster.cat
+
+[Manufacturer]
+Contoso = Contoso, NT$ARCH$
+
+[Contoso.NT$ARCH$]
+"Basic Toaster" = Toaster_Device, TOASTER\BASIC_TOASTER
+
+[Toaster_Device.NT]
+CopyFiles = Toaster_Device.NT.Copy
+
+[Toaster_Device.NT.Copy]
+toaster.sys
+
+[Toaster_Device.NT.Services]
+AddService = toaster, 0x00000002, Toaster_Service_Inst
+
+[DestinationDirs]
+DefaultDestDir = 13
+
+[Toaster_Device.NT.HW]
+AddReg = Toaster_AddReg
+
+[Toaster_AddReg]
+HKR, Heat, Minimum, 0x10001, 0 ; FLG_ADDREG_TYPE_DWORD
+HKR, Heat, Maximum, 0x10001, 10 ; FLG_ADDREG_TYPE_DWORD
+HKR,,,,Toaster
+HKR,,Icon,,"-5"
+HKR,,Security,,"D:P(A;;GA;;;WD)"
+
+
+[Toaster_Service_Inst]
+DisplayName    = "Basic Toaster Device Driver"
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+Dependencies   = wmiacpi
+LoadGroupOrdercmd = Extended Base
+ServiceBinary  = %13%\toaster.sys 
+
+[SourceDisksNames]
+1 = "Toaster Device Installation Disk #1",,,""
+
+[SourceDisksFiles]
+toaster.sys  = 1
