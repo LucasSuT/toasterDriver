@@ -8,13 +8,51 @@
 
 #include "IOCTLValue.h"
 
-#define AAEON_DEVICE L"\\\\.\\Aaeon_WdfLink"
+#define AAEON_DEVICE L"\\\\.\\Aaeon_SmbiosMemoryLink"
 
 using namespace std;
 
+void CallIOCTL()
+{
+    HANDLE hDevice = NULL;
+    BOOL result;
+	DWORD dwOutput;
+	int buff[5] = { 0 };
+
+    // Create device handler to driver
+	hDevice = CreateFile(AAEON_DEVICE,
+		GENERIC_READ | GENERIC_WRITE,
+		0,
+		NULL,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+	
+	if (hDevice == INVALID_HANDLE_VALUE)
+	{
+		cout << "Open IOCTL Failed." << endl;
+		return;
+	}
+
+	// Entry Drive IO Control
+	result = DeviceIoControl(hDevice,
+		IOCTL_AAEON_SMBIOS_READ_MEMORY,
+		buff,
+		sizeof(buff),
+		NULL,
+		0,
+		&dwOutput,
+		NULL);
+
+	if (result == FALSE) {
+		cout << "Last Error: " << GetLastError() << endl;
+	}
+}
+
 int main()
 {
-    cout << "HelloWorld\n";
+	cout << "Hello Test!\n";
+	CallIOCTL();
 
     return 0;
 }

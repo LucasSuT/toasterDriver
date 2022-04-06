@@ -26,9 +26,10 @@ Environment:
 --*/
 
 #include "toaster.h"
+#include "AonSimpleAPIs.h"
 
-#define AAEON_WDFDEVICE L"\\Device\\Aaeon_WdfDevice"
-#define AAEON_WDFLINKNAME L"\\DosDevices\\Aaeon_WdfLink"
+#define AAEON_WDFDEVICE L"\\Device\\Aaeon_Smbios"
+#define AAEON_WDFLINKNAME L"\\DosDevices\\Aaeon_SmbiosMemoryLink"
 
 #ifdef ALLOC_PRAGMA
 #pragma alloc_text (INIT, DriverEntry)
@@ -470,11 +471,11 @@ Return Value:
 	
 
     PAGED_CODE();
-	if (!OutputBufferLength || !InputBufferLength)
+	/*if (!OutputBufferLength || !InputBufferLength)
 	{
 		WdfRequestComplete(Request, STATUS_INVALID_PARAMETER);
 		return;
-	}
+	}*/
 
 	switch (IoControlCode) {
 	/*------------------------------------------------------------------------ AAEON GPIO Function-*/
@@ -560,7 +561,33 @@ Return Value:
 	}
     case IOCTL_AAEON_SMBIOS_READ_MEMORY:
     {
+        KdPrint(("Toaster: IOCTL_AAEON_SMBIOS_READ_MEMORY Enter\n"));
 
+        KdPrint(("Toaster: Now IRQL is: %d\n", KeGetCurrentIrql()));
+
+        status = WdfRequestRetrieveInputBuffer(Request, 0, &inBuf, &inbufSize);
+        if (!NT_SUCCESS(status)) {
+            status = STATUS_INSUFFICIENT_RESOURCES;
+            break;
+        }
+
+        // Test Read memory
+        KdPrint(("Toaster: Check 1st byte: %c \n", ReadMemByte(0x8CAC8063)));
+        KdPrint(("Toaster: Check 2nd byte: %c \n", ReadMemByte(0x8CAC8064)));
+        KdPrint(("Toaster: Check 3rd byte: %c \n", ReadMemByte(0x8CAC8065)));
+        KdPrint(("Toaster: Check 4th byte: %c \n", ReadMemByte(0x8CAC8066)));
+        KdPrint(("Toaster: Check 5th byte: %c \n", ReadMemByte(0x8CAC8067)));
+
+        WriteMemByte(0x8CAC8065, 'B');
+
+        // Test Read memory
+        KdPrint(("Toaster: Check 1st byte: %c \n", ReadMemByte(0x8CAC8063)));
+        KdPrint(("Toaster: Check 2nd byte: %c \n", ReadMemByte(0x8CAC8064)));
+        KdPrint(("Toaster: Check 3rd byte: %c \n", ReadMemByte(0x8CAC8065)));
+        KdPrint(("Toaster: Check 4th byte: %c \n", ReadMemByte(0x8CAC8066)));
+        KdPrint(("Toaster: Check 5th byte: %c \n", ReadMemByte(0x8CAC8067)));
+
+        break;
     }
     default:
         status = STATUS_INVALID_DEVICE_REQUEST;
