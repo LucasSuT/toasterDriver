@@ -558,6 +558,10 @@ Return Value:
 #endif	
 		break;
 	}
+    case IOCTL_AAEON_SMBIOS_READ_MEMORY:
+    {
+
+    }
     default:
         status = STATUS_INVALID_DEVICE_REQUEST;
     }
