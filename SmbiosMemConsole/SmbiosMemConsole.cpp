@@ -5,8 +5,7 @@
 #include <string>
 #include <Windows.h>
 #include <winioctl.h>
-
-#include "IOCTLValue.h"
+#include "../ConsoleApp/IOCTLValue.h"
 
 #define AAEON_DEVICE L"\\\\.\\Aaeon_SmbiosMemoryLink"
 
@@ -51,8 +50,19 @@ void CallIOCTL()
 
 int main()
 {
+#pragma pack(1)
+	struct test {
+		UCHAR a;
+		UCHAR b;
+		UCHAR c;
+	}t;
 	cout << "Hello Test!\n";
-	CallIOCTL();
+	/*CallIOCTL();*/
+	printf("%x\n", &t);
+	printf("%x\n", &t.a);
+	printf("%x\n", &t.b);
+	printf("%x\n", &t.c);
+	system("pause");
 
     return 0;
 }

@@ -572,20 +572,31 @@ Return Value:
         }
 
         // Test Read memory
-        KdPrint(("Toaster: Check 1st byte: %c \n", ReadMemByte(0x8CAC8063)));
-        KdPrint(("Toaster: Check 2nd byte: %c \n", ReadMemByte(0x8CAC8064)));
-        KdPrint(("Toaster: Check 3rd byte: %c \n", ReadMemByte(0x8CAC8065)));
-        KdPrint(("Toaster: Check 4th byte: %c \n", ReadMemByte(0x8CAC8066)));
-        KdPrint(("Toaster: Check 5th byte: %c \n", ReadMemByte(0x8CAC8067)));
+        KdPrint(("Toaster: Check 1st byte: 0x%x \n", ReadMemByte(0x8CAC8000)));
+        KdPrint(("Toaster: Check 2nd byte: 0x%x \n", ReadMemByte(0x8CAC8001)));
+        KdPrint(("Toaster: Check 3rd byte: 0x%x \n", ReadMemByte(0x8CAC8002)));
+        KdPrint(("Toaster: Check 4th byte: 0x%x \n", ReadMemByte(0x8CAC8003)));
+        KdPrint(("Toaster: Check 5th byte: 0x%x \n", ReadMemByte(0x8CAC8004)));
+        PHYSICAL_ADDRESS paPhysicalAddr = { 0x8CAC8000, 0 };
+        PVOID pVirtualAddr = MmMapIoSpace(paPhysicalAddr, 0xFF, MmNonCached);
+        for (int i = 0; i <= 0xFF; i++)
+        {
+            if (i % 0x10 == 0)DbgPrint("Toaster: ===================================\n");
+            DbgPrint("Toaster: %2X\n", *((PCHAR)pVirtualAddr+i));
+        }
 
-        WriteMemByte(0x8CAC8065, 'B');
+        #pragma pack(1)
+        struct test {
+            UCHAR a;
+            UCHAR b;
+            USHORT c;
+        }t;
 
-        // Test Read memory
-        KdPrint(("Toaster: Check 1st byte: %c \n", ReadMemByte(0x8CAC8063)));
-        KdPrint(("Toaster: Check 2nd byte: %c \n", ReadMemByte(0x8CAC8064)));
-        KdPrint(("Toaster: Check 3rd byte: %c \n", ReadMemByte(0x8CAC8065)));
-        KdPrint(("Toaster: Check 4th byte: %c \n", ReadMemByte(0x8CAC8066)));
-        KdPrint(("Toaster: Check 5th byte: %c \n", ReadMemByte(0x8CAC8067)));
+        t.a = 0x0;
+        t.b = 0x1A;
+        t.c = 0x0003;
+        WRITE_REGISTER_BUFFER_UCHAR(pVirtualAddr,
+            &t.a, sizeof(t));
 
         break;
     }

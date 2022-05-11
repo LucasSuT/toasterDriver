@@ -39,6 +39,9 @@
     <ClInclude Include="AonSimpleAPIs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\ConsoleApp\IOCTLValue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="toaster.c">

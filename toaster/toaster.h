@@ -31,7 +31,8 @@ Environment:
 #include <initguid.h>
 #include "driver.h"
 #include "public.h"
-#include "IOCTLValue.h"
+#include "../ConsoleApp/IOCTLValue.h"
+
 
 
 // For Featured driver only
