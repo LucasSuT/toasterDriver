@@ -579,13 +579,29 @@ Return Value:
         KdPrint(("Toaster: Check 5th byte: 0x%x \n", ReadMemByte(0x8CAC8004)));
         PHYSICAL_ADDRESS paPhysicalAddr = { 0x8CAC8000, 0 };
         PVOID pVirtualAddr = MmMapIoSpace(paPhysicalAddr, 0xFF, MmNonCached);
-        for (int i = 0; i <= 0xFF; i++)
+        /*for (int i = 0; i <= 0xFF; i++)
         {
             if (i % 0x10 == 0)DbgPrint("Toaster: ===================================\n");
             DbgPrint("Toaster: %2X\n", *((PCHAR)pVirtualAddr+i));
-        }
+        }*/
 
         #pragma pack(1)
+        struct TestCopy {
+            UCHAR data[2];
+            USHORT data2;
+            UCHAR data3[249];
+        }t_copy;
+        READ_REGISTER_BUFFER_UCHAR(pVirtualAddr, &t_copy.data[0], sizeof(t_copy));
+        for (int i = 0; i < 0x02; i++)
+        {
+            DbgPrint("Toaster: %2X\n", t_copy.data[i]);
+        }
+        DbgPrint("Toaster: %x\n", t_copy.data2);
+        for (int i = 0; i < 249; i++)
+        {
+            DbgPrint("Toaster: %2X\n", t_copy.data3[i]);
+        }
+
         struct test {
             UCHAR a;
             UCHAR b;
@@ -594,7 +610,7 @@ Return Value:
 
         t.a = 0x0;
         t.b = 0x1A;
-        t.c = 0x0003;
+        t.c = 0x1234;
         WRITE_REGISTER_BUFFER_UCHAR(pVirtualAddr,
             &t.a, sizeof(t));
 
