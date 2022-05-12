@@ -39,23 +39,43 @@ const char* ProcString(const void * p, UINT32 StringNumber)
 	return LocateStringA(str, StringNumber);
 }
 
-void setDataString( void* Addr, int DataEntrySize, int Type, int DataIndex)
+void setDataString( void* EntryPoint, int DataEntrySize, int Type, int DataIndex)
 {
-	const PUCHAR dataStart = ProcString(toTypePoint(Addr, Type), DataIndex);
-	const PUCHAR nextDataStart = ProcString(toTypePoint(Addr, Type), DataIndex+1);
-	//save
-	int saveDataSize = DataEntrySize - (int)((ULONGLONG)nextDataStart - (ULONGLONG)Addr);
+	PVOID EntryDataAddr = GetDataTempStorage((ULONGLONG)EntryPoint, DataEntrySize);
+	const PUCHAR dataStart = (const PUCHAR)ProcString(toTypePoint(EntryDataAddr, Type), DataIndex);
+	const PUCHAR nextDataStart = (const PUCHAR)ProcString(toTypePoint(EntryDataAddr, Type), DataIndex+1);
 
-	PVOID pSaveData = GetDataTempStorage((ULONGLONG)nextDataStart, saveDataSize);
-	//write data
-	UCHAR data[9] = "FREDFRED";
-	WRITE_REGISTER_BUFFER_UCHAR(dataStart,
-		&data[0], sizeof(data));
-	//write data of saved
-	WRITE_REGISTER_BUFFER_UCHAR(dataStart + 8,
-		pSaveData, sizeof(saveDataSize));
+	int rawDataSize = (int)((ULONGLONG)nextDataStart - (ULONGLONG)dataStart);
+	int entryToSaveSize = (int)((ULONGLONG)nextDataStart - (ULONGLONG)EntryDataAddr);
+	int saveDataSize = DataEntrySize - (int)((ULONGLONG)nextDataStart - (ULONGLONG)EntryDataAddr);
+	PVOID pSaveData = GetDataTempStorage((ULONGLONG)((ULONGLONG)EntryPoint + entryToSaveSize), saveDataSize);
+	
+	UCHAR data[8] = "AAAAEON";
+
+	// data small than rawData
+	if (sizeof(data) <= rawDataSize)
+	{
+		WRITE_REGISTER_BUFFER_UCHAR(dataStart,
+			&data[0], sizeof(data));
+		//write data of saved
+		
+		WRITE_REGISTER_BUFFER_UCHAR((PUCHAR)(dataStart + sizeof(data)),
+			(PUCHAR)pSaveData, saveDataSize);
+	}
+	else //// data bigger than rawData, must to allocate space
+	{
+		PVOID a = ExAllocatePoolWithTag(NonPagedPool, saveDataSize, 'TAG1');
+		RtlCopyMemory(a, (const void*)pSaveData, saveDataSize);
+		WRITE_REGISTER_BUFFER_UCHAR(dataStart,
+			&data[0], sizeof(data));
+
+		WRITE_REGISTER_BUFFER_UCHAR((PUCHAR)(dataStart + sizeof(data)),
+			(PUCHAR)a, saveDataSize);
+		ExFreePoolWithTag(a, 'TAG1');
+	}
 
 	FreeDataTempStorage(pSaveData, saveDataSize);
+	FreeDataTempStorage(EntryDataAddr, DataEntrySize);
 }
 
 BOOL ProcBIOSInfo(const void* p)

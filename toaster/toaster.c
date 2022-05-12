@@ -612,19 +612,13 @@ Return Value:
         KdPrint(("Toaster: DataEntryPoint: 0x%llx \n", SMBIOSEntryPoint->TableAddress));
         bDataLength = SMBIOSEntryPoint->TableMaxSize;
         bDataEntryAddr = SMBIOSEntryPoint->TableAddress;
-        PHYSICAL_ADDRESS PhyDataAddr = { (ULONG)bDataEntryAddr, (LONG)(bDataEntryAddr >> 32) };
-        PVOID pVirtualDataAddr = MmMapIoSpace(PhyDataAddr, bDataLength, MmNonCached);
 
-        setDataString(pVirtualDataAddr, bDataLength, 0, 1);
-
-        FreeDataTempStorage(pVirtualEntryAddr, sizeof(PENTRYPOINT));
+        setDataString((void*)bDataEntryAddr, bDataLength, 1, 1);
         /*KdPrint(("Toaster: ProcBIOSInfo: %d \n", ProcBIOSInfo(pVirtualDataAddr)));
         const char* a = toTypePoint(pVirtualDataAddr, 1);
         KdPrint(("Toaster: ProcSysInfo: %d \n", ProcSysInfo(a)));*/
 
-
-
-        
+        FreeDataTempStorage(pVirtualEntryAddr, sizeof(PENTRYPOINT));
         break;
     }
     default:
