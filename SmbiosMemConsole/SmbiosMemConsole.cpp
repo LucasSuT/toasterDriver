@@ -15,7 +15,7 @@ using namespace std;
 void RasiePrivileges(void)
 {
 	HANDLE hToken;
-	TOKEN_PRIVILEGES tkp;
+	TOKEN_PRIVILEGES tkp = { 0 };
 
 	if (!OpenProcessToken(GetCurrentProcess(),
 		TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY,

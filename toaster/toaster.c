@@ -603,8 +603,9 @@ Return Value:
             WdfRequestComplete(Request, status);
             break;
         }
-        PHYSICAL_ADDRESS PhyEntryAddr = { bEntryPoint, 0 };
-        PVOID pVirtualEntryAddr = MmMapIoSpace(PhyEntryAddr, sizeof(PENTRYPOINT), MmNonCached);
+        
+        PVOID pVirtualEntryAddr = GetDataTempStorage(bEntryPoint, sizeof(PENTRYPOINT));
+
         KdPrint(("Toaster: BASE address: 0x%lx \n", bEntryPoint));
         PENTRYPOINT SMBIOSEntryPoint = (PENTRYPOINT)pVirtualEntryAddr;
         KdPrint(("Toaster: Data Length: 0x%lx \n", SMBIOSEntryPoint->TableMaxSize));
@@ -613,10 +614,13 @@ Return Value:
         bDataEntryAddr = SMBIOSEntryPoint->TableAddress;
         PHYSICAL_ADDRESS PhyDataAddr = { (ULONG)bDataEntryAddr, (LONG)(bDataEntryAddr >> 32) };
         PVOID pVirtualDataAddr = MmMapIoSpace(PhyDataAddr, bDataLength, MmNonCached);
-        
-        KdPrint(("Toaster: ProcBIOSInfo: %d \n", ProcBIOSInfo(pVirtualDataAddr)));
+
+        setDataString(pVirtualDataAddr, bDataLength, 0, 1);
+
+        FreeDataTempStorage(pVirtualEntryAddr, sizeof(PENTRYPOINT));
+        /*KdPrint(("Toaster: ProcBIOSInfo: %d \n", ProcBIOSInfo(pVirtualDataAddr)));
         const char* a = toTypePoint(pVirtualDataAddr, 1);
-        KdPrint(("Toaster: ProcSysInfo: %d \n", ProcSysInfo(a)));
+        KdPrint(("Toaster: ProcSysInfo: %d \n", ProcSysInfo(a)));*/
 
 
 

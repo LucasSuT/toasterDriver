@@ -1,3 +1,4 @@
+#pragma once
 #include "Smbios.h"
 #include "stdafx.h"
 
@@ -38,7 +39,24 @@ const char* ProcString(const void * p, UINT32 StringNumber)
 	return LocateStringA(str, StringNumber);
 }
 
+void setDataString( void* Addr, int DataEntrySize, int Type, int DataIndex)
+{
+	const PUCHAR dataStart = ProcString(toTypePoint(Addr, Type), DataIndex);
+	const PUCHAR nextDataStart = ProcString(toTypePoint(Addr, Type), DataIndex+1);
+	//save
+	int saveDataSize = DataEntrySize - (int)((ULONGLONG)nextDataStart - (ULONGLONG)Addr);
 
+	PVOID pSaveData = GetDataTempStorage((ULONGLONG)nextDataStart, saveDataSize);
+	//write data
+	UCHAR data[9] = "FREDFRED";
+	WRITE_REGISTER_BUFFER_UCHAR(dataStart,
+		&data[0], sizeof(data));
+	//write data of saved
+	WRITE_REGISTER_BUFFER_UCHAR(dataStart + 8,
+		pSaveData, sizeof(saveDataSize));
+
+	FreeDataTempStorage(pSaveData, saveDataSize);
+}
 
 BOOL ProcBIOSInfo(const void* p)
 {

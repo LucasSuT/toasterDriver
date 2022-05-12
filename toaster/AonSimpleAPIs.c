@@ -171,35 +171,18 @@ VOID WriteMemByte(ULONG uAddr, UCHAR bData)
 	WriteMemory(&param, sizeof(SVCIO_WRITE_MEMORY_INPUT), NULL, 0, &uBytesReturned);
 }
 
-USHORT ReadMemWord(ULONG uAddr)
+PVOID GetDataTempStorage(ULONGLONG targetAddr, int size)
 {
-	USHORT wData = 0x0000;
-	SVCIO_READ_MEMORY_INPUT param = { 0 };
-	ULONG uSize = 0;
-	ULONG uBytesReturned = 0;
+	PHYSICAL_ADDRESS address;
 
-	param.Address = uAddr;
-	param.Count = 1;
-	param.UnitSize = 2;
-	uSize = param.Count * param.UnitSize;
+	address.HighPart = targetAddr >> 32;
+	address.LowPart = targetAddr & 0xFFFFFFFF;
+	PVOID pVirtualAddr = MmMapIoSpace(address, size, MmNonCached);
 
-	ReadMemory(&param, sizeof(SVCIO_READ_MEMORY_INPUT), &wData, uSize, &uBytesReturned);
-
-	return wData;
+	return pVirtualAddr;
 }
-ULONG ReadMemDWord(ULONGLONG uAddr)
+
+VOID FreeDataTempStorage(PVOID virtualAddr, int size)
 {
-	ULONG dwData = 0x00000000;
-	SVCIO_READ_MEMORY_INPUT param = { 0 };
-	ULONG uSize = 0;
-	ULONG uBytesReturned = 0;
-
-	param.Address = uAddr;
-	param.Count = 1;
-	param.UnitSize = 4;
-	uSize = param.Count * param.UnitSize;
-
-	ReadMemory(&param, sizeof(SVCIO_READ_MEMORY_INPUT), &dwData, uSize, &uBytesReturned);
-
-	return dwData;
+	MmUnmapIoSpace(virtualAddr, size);
 }

@@ -7,6 +7,7 @@
 #include <wmidata.h>
 #include <wmistr.h>
 #include <minwindef.h>
+#include "AonSimpleAPIs.h"
 
 #pragma pack(push) 
 #pragma pack(1)
@@ -74,5 +75,6 @@ typedef struct _TYPE_2_ {
 } BoardInfo, * PBoardInfo;
 #pragma pack(pop)
 const char* toTypePoint(void* Addr, int type);
+void setDataString(void* Addr, int DataEntrySize, int Type, int DataIndex);
 BOOL ProcBIOSInfo(void* p);
 BOOL ProcSysInfo(const void* p);
