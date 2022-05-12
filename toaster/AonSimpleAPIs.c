@@ -17,7 +17,7 @@ ReadMemory(void* lpInBuffer,
 {
 	SVCIO_READ_MEMORY_INPUT* param;
 	ULONG	size;
-	PHYSICAL_ADDRESS address;
+	PHYSICAL_ADDRESS address = { 0 };
 	PVOID	maped;
 	BOOLEAN	error;
 
@@ -82,7 +82,7 @@ WriteMemory(void* lpInBuffer,
 
 	SVCIO_WRITE_MEMORY_INPUT* param;
 	ULONG size;
-	PHYSICAL_ADDRESS address;
+	PHYSICAL_ADDRESS address = { 0 };
 	PVOID	maped;
 	BOOLEAN	error;
 
@@ -141,7 +141,7 @@ WriteMemory(void* lpInBuffer,
 UCHAR ReadMemByte(ULONG uAddr)
 {
 	UCHAR bData = 0x00;
-	SVCIO_READ_MEMORY_INPUT param;
+	SVCIO_READ_MEMORY_INPUT param = { 0 };
 	ULONG uSize = 0;
 	ULONG uBytesReturned = 0;
 
@@ -157,16 +157,49 @@ UCHAR ReadMemByte(ULONG uAddr)
 
 VOID WriteMemByte(ULONG uAddr, UCHAR bData)
 {
-	SVCIO_WRITE_MEMORY_INPUT param;
+	SVCIO_WRITE_MEMORY_INPUT param = { 0 };
 	ULONG uSize = 0;
 	ULONG uBytesReturned = 0;
 
 	param.Address = uAddr;
 	param.Count = 1;
 	param.UnitSize = 1;
-	memcpy(&(param.Data), &bData, param.Count * param.UnitSize);
+	memcpy(&(param.Data), &bData, (ULONGLONG)(param.Count * param.UnitSize));
 
-	uSize = offsetof(SVCIO_WRITE_MEMORY_INPUT, Data) + param.Count * param.UnitSize;
+	uSize = (ULONG)offsetof(SVCIO_WRITE_MEMORY_INPUT, Data) + param.Count * param.UnitSize;
 
 	WriteMemory(&param, sizeof(SVCIO_WRITE_MEMORY_INPUT), NULL, 0, &uBytesReturned);
+}
+
+USHORT ReadMemWord(ULONG uAddr)
+{
+	USHORT wData = 0x0000;
+	SVCIO_READ_MEMORY_INPUT param = { 0 };
+	ULONG uSize = 0;
+	ULONG uBytesReturned = 0;
+
+	param.Address = uAddr;
+	param.Count = 1;
+	param.UnitSize = 2;
+	uSize = param.Count * param.UnitSize;
+
+	ReadMemory(&param, sizeof(SVCIO_READ_MEMORY_INPUT), &wData, uSize, &uBytesReturned);
+
+	return wData;
+}
+ULONG ReadMemDWord(ULONGLONG uAddr)
+{
+	ULONG dwData = 0x00000000;
+	SVCIO_READ_MEMORY_INPUT param = { 0 };
+	ULONG uSize = 0;
+	ULONG uBytesReturned = 0;
+
+	param.Address = uAddr;
+	param.Count = 1;
+	param.UnitSize = 4;
+	uSize = param.Count * param.UnitSize;
+
+	ReadMemory(&param, sizeof(SVCIO_READ_MEMORY_INPUT), &dwData, uSize, &uBytesReturned);
+
+	return dwData;
 }

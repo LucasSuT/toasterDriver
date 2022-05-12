@@ -24,9 +24,9 @@ Environment:
     Kernel mode
 
 --*/
-
 #include "toaster.h"
 #include "AonSimpleAPIs.h"
+#include "Smbios.h"
 
 #define AAEON_WDFDEVICE L"\\Device\\Aaeon_Smbios"
 #define AAEON_WDFLINKNAME L"\\DosDevices\\Aaeon_SmbiosMemoryLink"
@@ -497,7 +497,7 @@ Return Value:
 			break;
 		}
 
-		UCHAR buff[512];
+        UCHAR buff[512] = { 0 };
 		ULONG buffSize = sizeof(buff);
 		status = IoWMIQueryAllData(fdoData->BfpiMethodDataObject, &buffSize, buff);
 		if (!NT_SUCCESS(status)) {
@@ -570,23 +570,57 @@ Return Value:
             status = STATUS_INSUFFICIENT_RESOURCES;
             break;
         }
+        //// Test Read memory
+        //KdPrint(("Toaster: Check 1st byte: %c \n", ReadMemByte(0x8CAC8063)));
+        //KdPrint(("Toaster: Check 2nd byte: %c \n", ReadMemByte(0x8CAC8064)));
+        //KdPrint(("Toaster: Check 3rd byte: %c \n", ReadMemByte(0x8CAC8065)));
+        //KdPrint(("Toaster: Check 4th byte: %c \n", ReadMemByte(0x8CAC8066)));
+        //KdPrint(("Toaster: Check 5th byte: %c \n", ReadMemByte(0x8CAC8067)));
 
-        // Test Read memory
-        KdPrint(("Toaster: Check 1st byte: %c \n", ReadMemByte(0x8CAC8063)));
-        KdPrint(("Toaster: Check 2nd byte: %c \n", ReadMemByte(0x8CAC8064)));
-        KdPrint(("Toaster: Check 3rd byte: %c \n", ReadMemByte(0x8CAC8065)));
-        KdPrint(("Toaster: Check 4th byte: %c \n", ReadMemByte(0x8CAC8066)));
-        KdPrint(("Toaster: Check 5th byte: %c \n", ReadMemByte(0x8CAC8067)));
+        //WriteMemByte(0x8CAC8065, 'B');
 
-        WriteMemByte(0x8CAC8065, 'B');
+        //// Test Read memory
+        //KdPrint(("Toaster: Check 1st byte: %c \n", ReadMemByte(0x8CAC8063)));
+        //KdPrint(("Toaster: Check 2nd byte: %c \n", ReadMemByte(0x8CAC8064)));
+        //KdPrint(("Toaster: Check 3rd byte: %c \n", ReadMemByte(0x8CAC8065)));
+        //KdPrint(("Toaster: Check 4th byte: %c \n", ReadMemByte(0x8CAC8066)));
+        //KdPrint(("Toaster: Check 5th byte: %c \n", ReadMemByte(0x8CAC8067)));
 
-        // Test Read memory
-        KdPrint(("Toaster: Check 1st byte: %c \n", ReadMemByte(0x8CAC8063)));
-        KdPrint(("Toaster: Check 2nd byte: %c \n", ReadMemByte(0x8CAC8064)));
-        KdPrint(("Toaster: Check 3rd byte: %c \n", ReadMemByte(0x8CAC8065)));
-        KdPrint(("Toaster: Check 4th byte: %c \n", ReadMemByte(0x8CAC8066)));
-        KdPrint(("Toaster: Check 5th byte: %c \n", ReadMemByte(0x8CAC8067)));
+        break;
+    }
+    case IOCTL_AAEON_READ_SMBIOS:
+    {
+        DWORD bEntryPoint = 0, bDataLength = 0;
+        LONGLONG bDataEntryAddr = 0;
+        status = WdfRequestRetrieveInputBuffer(Request, sizeof(AAEON_SMBIOS), &inBuf, &inbufSize);
+        if (NT_SUCCESS(status))
+        {
+            bEntryPoint = ((PAAEON_SMBIOS)inBuf)->bEntryPoint;
+        }
+        else
+        {
+            DbgPrint("Toaster: WdfRequestRetrieveInputBuffer Error\n");
+            WdfRequestComplete(Request, status);
+            break;
+        }
+        PHYSICAL_ADDRESS PhyEntryAddr = { bEntryPoint, 0 };
+        PVOID pVirtualEntryAddr = MmMapIoSpace(PhyEntryAddr, sizeof(PENTRYPOINT), MmNonCached);
+        KdPrint(("Toaster: BASE address: 0x%lx \n", bEntryPoint));
+        PENTRYPOINT SMBIOSEntryPoint = (PENTRYPOINT)pVirtualEntryAddr;
+        KdPrint(("Toaster: Data Length: 0x%lx \n", SMBIOSEntryPoint->TableMaxSize));
+        KdPrint(("Toaster: DataEntryPoint: 0x%llx \n", SMBIOSEntryPoint->TableAddress));
+        bDataLength = SMBIOSEntryPoint->TableMaxSize;
+        bDataEntryAddr = SMBIOSEntryPoint->TableAddress;
+        PHYSICAL_ADDRESS PhyDataAddr = { (ULONG)bDataEntryAddr, (LONG)(bDataEntryAddr >> 32) };
+        PVOID pVirtualDataAddr = MmMapIoSpace(PhyDataAddr, bDataLength, MmNonCached);
+        
+        KdPrint(("Toaster: ProcBIOSInfo: %d \n", ProcBIOSInfo(pVirtualDataAddr)));
+        const char* a = toTypePoint(pVirtualDataAddr, 1);
+        KdPrint(("Toaster: ProcSysInfo: %d \n", ProcSysInfo(a)));
 
+
+
+        
         break;
     }
     default:

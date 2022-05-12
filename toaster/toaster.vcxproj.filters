@@ -39,12 +39,24 @@
     <ClInclude Include="AonSimpleAPIs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Smbios.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="toaster.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AonSimpleAPIs.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Smbios.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
