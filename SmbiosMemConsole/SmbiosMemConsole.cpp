@@ -16,7 +16,7 @@ void CallIOCTL()
     HANDLE hDevice = NULL;
     BOOL result;
 	DWORD dwOutput;
-	int buff[5] = { 0 };
+	DWORD32 buff= 0x8CAC8000;
 
     // Create device handler to driver
 	hDevice = CreateFile(AAEON_DEVICE,
@@ -36,7 +36,7 @@ void CallIOCTL()
 	// Entry Drive IO Control
 	result = DeviceIoControl(hDevice,
 		IOCTL_AAEON_SMBIOS_READ_MEMORY,
-		buff,
+		&buff,
 		sizeof(buff),
 		NULL,
 		0,
@@ -50,18 +50,8 @@ void CallIOCTL()
 
 int main()
 {
-#pragma pack(1)
-	struct test {
-		UCHAR a;
-		UCHAR b;
-		UCHAR c;
-	}t;
 	cout << "Hello Test!\n";
-	/*CallIOCTL();*/
-	printf("%x\n", &t);
-	printf("%x\n", &t.a);
-	printf("%x\n", &t.b);
-	printf("%x\n", &t.c);
+	CallIOCTL();
 	system("pause");
 
     return 0;
