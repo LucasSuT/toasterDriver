@@ -2,6 +2,12 @@
 #include "Smbios.h"
 #include "stdafx.h"
 
+#ifdef _WIN64
+#define CONVERTPTRTONUM(X) ((ULONGLONG)(X))
+#else
+#define CONVERTPTRTONUM(X) ((ULONG)(X))
+#endif
+
 const char* toPointString(const void* p)
 {
 	return (char*)p + ((PSMBIOSHEADER)p)->Length;
@@ -39,43 +45,50 @@ const char* ProcString(const void * p, UINT32 StringNumber)
 	return LocateStringA(str, StringNumber);
 }
 
-void setDataString( void* EntryPoint, int DataEntrySize, int Type, int DataIndex)
+void setDataString( void* VirtualEntryPoint, int Type, int DataIndex, PUCHAR InputData, int DataSize)
 {
-	PVOID EntryDataAddr = GetDataTempStorage((ULONGLONG)EntryPoint, DataEntrySize);
-	const PUCHAR dataStart = (const PUCHAR)ProcString(toTypePoint(EntryDataAddr, Type), DataIndex);
-	const PUCHAR nextDataStart = (const PUCHAR)ProcString(toTypePoint(EntryDataAddr, Type), DataIndex+1);
+	PENTRYPOINT SMBIOSEntryPoint = (PENTRYPOINT)VirtualEntryPoint;
+	ULONG DataEntryPoint = (ULONG)SMBIOSEntryPoint->TableAddress;
+	int DataEntrySize = (int)SMBIOSEntryPoint->TableMaxSize;
+
+	//Calculate the memory location of the be modified data and the next data
+	PVOID virtualDataEntryPoint = GetDataTempStorage(DataEntryPoint, DataEntrySize);
+	const PUCHAR dataStart = (const PUCHAR)ProcString(toTypePoint(virtualDataEntryPoint, Type), DataIndex);
+	const PUCHAR nextDataStart = (const PUCHAR)ProcString(toTypePoint(virtualDataEntryPoint, Type), DataIndex+1);
+	
+	int entryToNextDataSize = (int)(CONVERTPTRTONUM(nextDataStart) - CONVERTPTRTONUM(virtualDataEntryPoint));
+	int NextDataToEndSize = DataEntrySize - (int)(CONVERTPTRTONUM(nextDataStart) - CONVERTPTRTONUM(virtualDataEntryPoint));
+	PVOID virtualNextData = GetDataTempStorage((ULONG)(DataEntryPoint + entryToNextDataSize), NextDataToEndSize);
 
 	int rawDataSize = (int)((ULONGLONG)nextDataStart - (ULONGLONG)dataStart);
-	int entryToSaveSize = (int)((ULONGLONG)nextDataStart - (ULONGLONG)EntryDataAddr);
-	int saveDataSize = DataEntrySize - (int)((ULONGLONG)nextDataStart - (ULONGLONG)EntryDataAddr);
-	PVOID pSaveData = GetDataTempStorage((ULONGLONG)((ULONGLONG)EntryPoint + entryToSaveSize), saveDataSize);
-	
-	UCHAR data[8] = "AAAAEON";
 
 	// data small than rawData
-	if (sizeof(data) <= rawDataSize)
+	if (DataSize <= rawDataSize)
 	{
-		WRITE_REGISTER_BUFFER_UCHAR(dataStart,
-			&data[0], sizeof(data));
-		//write data of saved
-		
-		WRITE_REGISTER_BUFFER_UCHAR((PUCHAR)(dataStart + sizeof(data)),
-			(PUCHAR)pSaveData, saveDataSize);
+		WRITE_REGISTER_BUFFER_UCHAR((PUCHAR)(dataStart + DataSize),
+			(PUCHAR)virtualNextData, NextDataToEndSize);
 	}
-	else //// data bigger than rawData, must to allocate space
+	else /// data bigger than rawData, must to allocate space to save data, avoid data be modified
 	{
-		PVOID a = ExAllocatePoolWithTag(NonPagedPool, saveDataSize, 'TAG1');
-		RtlCopyMemory(a, (const void*)pSaveData, saveDataSize);
-		WRITE_REGISTER_BUFFER_UCHAR(dataStart,
-			&data[0], sizeof(data));
+		PVOID saveData = ExAllocatePoolWithTag(NonPagedPool, NextDataToEndSize, 'TAG1');
+		RtlCopyMemory(saveData, (const void*)virtualNextData, NextDataToEndSize);
 
-		WRITE_REGISTER_BUFFER_UCHAR((PUCHAR)(dataStart + sizeof(data)),
-			(PUCHAR)a, saveDataSize);
-		ExFreePoolWithTag(a, 'TAG1');
+		WRITE_REGISTER_BUFFER_UCHAR((PUCHAR)(dataStart + DataSize),
+			(PUCHAR)saveData, NextDataToEndSize);
+		ExFreePoolWithTag(saveData, 'TAG1');
 	}
+	//write data
+	WRITE_REGISTER_BUFFER_UCHAR(dataStart,
+		InputData, DataSize);
+	
+	FreeDataTempStorage(virtualNextData, NextDataToEndSize);
+	FreeDataTempStorage(virtualDataEntryPoint, DataEntrySize);
+	
+	//write data length
+	DataEntrySize = DataEntrySize + DataSize - rawDataSize;
+	WRITE_REGISTER_BUFFER_UCHAR( &(UCHAR)(SMBIOSEntryPoint->TableMaxSize),
+		&((UCHAR)DataEntrySize), sizeof(DWORD));
 
-	FreeDataTempStorage(pSaveData, saveDataSize);
-	FreeDataTempStorage(EntryDataAddr, DataEntrySize);
 }
 
 BOOL ProcBIOSInfo(const void* p)

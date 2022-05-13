@@ -540,7 +540,7 @@ Return Value:
 		else
 		{
 			KdPrint(("Toaster: IoWMIExecuteMethod Success\n"));
-			for (int i = 0; i < (wmiOutSize / sizeof(DWORD32)); i++)
+			for (UINT i = 0; i < (wmiOutSize / sizeof(DWORD32)); i++)
 				KdPrint(("Toaster: 0x%X\n", wmiOutBuff[i]));
 		}
 
@@ -604,21 +604,23 @@ Return Value:
             break;
         }
         
-        PVOID pVirtualEntryAddr = GetDataTempStorage(bEntryPoint, sizeof(PENTRYPOINT));
+        PVOID VirtualEntryPoint = GetDataTempStorage(bEntryPoint, sizeof(PENTRYPOINT));
 
         KdPrint(("Toaster: BASE address: 0x%lx \n", bEntryPoint));
-        PENTRYPOINT SMBIOSEntryPoint = (PENTRYPOINT)pVirtualEntryAddr;
+        PENTRYPOINT SMBIOSEntryPoint = (PENTRYPOINT)VirtualEntryPoint;
         KdPrint(("Toaster: Data Length: 0x%lx \n", SMBIOSEntryPoint->TableMaxSize));
         KdPrint(("Toaster: DataEntryPoint: 0x%llx \n", SMBIOSEntryPoint->TableAddress));
         bDataLength = SMBIOSEntryPoint->TableMaxSize;
         bDataEntryAddr = SMBIOSEntryPoint->TableAddress;
 
-        setDataString((void*)bDataEntryAddr, bDataLength, 1, 1);
+        UCHAR a[8] = "FREDFRE";
+        setDataString(VirtualEntryPoint, 1, 1, &a[0], sizeof(a));
+        
         /*KdPrint(("Toaster: ProcBIOSInfo: %d \n", ProcBIOSInfo(pVirtualDataAddr)));
         const char* a = toTypePoint(pVirtualDataAddr, 1);
         KdPrint(("Toaster: ProcSysInfo: %d \n", ProcSysInfo(a)));*/
 
-        FreeDataTempStorage(pVirtualEntryAddr, sizeof(PENTRYPOINT));
+        FreeDataTempStorage(VirtualEntryPoint, sizeof(PENTRYPOINT));
         break;
     }
     default:

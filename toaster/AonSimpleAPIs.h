@@ -39,5 +39,5 @@ ULONG MsgBusRead(UCHAR bPort, USHORT wOffset);
 VOID MsgBusWrite(UCHAR bPort, USHORT wOffset, ULONG dwData);
 NTSTATUS aaeonPowerManagementControl(BOOLEAN bIsRestore, BOOLEAN bEnable, PPOWER_MANAGEMENT_DATA pData, PULONG pDataCnt);
 
-PVOID GetDataTempStorage(ULONGLONG targetAddr, int size);
+PVOID GetDataTempStorage(ULONG targetAddr, int size);
 VOID FreeDataTempStorage(PVOID virtualAddr, int size);

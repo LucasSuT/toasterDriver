@@ -171,12 +171,12 @@ VOID WriteMemByte(ULONG uAddr, UCHAR bData)
 	WriteMemory(&param, sizeof(SVCIO_WRITE_MEMORY_INPUT), NULL, 0, &uBytesReturned);
 }
 
-PVOID GetDataTempStorage(ULONGLONG targetAddr, int size)
+PVOID GetDataTempStorage(ULONG targetAddr, int size)
 {
 	PHYSICAL_ADDRESS address;
 
-	address.HighPart = targetAddr >> 32;
-	address.LowPart = targetAddr & 0xFFFFFFFF;
+	address.HighPart = 0;
+	address.LowPart = targetAddr;
 	PVOID pVirtualAddr = MmMapIoSpace(address, size, MmNonCached);
 
 	return pVirtualAddr;
