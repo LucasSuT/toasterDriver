@@ -27,7 +27,8 @@ Environment:
 
 #include "toaster.h"
 #include "AonSimpleAPIs.h"
-
+#include "SmbiosStruct.h"
+#include "SmbiosParser.h"
 #define AAEON_WDFDEVICE L"\\Device\\Aaeon_Smbios"
 #define AAEON_WDFLINKNAME L"\\DosDevices\\Aaeon_SmbiosMemoryLink"
 
@@ -581,30 +582,29 @@ Return Value:
         KdPrint(("Toaster: Check 5th byte: 0x%x \n", ReadMemByte(smbios_structure_address+4)));
         PHYSICAL_ADDRESS paPhysicalAddr = { smbios_structure_address, 0 };
         PVOID pVirtualAddr = MmMapIoSpace(paPhysicalAddr, 0xFF, MmNonCached);
-        for (int i = 0; i <= 0xFF; i++)
+        /*for (int i = 0; i <= 0xFF; i++)
         {
             if (i % 0x10 == 0)DbgPrint("Toaster: ===================================\n");
-            DbgPrint("Toaster: %2X\n", *((PCHAR)pVirtualAddr+i));
+            DbgPrint("Toaster: %2X\n", *((PUCHAR)pVirtualAddr+i));
+        }
+        DbgPrint("Toaster: \n\n\n\n");*/
+
+        ParsingSmbiosStructure(pVirtualAddr,0xFF);
+        MmUnmapIoSpace(pVirtualAddr, 0xFF);
+        DbgPrint("Toaster: %2X\n", BIOSInfo.Header.Type);
+        DbgPrint("Toaster: %2X\n", BIOSInfo.Header.Length);
+        DbgPrint("Toaster: %2X\n", BIOSInfo.Header.Handle);
+        DbgPrint("Toaster: %2X\n", BIOSInfo.Vendor);
+        DbgPrint("Toaster: %2X\n", BIOSInfo.Version);
+        DbgPrint("Toaster: %2X\n", BIOSInfo.StartingAddrSeg);
+        DbgPrint("Toaster: %2X\n", BIOSInfo.Characteristics);
+        for (int i = 0; i <= 0x20; i++)
+        {
+            if (i % 0x10 == 0)DbgPrint("Toaster: ===================================\n");
+            DbgPrint("Toaster: %2X\n", *(& BIOSInfo.Header.Type + i));
         }
 
-        #pragma pack(1)
-        struct TestCopy {
-            UCHAR data[2];
-            USHORT data2;
-            UCHAR data3[249];
-        }t_copy;
-        READ_REGISTER_BUFFER_UCHAR(pVirtualAddr, &t_copy.data[0], sizeof(t_copy));
-        for (int i = 0; i < 0x02; i++)
-        {
-            DbgPrint("Toaster: %2X\n", t_copy.data[i]);
-        }
-        DbgPrint("Toaster: %x\n", t_copy.data2);
-        for (int i = 0; i < 249; i++)
-        {
-            DbgPrint("Toaster: %2X\n", t_copy.data3[i]);
-        }
-
-        struct test {
+        /*struct test {
             UCHAR a;
             UCHAR b;
             USHORT c;
@@ -614,7 +614,7 @@ Return Value:
         t.b = 0x1A;
         t.c = 0x1234;
         WRITE_REGISTER_BUFFER_UCHAR(pVirtualAddr,
-            &t.a, sizeof(t));
+            &t.a, sizeof(t));*/
 
         break;
     }

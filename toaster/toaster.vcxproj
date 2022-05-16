@@ -223,6 +223,8 @@
     <ClInclude Include="AonSimpleAPIs.h" />
     <ClInclude Include="driver.h" />
     <ClInclude Include="public.h" />
+    <ClInclude Include="SmbiosParser.h" />
+    <ClInclude Include="SmbiosStruct.h" />
     <ClInclude Include="toaster.h" />
     <ClInclude Include="trace.h" />
   </ItemGroup>
