@@ -4,6 +4,7 @@
 #pragma once
 #pragma pack(push) 
 #pragma pack(1)
+
 typedef struct _SMBIOSHEADER_
 {
     BYTE Type;
@@ -101,4 +102,14 @@ struct _UNKNOW_ {
 	UCHAR	Str[1000];
 	SIZE_T	Size;
 }UnKnow[100];
+
+typedef struct _SMBIOSTABLE_
+{
+	struct _TYPE_0_ _BIOSInfo;
+	struct _TYPE_1_ _SystemInfo;
+	struct _TYPE_2_ _BoardInfo;
+	struct _TYPE_3_ _SystemEnclosure;
+	struct _TYPE_4_ _ProcessorInfo;
+	struct _UNKNOW_ _UnKnow[100];
+}SmbiosTable;
 #pragma pack(pop) 

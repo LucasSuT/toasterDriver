@@ -170,3 +170,36 @@ VOID WriteMemByte(ULONG uAddr, UCHAR bData)
 
 	WriteMemory(&param, sizeof(SVCIO_WRITE_MEMORY_INPUT), NULL, 0, &uBytesReturned);
 }
+
+ULONG ReadMemDWord(ULONGLONG uAddr)
+{
+	ULONG dwData = 0x00000000;
+	SVCIO_READ_MEMORY_INPUT param;
+	ULONG uSize = 0;
+	ULONG uBytesReturned = 0;
+
+	param.Address = uAddr;
+	param.Count = 1;
+	param.UnitSize = 4;
+	uSize = param.Count * param.UnitSize;
+
+	ReadMemory(&param, sizeof(SVCIO_READ_MEMORY_INPUT), &dwData, uSize, &uBytesReturned);
+
+	return dwData;
+}
+
+VOID WriteMemDWord(ULONGLONG uAddr, ULONG dwData)
+{
+	SVCIO_WRITE_MEMORY_INPUT param;
+	ULONG uSize = 0;
+	ULONG uBytesReturned = 0;
+
+	param.Address = uAddr;
+	param.Count = 1;
+	param.UnitSize = 4;
+	memcpy(&(param.Data), &dwData, param.Count * param.UnitSize);
+
+	uSize = offsetof(SVCIO_WRITE_MEMORY_INPUT, Data) + param.Count * param.UnitSize;
+
+	WriteMemory(&param, sizeof(SVCIO_WRITE_MEMORY_INPUT), NULL, 0, &uBytesReturned);
+}

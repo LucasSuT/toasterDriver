@@ -7,9 +7,9 @@
 SIZE_T GetStructureSize(volatile UCHAR* pVirtualAddr)
 {
 	ULONGLONG base=(ULONGLONG)pVirtualAddr;
-	pVirtualAddr += *(pVirtualAddr + 1);
-	while ((*pVirtualAddr | *(pVirtualAddr + 1)) != 0x0)pVirtualAddr++;
-	pVirtualAddr += 2;
+	pVirtualAddr += *(pVirtualAddr + 1); // point to struct end
+	while ((*pVirtualAddr | *(pVirtualAddr + 1)) != 0x0)pVirtualAddr++; // skip string area
+	pVirtualAddr += 2; //skip end of strcut
 	DbgPrint("Toaster structur start: %2X structure end: %2X\n", base, pVirtualAddr);
 	return (ULONGLONG)pVirtualAddr-base;
 }
@@ -63,7 +63,7 @@ void ParsingSmbiosStructure(volatile UCHAR* pVirtualAddr,const DWORD32 length)
 	ULONGLONG last_address = (ULONGLONG)pVirtualAddr + length;
 	UCHAR type = *pVirtualAddr;
 	DbgPrint("Toaster parsing start: %2X end: %2X\n", pVirtualAddr, last_address);
-	while (type != 0x04 && (ULONGLONG)pVirtualAddr< last_address)
+	while (type != 0x7F && (ULONGLONG)pVirtualAddr< last_address)
 	{
 		DbgPrint("Toaster in loop base: %2X base-value: %2X\n", pVirtualAddr, *pVirtualAddr);
 		DumpSmbiosTable(&pVirtualAddr, *pVirtualAddr);

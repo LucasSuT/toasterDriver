@@ -6,6 +6,7 @@
 #include <Windows.h>
 #include <winioctl.h>
 #include "../ConsoleApp/IOCTLValue.h"
+#include "../toaster/SmbiosStruct.h"
 
 #define AAEON_DEVICE L"\\\\.\\Aaeon_SmbiosMemoryLink"
 
@@ -16,7 +17,8 @@ void CallIOCTL()
     HANDLE hDevice = NULL;
     BOOL result;
 	DWORD dwOutput;
-	DWORD32 buff= 0x8CAC8000;
+	//DWORD32 buff= 0x8CAC8000;
+	DWORD32 buff = 0x8CACA000;
 
     // Create device handler to driver
 	hDevice = CreateFile(AAEON_DEVICE,
