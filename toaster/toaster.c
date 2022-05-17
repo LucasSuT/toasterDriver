@@ -572,7 +572,9 @@ Return Value:
             break;
         }
         DWORD32 smbios_structure_address;
-        smbios_structure_address = (DWORD32)*inBuf;
+        DWORD32 maximum_size;
+        smbios_structure_address = ReadMemDWord((*inBuf)+0x10);
+        maximum_size = ReadMemDWord((*inBuf) + 0x0C);
         KdPrint(("Toaster: base addr : 0x%x \n", smbios_structure_address));
         // Test Read memory
         KdPrint(("Toaster: Check 1st byte: 0x%x \n", ReadMemByte(smbios_structure_address)));
@@ -581,7 +583,7 @@ Return Value:
         KdPrint(("Toaster: Check 4th byte: 0x%x \n", ReadMemByte(smbios_structure_address+3)));
         KdPrint(("Toaster: Check 5th byte: 0x%x \n", ReadMemByte(smbios_structure_address+4)));
         PHYSICAL_ADDRESS paPhysicalAddr = { smbios_structure_address, 0 };
-        PVOID pVirtualAddr = MmMapIoSpace(paPhysicalAddr, 0xFF, MmNonCached);
+        PVOID pVirtualAddr = MmMapIoSpace(paPhysicalAddr, maximum_size, MmNonCached);
         /*for (int i = 0; i <= 0xFF; i++)
         {
             if (i % 0x10 == 0)DbgPrint("Toaster: ===================================\n");
@@ -589,8 +591,8 @@ Return Value:
         }
         DbgPrint("Toaster: \n\n\n\n");*/
 
-        ParsingSmbiosStructure(pVirtualAddr,0xFF);
-        MmUnmapIoSpace(pVirtualAddr, 0xFF);
+        ParsingSmbiosStructure(pVirtualAddr, maximum_size);
+        MmUnmapIoSpace(pVirtualAddr, maximum_size);
         DbgPrint("Toaster: %2X\n", BIOSInfo.Header.Type);
         DbgPrint("Toaster: %2X\n", BIOSInfo.Header.Length);
         DbgPrint("Toaster: %2X\n", BIOSInfo.Header.Handle);
