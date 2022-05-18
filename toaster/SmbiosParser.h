@@ -21,37 +21,37 @@ void DumpSmbiosTable(volatile UCHAR** pVirtualAddr, const UCHAR type)
 	{
 		case 0x0:
 		{
-			READ_REGISTER_BUFFER_UCHAR(*pVirtualAddr, &BIOSInfo.Header.Type, sizeof(BIOSInfo));
+			READ_REGISTER_BUFFER_UCHAR(*pVirtualAddr, (PUCHAR)&BIOSInfo, sizeof(BIOSInfo));
 			BIOSInfo.Size = GetStructureSize(*pVirtualAddr);
 			*pVirtualAddr += BIOSInfo.Size;
 			break;
 		}
 		case 0x1:
 		{
-			READ_REGISTER_BUFFER_UCHAR(*pVirtualAddr, &SystemInfo.Header.Type, sizeof(SystemInfo));
+			READ_REGISTER_BUFFER_UCHAR(*pVirtualAddr, (PUCHAR)&SystemInfo, sizeof(SystemInfo));
 			SystemInfo.Size = GetStructureSize(*pVirtualAddr);
 			*pVirtualAddr += SystemInfo.Size;
 			break;
 		}
 		case 0x2:
 		{
-			READ_REGISTER_BUFFER_UCHAR(*pVirtualAddr, &BoardInfo.Header.Type, sizeof(BoardInfo));
+			READ_REGISTER_BUFFER_UCHAR(*pVirtualAddr, (PUCHAR)&BoardInfo, sizeof(BoardInfo));
 			BoardInfo.Size = GetStructureSize(*pVirtualAddr);
 			*pVirtualAddr += BoardInfo.Size;
 			break;
 		}
 		case 0x3:
 		{
-			READ_REGISTER_BUFFER_UCHAR(*pVirtualAddr, &SystemEnclosure.Header.Type, sizeof(SystemEnclosure));
+			READ_REGISTER_BUFFER_UCHAR(*pVirtualAddr, (PUCHAR)&SystemEnclosure, sizeof(SystemEnclosure));
 			SystemEnclosure.Size = GetStructureSize(*pVirtualAddr);
 			*pVirtualAddr += SystemEnclosure.Size;
 			break;
 		}
 		default:
 		{
-			READ_REGISTER_BUFFER_UCHAR(*pVirtualAddr, &UnKnow[unknow_count].Header.Type, sizeof(UnKnow[unknow_count]));
+			READ_REGISTER_BUFFER_UCHAR(*pVirtualAddr, (PUCHAR)&UnKnow[unknow_count], sizeof(UnKnow[unknow_count]));
 			UnKnow[unknow_count].Size = GetStructureSize(*pVirtualAddr);
-			*pVirtualAddr += UnKnow[unknow_count++].Size;
+			*pVirtualAddr += UnKnow[unknow_count].Size;
 			break;
 		}
 	}

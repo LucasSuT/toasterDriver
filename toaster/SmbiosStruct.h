@@ -1,6 +1,3 @@
-#include <ntddk.h>
-#include <wdf.h>
-#include <wdm.h>
 #pragma once
 #pragma pack(push) 
 #pragma pack(1)
@@ -111,5 +108,5 @@ typedef struct _SMBIOSTABLE_
 	struct _TYPE_3_ _SystemEnclosure;
 	struct _TYPE_4_ _ProcessorInfo;
 	struct _UNKNOW_ _UnKnow[100];
-}SmbiosTable;
+}SmbiosTable,*PSmbiosTable;
 #pragma pack(pop) 

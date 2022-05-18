@@ -19,6 +19,7 @@ void CallIOCTL()
 	DWORD dwOutput;
 	//DWORD32 buff= 0x8CAC8000;
 	DWORD32 buff = 0x8CACA000;
+	SmbiosTable sambios_table;
 
     // Create device handler to driver
 	hDevice = CreateFile(AAEON_DEVICE,
@@ -40,13 +41,18 @@ void CallIOCTL()
 		IOCTL_AAEON_SMBIOS_READ_MEMORY,
 		&buff,
 		sizeof(buff),
-		NULL,
-		0,
+		&sambios_table,
+		sizeof(sambios_table),
 		&dwOutput,
 		NULL);
 
 	if (result == FALSE) {
 		cout << "Last Error: " << GetLastError() << endl;
+	}
+	else
+	{
+		printf("%2X\n", sambios_table._BIOSInfo.Header.Length);
+		printf("%2X\n", sambios_table._SystemInfo.Header.Length);
 	}
 }
 

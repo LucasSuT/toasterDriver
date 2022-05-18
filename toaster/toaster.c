@@ -576,12 +576,7 @@ Return Value:
         smbios_structure_address = ReadMemDWord((*inBuf)+0x10);
         maximum_size = ReadMemDWord((*inBuf) + 0x0C);
         KdPrint(("Toaster: base addr : 0x%x \n", smbios_structure_address));
-        // Test Read memory
-        KdPrint(("Toaster: Check 1st byte: 0x%x \n", ReadMemByte(smbios_structure_address)));
-        KdPrint(("Toaster: Check 2nd byte: 0x%x \n", ReadMemByte(smbios_structure_address+1)));
-        KdPrint(("Toaster: Check 3rd byte: 0x%x \n", ReadMemByte(smbios_structure_address+2)));
-        KdPrint(("Toaster: Check 4th byte: 0x%x \n", ReadMemByte(smbios_structure_address+3)));
-        KdPrint(("Toaster: Check 5th byte: 0x%x \n", ReadMemByte(smbios_structure_address+4)));
+        KdPrint(("Toaster: maximum_size : 0x%x \n", maximum_size));
         PHYSICAL_ADDRESS paPhysicalAddr = { smbios_structure_address, 0 };
         PVOID pVirtualAddr = MmMapIoSpace(paPhysicalAddr, maximum_size, MmNonCached);
         /*for (int i = 0; i <= 0xFF; i++)
@@ -605,6 +600,17 @@ Return Value:
             if (i % 0x10 == 0)DbgPrint("Toaster: ===================================\n");
             DbgPrint("Toaster: %2X\n", *(& BIOSInfo.Header.Type + i));
         }
+
+        PSmbiosTable smbios_table;
+        status = WdfRequestRetrieveOutputBuffer(Request, sizeof(SmbiosTable), &smbios_table, NULL);
+        if (NT_SUCCESS(status))
+        {
+            RtlCopyMemory(&smbios_table->_BIOSInfo, &BIOSInfo, sizeof(BIOSInfo));
+            RtlCopyMemory(&smbios_table->_SystemInfo, &SystemInfo, sizeof(SystemInfo));
+        }
+        DbgPrint("Toaster: %2X\n", smbios_table->_BIOSInfo.Header.Length);
+        DbgPrint("Toaster: %2X\n", smbios_table->_SystemInfo.Header.Length);
+        WdfRequestSetInformation(Request, sizeof(SmbiosTable));
 
         /*struct test {
             UCHAR a;
