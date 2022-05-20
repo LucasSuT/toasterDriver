@@ -27,8 +27,8 @@ Environment:
 
 #include "toaster.h"
 
-#define AAEON_WDFDEVICE L"\\Device\\Aaeon_WdfDevice"
-#define AAEON_WDFLINKNAME L"\\DosDevices\\Aaeon_WdfLink"
+#define AAEON_WDFDEVICE L"\\Device\\Aaeon_BFPITool"
+#define AAEON_WDFLINKNAME L"\\DosDevices\\Aaeon_BFPIToolLink"
 
 #ifdef ALLOC_PRAGMA
 #pragma alloc_text (INIT, DriverEntry)
@@ -42,7 +42,7 @@ NTSTATUS
 DriverEntry(
     IN PDRIVER_OBJECT  DriverObject,
     IN PUNICODE_STRING RegistryPath
-    )
+)
 /*++
 
 Routine Description:
@@ -86,7 +86,7 @@ Return Value:
     WDF_DRIVER_CONFIG_INIT(
         &config,
         ToasterEvtDeviceAdd
-        );
+    );
 
 
     //
@@ -98,10 +98,10 @@ Return Value:
         WDF_NO_OBJECT_ATTRIBUTES, // Driver Attributes
         &config,          // Driver Config Info
         WDF_NO_HANDLE
-        );
+    );
 
     if (!NT_SUCCESS(status)) {
-        KdPrint( ("Toaster: WdfDriverCreate failed with status 0x%x\n", status));
+        KdPrint(("Toaster: WdfDriverCreate failed with status 0x%x\n", status));
     }
 
     return status;
@@ -112,7 +112,7 @@ NTSTATUS
 ToasterEvtDeviceAdd(
     IN WDFDRIVER       Driver,
     IN PWDFDEVICE_INIT DeviceInit
-    )
+)
 /*++
 Routine Description:
 
@@ -139,8 +139,8 @@ Return Value:
     WDFDEVICE              hDevice;
     WDFQUEUE               queue;
 
-	// Brian: Use for old convention need
-	UNICODE_STRING uString;
+    // Brian: Use for old convention need
+    UNICODE_STRING uString;
 
     UNREFERENCED_PARAMETER(Driver);
 
@@ -154,18 +154,18 @@ Return Value:
     //
     WDF_OBJECT_ATTRIBUTES_INIT_CONTEXT_TYPE(&fdoAttributes, FDO_DATA);
 
-	// Brian: Use old convention ---------------------------------------------------------------
-	RtlInitUnicodeString(&uString, AAEON_WDFDEVICE);
-	status = WdfDeviceInitAssignName(DeviceInit, &uString);
-	if (!NT_SUCCESS(status))
-	{
-		KdPrint(("Toaster: WdfDeviceInitAssignName failed 0x%x\n", status));
+    // Brian: Use old convention ---------------------------------------------------------------
+    RtlInitUnicodeString(&uString, AAEON_WDFDEVICE);
+    status = WdfDeviceInitAssignName(DeviceInit, &uString);
+    if (!NT_SUCCESS(status))
+    {
+        KdPrint(("Toaster: WdfDeviceInitAssignName failed 0x%x\n", status));
 
-		return status;
-	}
-	KdPrint(("Toaster: WdfDeviceInitAssignName Success\n"));
+        return status;
+    }
+    KdPrint(("Toaster: WdfDeviceInitAssignName Success\n"));
 
-	// -----------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------
 
     //
     // Create a framework device object.This call will in turn create
@@ -174,10 +174,10 @@ Return Value:
     //
     status = WdfDeviceCreate(&DeviceInit, &fdoAttributes, &hDevice);
     if (!NT_SUCCESS(status)) {
-        KdPrint( ("Toaster: WdfDeviceCreate failed with status code 0x%x\n", status));
+        KdPrint(("Toaster: WdfDeviceCreate failed with status code 0x%x\n", status));
         return status;
     }
-	KdPrint(("Toaster: WdfDeviceCreate Success\n"));
+    KdPrint(("Toaster: WdfDeviceCreate Success\n"));
 
     //
     // Get the device context by using the accessor function specified in
@@ -189,26 +189,26 @@ Return Value:
     // Tell the Framework that this device will need an interface
     //
     status = WdfDeviceCreateDeviceInterface(
-                 hDevice,
-                 (LPGUID) &GUID_DEVINTERFACE_TOASTER,
-                 NULL // ReferenceString
-             );
+        hDevice,
+        (LPGUID)&GUID_DEVINTERFACE_TOASTER,
+        NULL // ReferenceString
+    );
 
-    if (!NT_SUCCESS (status)) {
-        KdPrint( ("Toaster: WdfDeviceCreateDeviceInterface failed 0x%x\n", status));
+    if (!NT_SUCCESS(status)) {
+        KdPrint(("Toaster: WdfDeviceCreateDeviceInterface failed 0x%x\n", status));
         return status;
     }
 
-	// Brian: Use SymbolicLink function ---------------------------------------------------------
-	RtlInitUnicodeString(&uString, AAEON_WDFLINKNAME);
-	status = WdfDeviceCreateSymbolicLink(hDevice, &uString);
-	if (!NT_SUCCESS(status))
-	{
-		KdPrint(("Toaster: WdfDeviceCreateSymbolicLink failed 0x%x\n", status));
-		return status;
-	}
-	KdPrint(("Toaster: WdfDeviceCreateSymbolicLink Success\n"));
-	// ------------------------------------------------------------------------------------------
+    // Brian: Use SymbolicLink function ---------------------------------------------------------
+    RtlInitUnicodeString(&uString, AAEON_WDFLINKNAME);
+    status = WdfDeviceCreateSymbolicLink(hDevice, &uString);
+    if (!NT_SUCCESS(status))
+    {
+        KdPrint(("Toaster: WdfDeviceCreateSymbolicLink failed 0x%x\n", status));
+        return status;
+    }
+    KdPrint(("Toaster: WdfDeviceCreateSymbolicLink Success\n"));
+    // ------------------------------------------------------------------------------------------
 
     //
     // Register I/O callbacks to tell the framework that you are interested
@@ -223,7 +223,7 @@ Return Value:
     // A default queue gets all the requests that are not
     // configured for forwarding using WdfDeviceConfigureRequestDispatching.
     //
-    WDF_IO_QUEUE_CONFIG_INIT_DEFAULT_QUEUE(&queueConfig,  WdfIoQueueDispatchParallel);
+    WDF_IO_QUEUE_CONFIG_INIT_DEFAULT_QUEUE(&queueConfig, WdfIoQueueDispatchParallel);
 
     queueConfig.EvtIoRead = ToasterEvtIoRead;
     queueConfig.EvtIoWrite = ToasterEvtIoWrite;
@@ -252,18 +252,18 @@ Return Value:
         &queueConfig,
         WDF_NO_OBJECT_ATTRIBUTES,
         &queue
-        );
+    );
     __analysis_assume(queueConfig.EvtIoStop == 0);
 
-    if (!NT_SUCCESS (status)) {
+    if (!NT_SUCCESS(status)) {
 
-        KdPrint( ("Toaster: WdfIoQueueCreate failed 0x%x\n", status));
+        KdPrint(("Toaster: WdfIoQueueCreate failed 0x%x\n", status));
         return status;
     }
 
 
 #if 0
-    DWORD *pB = (DWORD *)buff;
+    DWORD* pB = (DWORD*)buff;
     ULONG outSize = sizeof(buff);
     //UNICODE_STRING nullInstance;
     //RtlInitUnicodeString(&nullInstance, L"ACPI\\PNP0C14\\BFPI_0");
@@ -276,7 +276,7 @@ Return Value:
     }
 
     // for setting DIO Level
-    pB = (DWORD *)buff;
+    pB = (DWORD*)buff;
     PUINT16 pU16 = (PUINT16)&buff[0];
     pU16[0] = 0;  //DIO1,
     pU16[1] = 1;  // level 1
@@ -287,7 +287,7 @@ Return Value:
         return status;
     }
     // for setting DIO Level
-    pB = (DWORD *)buff;
+    pB = (DWORD*)buff;
     pU16[0] = 0;  //DIO1,
     pU16[1] &= (~1);  // level 0
     outSize = sizeof(buff);
@@ -301,11 +301,11 @@ Return Value:
 }
 
 VOID
-ToasterEvtIoRead (
+ToasterEvtIoRead(
     WDFQUEUE      Queue,
     WDFREQUEST    Request,
     size_t        Length
-    )
+)
 /*++
 
 Routine Description:
@@ -332,7 +332,7 @@ Return Value:
 --*/
 {
     NTSTATUS    status;
-    ULONG_PTR bytesCopied =0;
+    ULONG_PTR bytesCopied = 0;
     WDFMEMORY memory;
 
     UNREFERENCED_PARAMETER(Queue);
@@ -340,14 +340,14 @@ Return Value:
 
     PAGED_CODE();
 
-    KdPrint(( "Toaster: ToasterEvtIoRead: Request: 0x%p, Queue: 0x%p\n",
-                                    Request, Queue));
+    KdPrint(("Toaster: ToasterEvtIoRead: Request: 0x%p, Queue: 0x%p\n",
+        Request, Queue));
 
     //
     // Get the request memory and perform read operation here
     //
     status = WdfRequestRetrieveOutputMemory(Request, &memory);
-    if(NT_SUCCESS(status) ) {
+    if (NT_SUCCESS(status)) {
         //
         // Copy data into the memory buffer using WdfMemoryCopyFromBuffer
         //
@@ -357,11 +357,11 @@ Return Value:
 }
 
 VOID
-ToasterEvtIoWrite (
+ToasterEvtIoWrite(
     WDFQUEUE      Queue,
     WDFREQUEST    Request,
     size_t        Length
-    )
+)
 /*++
 
 Routine Description:
@@ -388,14 +388,14 @@ Return Value:
 
 {
     NTSTATUS    status;
-    ULONG_PTR bytesWritten =0;
+    ULONG_PTR bytesWritten = 0;
     WDFMEMORY memory;
 
     UNREFERENCED_PARAMETER(Queue);
     UNREFERENCED_PARAMETER(Length);
 
     KdPrint(("Toaster: ToasterEvtIoWrite. Request: 0x%p, Queue: 0x%p\n",
-                                Request, Queue));
+        Request, Queue));
 
     PAGED_CODE();
 
@@ -403,7 +403,7 @@ Return Value:
     // Get the request buffer and perform write operation here
     //
     status = WdfRequestRetrieveInputMemory(Request, &memory);
-    if(NT_SUCCESS(status) ) {
+    if (NT_SUCCESS(status)) {
         //
         // 1) Use WdfMemoryCopyToBuffer to copy data from the request
         // to driver buffer.
@@ -427,7 +427,7 @@ ToasterEvtIoDeviceControl(
     IN size_t       OutputBufferLength,
     IN size_t       InputBufferLength,
     IN ULONG        IoControlCode
-    )
+)
 /*++
 Routine Description:
 
@@ -454,145 +454,262 @@ Return Value:
 
 --*/
 {
-    NTSTATUS  status= STATUS_SUCCESS;
+    NTSTATUS  status = STATUS_SUCCESS;
 
-	PFDO_DATA fdoData;
-	WDFDEVICE device;
-	device = WdfIoQueueGetDevice(Queue);
-	fdoData = ToasterFdoGetData(device);
-	PDWORD32 inBuf = NULL;
-	PDWORD32 outBuf = NULL;
+    PFDO_DATA fdoData;
+    WDFDEVICE device;
+    device = WdfIoQueueGetDevice(Queue);
+    fdoData = ToasterFdoGetData(device);
+    PDWORD32 inBuf = NULL;
+    PDWORD32 outBuf = NULL;
 
-	size_t inbufSize;
-	size_t outbufSize;
+    size_t inbufSize;
+    size_t outbufSize;
     KdPrint(("Toaster: ToasterEvtIoDeviceControl called\n"));
-	KdPrint(("Toaster: OutputBufferLength: %d\n", OutputBufferLength));
-	
+    KdPrint(("Toaster: OutputBufferLength: %d\n", OutputBufferLength));
+
 
     PAGED_CODE();
-	if (!OutputBufferLength || !InputBufferLength)
-	{
-		WdfRequestComplete(Request, STATUS_INVALID_PARAMETER);
-		return;
-	}
+    if (!OutputBufferLength || !InputBufferLength)
+    {
+        WdfRequestComplete(Request, STATUS_INVALID_PARAMETER);
+        return;
+    }
 
-	switch (IoControlCode) {
-	/*------------------------------------------------------------------------ AAEON GPIO Function-*/
-	case IOCTL_AAEON_CALL_BFPI_METHOD:
-	{
-		KdPrint(("Toaster: IOCTL_AAEON_CALL_BFPI_METHOD Enter\n"));
-		//
-		// Get the device context by using the accessor function specified in
-		// the WDF_DECLARE_CONTEXT_TYPE_WITH_NAME macro for FDO_DATA.
-		//
-		// Add by Kunyi -----------------------------------------------------------------------
-		GUID BfpiMethod = AAEON_BFPI_METHOD;
-		status = IoWMIOpenBlock(&BfpiMethod,
-			WMIGUID_EXECUTE,
-			&fdoData->BfpiMethodDataObject);
-		if (!NT_SUCCESS(status)) {
-			KdPrint(("Toaster: IoWMIOpenBlock failed 0x%x\n", status));
-			status = STATUS_INSUFFICIENT_RESOURCES;
-			break;
-		}
+    switch (IoControlCode) {
+        /*------------------------------------------------------------------------ AAEON Call BFPI Function-*/
+    case IOCTL_AAEON_CALL_BFPI_METHOD:
+    {
+        KdPrint(("Toaster: IOCTL_AAEON_CALL_BFPI_METHOD Enter\n"));
+        //
+        // Get the device context by using the accessor function specified in
+        // the WDF_DECLARE_CONTEXT_TYPE_WITH_NAME macro for FDO_DATA.
+        //
+        // Add by Kunyi -----------------------------------------------------------------------
+        GUID BfpiMethod = AAEON_BFPI_METHOD;
+        status = IoWMIOpenBlock(&BfpiMethod,
+            WMIGUID_EXECUTE,
+            &fdoData->BfpiMethodDataObject);
+        if (!NT_SUCCESS(status)) {
+            KdPrint(("Toaster: IoWMIOpenBlock failed 0x%x\n", status));
+            status = STATUS_INSUFFICIENT_RESOURCES;
+            break;
+        }
 
-		UCHAR buff[512];
-		ULONG buffSize = sizeof(buff);
-		status = IoWMIQueryAllData(fdoData->BfpiMethodDataObject, &buffSize, buff);
-		if (!NT_SUCCESS(status)) {
-			KdPrintEx((DPFLTR_IHVDRIVER_ID, DPFLTR_ERROR_LEVEL,
-				"Toaster: Failed, execute IoWMIQueryAllData(), return %d\n",
-				status));
-			status = STATUS_INSUFFICIENT_RESOURCES;
-			break;
-		}
+        UCHAR buff[512];
+        ULONG buffSize = sizeof(buff);
+        status = IoWMIQueryAllData(fdoData->BfpiMethodDataObject, &buffSize, buff);
+        if (!NT_SUCCESS(status)) {
+            KdPrintEx((DPFLTR_IHVDRIVER_ID, DPFLTR_ERROR_LEVEL,
+                "Toaster: Failed, execute IoWMIQueryAllData(), return %d\n",
+                status));
+            status = STATUS_INSUFFICIENT_RESOURCES;
+            break;
+        }
 
-		// store instance
-		WNODE_ALL_DATA *pWNode = (WNODE_ALL_DATA *)buff;
-		ULONG offset = *((PULONG)(buff + pWNode->OffsetInstanceNameOffsets));
-		RtlStringCbCopyW(fdoData->InstanceNameBuff,
-			sizeof(fdoData->InstanceNameBuff), (PCWSTR)(buff + offset + 2));
-		RtlInitUnicodeString(&fdoData->wmiInstanceName, fdoData->InstanceNameBuff);
+        // store instance
+        WNODE_ALL_DATA* pWNode = (WNODE_ALL_DATA*)buff;
+        ULONG offset = *((PULONG)(buff + pWNode->OffsetInstanceNameOffsets));
+        RtlStringCbCopyW(fdoData->InstanceNameBuff,
+            sizeof(fdoData->InstanceNameBuff), (PCWSTR)(buff + offset + 2));
+        RtlInitUnicodeString(&fdoData->wmiInstanceName, fdoData->InstanceNameBuff);
 
-		status = WdfRequestRetrieveInputBuffer(Request, 0, &inBuf, &inbufSize);
-		if (!NT_SUCCESS(status)) {
-			status = STATUS_INSUFFICIENT_RESOURCES;
-			break;
-		}
+        status = WdfRequestRetrieveInputBuffer(Request, 0, &inBuf, &inbufSize);
+        if (!NT_SUCCESS(status)) {
+            status = STATUS_INSUFFICIENT_RESOURCES;
+            break;
+        }
 
-		ASSERT(inbufSize == InputBufferLength);
-		KdPrint(("Toaster: BFPI_METHOD_ID = 0x%x\n", inBuf[0]));
-		KdPrint(("Toaster: Input = %d\n", inBuf[1]));
-		KdPrint(("Toaster: Input Address = %p\n", &inBuf[1]));
+        ASSERT(inbufSize == InputBufferLength);
+        KdPrint(("Toaster: BFPI_METHOD_ID = 0x%x\n", inBuf[0]));
+        KdPrint(("Toaster: Input Arg0 = %d\n", inBuf[1]));
+        KdPrint(("Toaster: Input Arg1 = %d\n", inBuf[2]));
+        KdPrint(("Toaster: inbufSize = %d\n", inbufSize));
 
 
-		ASSERT(OutputBufferLength >= inbufSize);
+        ASSERT(OutputBufferLength >= inbufSize);
 #if 1
-		// execute BFPI WMI
-		DWORD32 wmiOutBuff[8] = { 0 };
-		ULONG wmiOutSize = sizeof(wmiOutBuff);
-		RtlCopyMemory(wmiOutBuff, &inBuf[1], sizeof(DWORD) * 2);
-		status = IoWMIExecuteMethod(fdoData->BfpiMethodDataObject, &fdoData->wmiInstanceName, inBuf[0], 8,(PULONG)&wmiOutSize,(PUCHAR)wmiOutBuff);
-		if (!NT_SUCCESS(status)) {
-			KdPrint(("Toaster: IoWMIExecuteMethod failed 0x%x\n", status));
-		}
-		else
-		{
-			KdPrint(("Toaster: IoWMIExecuteMethod Success\n"));
-			for (int i = 0; i < (wmiOutSize / sizeof(DWORD32)); i++)
-				KdPrint(("Toaster: 0x%X\n", wmiOutBuff[i]));
-		}
+        // execute BFPI WMI
+        DWORD32 wmiOutBuff[8] = { 0 };
+        ULONG wmiOutSize = sizeof(wmiOutBuff);
+        KdPrint(("Toaster: wmiOutBuff = %d\n", wmiOutBuff)); // Test
+        RtlCopyMemory(wmiOutBuff, &inBuf[1], sizeof(DWORD) * 2);
+        status = IoWMIExecuteMethod(fdoData->BfpiMethodDataObject, &fdoData->wmiInstanceName, inBuf[0], 8, (PULONG)&wmiOutSize, (PUCHAR)wmiOutBuff);
+        if (!NT_SUCCESS(status)) {
+            KdPrint(("Toaster: IoWMIExecuteMethod failed 0x%x\n", status));
+        }
+        else
+        {
+            KdPrint(("Toaster: IoWMIExecuteMethod Success\n"));
+            for (int i = 0; i < (wmiOutSize / sizeof(DWORD32)); i++)
+                KdPrint(("Toaster: 0x%X\n", wmiOutBuff[i]));
+        }
 
-		status = WdfRequestRetrieveOutputBuffer(Request, 0, &outBuf, &outbufSize);
-		if (!NT_SUCCESS(status)) {
-			status = STATUS_INSUFFICIENT_RESOURCES;
-			break;
-		}
+        status = WdfRequestRetrieveOutputBuffer(Request, 0, &outBuf, &outbufSize);
+        if (!NT_SUCCESS(status)) {
+            status = STATUS_INSUFFICIENT_RESOURCES;
+            break;
+        }
 
-		ASSERT(outbufSize == OutputBufferLength);
-		ASSERT(wmiOutSize <= outbufSize);
+        ASSERT(outbufSize == OutputBufferLength);
+        ASSERT(wmiOutSize <= outbufSize);
 
-		KdPrint(("Toaster: OutputBufferLength = %d\n", wmiOutSize));
-		RtlCopyMemory(outBuf, wmiOutBuff, wmiOutSize);
-		WdfRequestSetInformation(Request, OutputBufferLength < wmiOutSize ? OutputBufferLength : wmiOutSize);
+        KdPrint(("Toaster: OutputBufferLength = %d\n", wmiOutSize));
+        RtlCopyMemory(outBuf, wmiOutBuff, wmiOutSize);
+        WdfRequestSetInformation(Request, OutputBufferLength < wmiOutSize ? OutputBufferLength : wmiOutSize);
+
 #endif	
-		break;
-	}
+        break;
+    }
+    case IOCTL_AAEON_CALL_BFPI_METHOD_BUFF:
+    {
+        KdPrint(("Toaster: IOCTL_AAEON_CALL_BFPI_METHOD_BUFF Enter\n"));
+        //
+        // Get the device context by using the accessor function specified in
+        // the WDF_DECLARE_CONTEXT_TYPE_WITH_NAME macro for FDO_DATA.
+        //
+        // Add by Kunyi -----------------------------------------------------------------------
+        GUID BfpiMethod = AAEON_BFPI_METHOD;
+        status = IoWMIOpenBlock(&BfpiMethod,
+            WMIGUID_EXECUTE,
+            &fdoData->BfpiMethodDataObject);
+        if (!NT_SUCCESS(status)) {
+            KdPrint(("Toaster: IoWMIOpenBlock failed 0x%x\n", status));
+            status = STATUS_INSUFFICIENT_RESOURCES;
+            break;
+        }
+
+        UCHAR buff[512];
+        ULONG buffSize = sizeof(buff);
+        status = IoWMIQueryAllData(fdoData->BfpiMethodDataObject, &buffSize, buff);
+        if (!NT_SUCCESS(status)) {
+            KdPrintEx((DPFLTR_IHVDRIVER_ID, DPFLTR_ERROR_LEVEL,
+                "Toaster: Failed, execute IoWMIQueryAllData(), return %d\n",
+                status));
+            status = STATUS_INSUFFICIENT_RESOURCES;
+            break;
+        }
+
+        // store instance
+        WNODE_ALL_DATA* pWNode = (WNODE_ALL_DATA*)buff;
+        ULONG offset = *((PULONG)(buff + pWNode->OffsetInstanceNameOffsets));
+        RtlStringCbCopyW(fdoData->InstanceNameBuff,
+            sizeof(fdoData->InstanceNameBuff), (PCWSTR)(buff + offset + 2));
+        RtlInitUnicodeString(&fdoData->wmiInstanceName, fdoData->InstanceNameBuff);
+
+        status = WdfRequestRetrieveInputBuffer(Request, 0, &inBuf, &inbufSize);
+        if (!NT_SUCCESS(status)) {
+            status = STATUS_INSUFFICIENT_RESOURCES;
+            break;
+        }
+
+        ASSERT(inbufSize == InputBufferLength);
+        KdPrint(("Toaster: BFPI_METHOD_ID = 0x%x\n", inBuf[0]));
+        KdPrint(("Toaster: Input Arg0 = %d\n", inBuf[1]));
+        KdPrint(("Toaster: Input Arg1 = %d\n", inBuf[2]));
+        KdPrint(("Toaster: inbufSize = %d\n", inbufSize));
+
+
+        ASSERT(OutputBufferLength >= inbufSize);
+#if 1
+        // execute BFPI WMI
+        DWORD32 wmiOutBuff[8] = { 0 };
+        ULONG wmiOutSize = sizeof(wmiOutBuff);
+        KdPrint(("Toaster: wmiOutBuff = %d\n", wmiOutBuff)); // Test
+        RtlCopyMemory(wmiOutBuff, &inBuf[1], sizeof(DWORD) * 2);
+        status = IoWMIExecuteMethod(fdoData->BfpiMethodDataObject, &fdoData->wmiInstanceName, inBuf[0], 8, (PULONG)&wmiOutSize, (PUCHAR)wmiOutBuff);
+        if (!NT_SUCCESS(status)) {
+            KdPrint(("Toaster: IoWMIExecuteMethod failed 0x%x\n", status));
+        }
+        else
+        {
+            KdPrint(("Toaster: IoWMIExecuteMethod Success\n"));
+            for (int i = 0; i < (wmiOutSize / sizeof(DWORD32)); i++)
+                KdPrint(("Toaster: 0x%X\n", wmiOutBuff[i]));
+        }
+
+        status = WdfRequestRetrieveOutputBuffer(Request, 0, &outBuf, &outbufSize);
+        if (!NT_SUCCESS(status)) {
+            status = STATUS_INSUFFICIENT_RESOURCES;
+            break;
+        }
+
+        ASSERT(outbufSize == OutputBufferLength);
+        ASSERT(wmiOutSize <= outbufSize);
+
+        // When Entry if condition means that it need "-buff" to return databuffer ----------------------------------------------------------------------------------
+
+        // Need get physical address first
+        // 0x00001 in IoWMIExecuteMethod means method ID, and need to use with 0x1 (inBuf[1]) to get physical address.
+        // Equal to: .\BFPIExec.exe 0x00001 0x01 to get physical address.
+        inBuf[1] = 0x01;
+        RtlCopyMemory(wmiOutBuff, &inBuf[1], sizeof(DWORD) * 2);
+        status = IoWMIExecuteMethod(fdoData->BfpiMethodDataObject, &fdoData->wmiInstanceName, 0x00001, 8, (PULONG)&wmiOutSize, (PUCHAR)wmiOutBuff);
+        ULONG LowpartAddress = wmiOutBuff[0];
+
+        KdPrint(("Toaster: Check LowpartAddress: 0x%X\n", LowpartAddress));
+
+        PHYSICAL_ADDRESS paPhysicalAddr = { LowpartAddress,0 };
+        PVOID pVirtualAddr = MmMapIoSpace(paPhysicalAddr, 4000, FALSE);
+
+        RtlCopyMemory(outBuf, (PUCHAR)pVirtualAddr, outbufSize);
+        KdPrint(("Toaster: outBuf = %s\n", outBuf));
+        WdfRequestSetInformation(Request, outbufSize);
+
+        MmUnmapIoSpace(pVirtualAddr, 4000);
+        // ----------------------------------------------------------------------------------------------------------------------------------------------------------
+#endif	
+        break;
+    }
     default:
         status = STATUS_INVALID_DEVICE_REQUEST;
     }
-	
+
     //
     // Complete the Request.
     //
-	WdfRequestComplete(Request, status);
+    WdfRequestComplete(Request, status);
 }
 
 VOID
-	PrintChars(
-		_In_reads_(CountChars) PCHAR BufferAddress,
-		_In_ size_t CountChars
-	)
+PrintChars(
+    _In_reads_(CountChars) PCHAR BufferAddress,
+    _In_ size_t CountChars
+)
 {
-	if (CountChars) {
+    if (CountChars) {
 
-		while (CountChars--) {
+        while (CountChars--) {
 
-			if (*BufferAddress > 31
-				&& *BufferAddress != 127) {
+            if (*BufferAddress > 31
+                && *BufferAddress != 127) {
 
-				KdPrint(("%c", *BufferAddress));
+                KdPrint(("%c", *BufferAddress));
 
-			}
-			else {
+            }
+            else {
 
-				KdPrint(("."));
+                KdPrint(("."));
 
-			}
-			BufferAddress++;
-		}
-		KdPrint(("\n"));
-	}
-	return;
+            }
+            BufferAddress++;
+        }
+        KdPrint(("\n"));
+    }
+    return;
 }
 
+VOID
+PrintDataBuffer()
+{
+    PHYSICAL_ADDRESS paPhysicalAddr = { 0x8CF31118,0 };
+    PVOID pVirtualAddr = MmMapIoSpace(paPhysicalAddr, 4000, FALSE);
+
+    if (pVirtualAddr != NULL)
+    {
+        KdPrint(("Toaster: PrintDataBuffer Enter\n"));
+        KdPrint(("Toaster: %s\n", (PCHAR)pVirtualAddr));
+    }
+
+    MmUnmapIoSpace(pVirtualAddr, 4000);
+}

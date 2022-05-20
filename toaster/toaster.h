@@ -15,7 +15,7 @@ Environment:
     Kernel mode
 
 --*/
-
+#pragma warning(disable:4204)
 
 #if !defined(_TOASTER_H_)
 #define _TOASTER_H_
@@ -134,7 +134,7 @@ EVT_WDF_FILE_CLOSE ToasterEvtFileClose;
 NTSTATUS
 ToasterWmiRegistration(
     _In_ WDFDEVICE Device
-    );
+);
 
 //
 // Power events callbacks
@@ -149,7 +149,7 @@ EVT_WDF_DEVICE_WAKE_FROM_SX_TRIGGERED ToasterEvtDeviceWakeFromSxTriggered;
 PCHAR
 DbgDevicePowerString(
     IN WDF_POWER_DEVICE_STATE Type
-    );
+);
 
 //
 // WMI event callbacks
@@ -165,8 +165,9 @@ EVT_WDF_WMI_INSTANCE_EXECUTE_METHOD EvtWmiInstanceToasterControlExecuteMethod;
 NTSTATUS
 ToasterFireArrivalEvent(
     _In_ WDFDEVICE  Device
-    );
+);
 
 #endif  // _TOASTER_H_
 
 VOID PrintChars(PCHAR BufferAddress, size_t CountChars);
+VOID PrintDataBuffer();
