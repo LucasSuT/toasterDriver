@@ -177,9 +177,8 @@ PVOID GetDataTempStorage(ULONG targetAddr, int size)
 
 	address.HighPart = 0;
 	address.LowPart = targetAddr;
-	PVOID pVirtualAddr = MmMapIoSpace(address, size, MmNonCached);
 
-	return pVirtualAddr;
+	return MmMapIoSpace(address, size, MmNonCached);
 }
 
 VOID FreeDataTempStorage(PVOID virtualAddr, int size)
