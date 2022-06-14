@@ -598,7 +598,7 @@ Return Value:
         for (int i = 0; i <= 0x20; i++)
         {
             if (i % 0x10 == 0)DbgPrint("Toaster: ===================================\n");
-            DbgPrint("Toaster: %2X\n", *(& BIOSInfo.Header.Type + i));
+            DbgPrint("Toaster: %2X\n", *((PCHAR)&BIOSInfo + i));
         }
 
         PSmbiosTable smbios_table;

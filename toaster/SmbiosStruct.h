@@ -24,7 +24,7 @@ struct _TYPE_0_ {
     UCHAR	ECFirmwareMinor;
 	UCHAR	Str[1000];
 	SIZE_T	Size;
-} BIOSInfo, * PBIOSInfo;
+} BIOSInfo = { 0 }, * PBIOSInfo;
 
 struct _TYPE_1_ {
 	SMBIOSHEADER	Header;
@@ -38,7 +38,7 @@ struct _TYPE_1_ {
 	UCHAR	Family;
 	UCHAR	Str[1000];
 	SIZE_T	Size;
-} SystemInfo, * PSystemInfo;
+} SystemInfo = { 0 }, * PSystemInfo;
 
 struct _TYPE_2_ {
 	SMBIOSHEADER	Header;
@@ -54,7 +54,7 @@ struct _TYPE_2_ {
 	UCHAR	NumObjHandle;
 	UCHAR	Str[1000];
 	SIZE_T	Size;
-} BoardInfo, * PBoardInfo;
+} BoardInfo = { 0 }, * PBoardInfo;
 
 struct _TYPE_3_ {
 	SMBIOSHEADER Header;
@@ -75,7 +75,7 @@ struct _TYPE_3_ {
 	UCHAR	pElements;
 	UCHAR	Str[1000];
 	SIZE_T	Size;
-} SystemEnclosure, * PSystemEnclosure;
+} SystemEnclosure = { 0 }, * PSystemEnclosure;
 
 struct _TYPE_4_ {
 	SMBIOSHEADER Header;
@@ -92,13 +92,13 @@ struct _TYPE_4_ {
 	UCHAR	Str[1000];
 	SIZE_T	Size;
 	// Todo, Here
-} ProcessorInfo, * PProcessorInfo;
+} ProcessorInfo = { 0 }, * PProcessorInfo;
 
 struct _UNKNOW_ {
 	SMBIOSHEADER	Header;
 	UCHAR	Str[1000];
 	SIZE_T	Size;
-}UnKnow[100];
+}UnKnow[100] = { 0 };
 
 typedef struct _SMBIOSTABLE_
 {
