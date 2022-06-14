@@ -13,7 +13,7 @@
 #pragma pack(1)
 typedef struct _ENTRYPOINT
 {
-	BYTE	AnchorSting[5];
+	BYTE	AnchorString[5];
 	BYTE	EntryPointStructChecksum;
 	BYTE	EntryPointLength;
 	BYTE	SMBIOSMajorVersion;

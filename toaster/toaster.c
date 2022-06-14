@@ -645,10 +645,12 @@ Return Value:
             break;
         }
         PVOID VirtualEntryPoint = GetDataTempStorage(bEntryPoint, sizeof(PENTRYPOINT));
-        int i = 0;
-        for (i = 0; i < bDataSize; ++i)
+
+        for (int i = 0; i < bDataSize; ++i)
             DbgPrint("Toaster: bData :%c \n", ((PAAEON_SMBIOS)inBuf)->bData[i]);
         setDataString(VirtualEntryPoint, bType, bDataIndex, ((PAAEON_SMBIOS)inBuf)->bData, bDataSize);
+
+        FreeDataTempStorage(VirtualEntryPoint, ((PENTRYPOINT)VirtualEntryPoint)->TableMaxSize);
     }
     default:
         status = STATUS_INVALID_DEVICE_REQUEST;
