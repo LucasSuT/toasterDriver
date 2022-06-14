@@ -73,7 +73,7 @@ DWORD getEntryPoint()
 	return SMBIOSEntryPoint;
 }
 
-void CallSMBIOS()
+void WriteSMBIOS(int type, int dataIndex, int DataSize, string data)
 {
 	HANDLE hDevice = NULL;
 	BOOL result;
@@ -95,10 +95,20 @@ void CallSMBIOS()
 		return;
 	}
 	bAAEON_SMBIOS.bEntryPoint = SMBIOSEntryPoint;
+	bAAEON_SMBIOS.bType = type;
+	bAAEON_SMBIOS.bDataIndex = dataIndex;
+	bAAEON_SMBIOS.bDataSize = DataSize;
+	int i;
+	for ( i = 0; i < DataSize; ++i)
+	{
+		bAAEON_SMBIOS.bData[i] = data[i];
+	}
+	bAAEON_SMBIOS.bData[i] = '\0';
+	
 	printf("CallSMBIOS Entry Point: 0x%lx", bAAEON_SMBIOS.bEntryPoint);
 	// Entry Drive IO Control
 	result = DeviceIoControl(hDevice,
-		IOCTL_AAEON_READ_SMBIOS,
+		IOCTL_AAEON_WRITE_SMBIOS,
 		&bAAEON_SMBIOS,
 		sizeof(AAEON_SMBIOS),
 		&bAAEON_SMBIOS,
@@ -111,48 +121,53 @@ void CallSMBIOS()
 	}
 }
 
-void CallIOCTL()
-{
-    HANDLE hDevice = NULL;
-    BOOL result;
-	DWORD dwOutput;
-	int buff[5] = { 0 };
-
-    // Create device handler to driver
-	hDevice = CreateFile(AAEON_DEVICE,
-		GENERIC_READ | GENERIC_WRITE,
-		0,
-		NULL,
-		OPEN_EXISTING,
-		FILE_ATTRIBUTE_NORMAL,
-		NULL);
-	
-	if (hDevice == INVALID_HANDLE_VALUE)
-	{
-		cout << "Open IOCTL Failed." << endl;
-		return;
-	}
-
-	// Entry Drive IO Control
-	result = DeviceIoControl(hDevice,
-		IOCTL_AAEON_SMBIOS_READ_MEMORY,
-		buff,
-		sizeof(buff),
-		NULL,
-		0,
-		&dwOutput,
-		NULL);
-
-	if (result == FALSE) {
-		cout << "Last Error: " << GetLastError() << endl;
-	}
-}
+//void CallIOCTL()
+//{
+//    HANDLE hDevice = NULL;
+//    BOOL result;
+//	DWORD dwOutput;
+//	int buff[5] = { 0 };
+//
+//    // Create device handler to driver
+//	hDevice = CreateFile(AAEON_DEVICE,
+//		GENERIC_READ | GENERIC_WRITE,
+//		0,
+//		NULL,
+//		OPEN_EXISTING,
+//		FILE_ATTRIBUTE_NORMAL,
+//		NULL);
+//	
+//	if (hDevice == INVALID_HANDLE_VALUE)
+//	{
+//		cout << "Open IOCTL Failed." << endl;
+//		return;
+//	}
+//
+//	// Entry Drive IO Control
+//	result = DeviceIoControl(hDevice,
+//		IOCTL_AAEON_SMBIOS_READ_MEMORY,
+//		buff,
+//		sizeof(buff),
+//		NULL,
+//		0,
+//		&dwOutput,
+//		NULL);
+//
+//	if (result == FALSE) {
+//		cout << "Last Error: " << GetLastError() << endl;
+//	}
+//}
 
 int main()
 {
-	cout << "Hello Test!\n";
-	printf("Entry Point: 0x%lx", getEntryPoint());
-	CallSMBIOS();
+	printf("Entry Point: 0x%lx\n", getEntryPoint());
+	cout << "Input hax formate Smbios parameter \"Type, Data Index\"\n";
+	int a, b;
+	string str;
+	cin >> hex >> a >> b;
+	cout << "Input Var  \"Data\"\n";
+	cin >> str;
+	WriteSMBIOS(a, b, str.length()+1, str);
 	//CallIOCTL();
 
     return 0;

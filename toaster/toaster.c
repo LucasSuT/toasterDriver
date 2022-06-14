@@ -623,6 +623,33 @@ Return Value:
         FreeDataTempStorage(VirtualEntryPoint, sizeof(PENTRYPOINT));
         break;
     }
+    case IOCTL_AAEON_WRITE_SMBIOS:
+    {
+        DWORD bEntryPoint = 0;
+        int bDataSize = 0, bType = 0, bDataIndex = 0;
+        status = WdfRequestRetrieveInputBuffer(Request, sizeof(AAEON_SMBIOS), &inBuf, &inbufSize);
+        if (NT_SUCCESS(status))
+        {
+            bEntryPoint = ((PAAEON_SMBIOS)inBuf)->bEntryPoint;
+            bType = (int)((PAAEON_SMBIOS)inBuf)->bType;
+            bDataIndex = (int)((PAAEON_SMBIOS)inBuf)->bDataIndex;
+            bDataSize = (int)((PAAEON_SMBIOS)inBuf)->bDataSize;
+            DbgPrint("Toaster: bEntryPoint :%d \n", bType);
+            DbgPrint("Toaster: bDataIndex :%d \n", bDataIndex);
+            DbgPrint("Toaster: bDataSize :%d \n", bDataSize);
+        }
+        else
+        {
+            DbgPrint("Toaster: WdfRequestRetrieveInputBuffer Error\n");
+            WdfRequestComplete(Request, status);
+            break;
+        }
+        PVOID VirtualEntryPoint = GetDataTempStorage(bEntryPoint, sizeof(PENTRYPOINT));
+        int i = 0;
+        for (i = 0; i < bDataSize; ++i)
+            DbgPrint("Toaster: bData :%c \n", ((PAAEON_SMBIOS)inBuf)->bData[i]);
+        setDataString(VirtualEntryPoint, bType, bDataIndex, ((PAAEON_SMBIOS)inBuf)->bData, bDataSize);
+    }
     default:
         status = STATUS_INVALID_DEVICE_REQUEST;
     }
