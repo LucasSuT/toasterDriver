@@ -10,6 +10,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConsoleApp", "ConsoleApp\ConsoleApp.vcxproj", "{EF88EEF1-5429-493B-954B-67173A30FC19}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SmbiosMapTest", "SmbiosMapTest\SmbiosMapTest.vcxproj", "{C61655EF-7479-46BE-B607-5DD6E59CD166}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CAF959C8-81FF-47F3-BA37-2EADCB712833} = {CAF959C8-81FF-47F3-BA37-2EADCB712833}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AaeonSmbiosApi", "AaeonSmbiosApi\AaeonSmbiosApi.vcxproj", "{CAF959C8-81FF-47F3-BA37-2EADCB712833}"
 EndProject
