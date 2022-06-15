@@ -1,9 +1,11 @@
 #pragma once
 #include <unordered_map>
+#include <vector>
 #include "MemberProp.h"
 
 using std::string;
 using std::unordered_map;
+using std::vector;
 
 // SMBIOS type macros which is according to SMBIOS 2.7 specification.
 #pragma region SMBIOS Type Macros
@@ -54,14 +56,16 @@ using std::unordered_map;
 #pragma endregion
 
 typedef string MemberName;
+typedef unordered_map<MemberName, MemberProp> SmbiosDictionary;
 
 class SmbiosMember
 {
 public:
-	unordered_map<MemberName, MemberProp> type0_table, type1_table;
+	vector<SmbiosDictionary> smbios_tables;
 	SmbiosMember();
 
 private:
+	SmbiosDictionary type0_table, type1_table;
 	void InitialType0Table();
 	void InitialType1Table();
 };

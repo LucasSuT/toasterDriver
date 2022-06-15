@@ -2,7 +2,11 @@
 
 SmbiosMember::SmbiosMember()
 {
-	
+	InitialType0Table();
+	InitialType1Table();
+
+	smbios_tables.push_back(type0_table);
+	smbios_tables.push_back(type1_table);
 }
 
 void SmbiosMember::InitialType0Table()
@@ -27,7 +31,7 @@ void SmbiosMember::InitialType0Table()
 
 void SmbiosMember::InitialType1Table()
 {
-	type1_table = 
+	type1_table =
 	{
 		{"Manufacturer", MemberProp("string", 0x4, 1)},
 		{"ProductName",  MemberProp("string", 0x5, 1)},
@@ -37,5 +41,5 @@ void SmbiosMember::InitialType1Table()
 		{"WakeUpType",   MemberProp("value",  0x18, 1)},
 		{"SKUNumber",    MemberProp("string", 0x19, 1)},
 		{"Family",       MemberProp("string", 0x1A, 1)}
-	}
+	};
 }
