@@ -613,9 +613,6 @@ Return Value:
         bDataLength = SMBIOSEntryPoint->TableMaxSize;
         bDataEntryAddr = SMBIOSEntryPoint->TableAddress;
 
-        UCHAR a[8] = "FREDFRE";
-        setDataString(VirtualEntryPoint, 1, 1, &a[0], sizeof(a));
-        
         /*KdPrint(("Toaster: ProcBIOSInfo: %d \n", ProcBIOSInfo(pVirtualDataAddr)));
         const char* a = toTypePoint(pVirtualDataAddr, 1);
         KdPrint(("Toaster: ProcSysInfo: %d \n", ProcSysInfo(a)));*/
@@ -625,8 +622,10 @@ Return Value:
     }
     case IOCTL_AAEON_WRITE_SMBIOS:
     {
+        DbgPrint("Toaster: enter IOCTL_AAEON_WRITE_SMBIOS\n");
         DWORD bEntryPoint = 0;
         int bDataSize = 0, bType = 0, bDataIndex = 0;
+        BOOL bIsString = 0;
         status = WdfRequestRetrieveInputBuffer(Request, sizeof(AAEON_SMBIOS), &inBuf, &inbufSize);
         if (NT_SUCCESS(status))
         {
@@ -634,9 +633,8 @@ Return Value:
             bType = (int)((PAAEON_SMBIOS)inBuf)->bType;
             bDataIndex = (int)((PAAEON_SMBIOS)inBuf)->bDataIndex;
             bDataSize = (int)((PAAEON_SMBIOS)inBuf)->bDataSize;
-            DbgPrint("Toaster: bEntryPoint :%d \n", bType);
-            DbgPrint("Toaster: bDataIndex :%d \n", bDataIndex);
-            DbgPrint("Toaster: bDataSize :%d \n", bDataSize);
+            bIsString = (BOOL)((PAAEON_SMBIOS)inBuf)->bIsString;
+            DbgPrint("Toaster: bIsString = %d \n", bIsString);
         }
         else
         {
@@ -646,9 +644,11 @@ Return Value:
         }
         PVOID VirtualEntryPoint = GetDataTempStorage(bEntryPoint, sizeof(ENTRYPOINT));
 
-        for (int i = 0; i < bDataSize; ++i)
-            DbgPrint("Toaster: bData :%c \n", ((PAAEON_SMBIOS)inBuf)->bData[i]);
-        setDataString(VirtualEntryPoint, bType, bDataIndex, ((PAAEON_SMBIOS)inBuf)->bData, bDataSize);
+        if (bIsString)
+            setStringData(VirtualEntryPoint, bType, bDataIndex, ((PAAEON_SMBIOS)inBuf)->bStringData, bDataSize);
+        else
+            setData(VirtualEntryPoint, bType, bDataIndex, (PUCHAR)((PAAEON_SMBIOS)inBuf)->bData, bDataSize);
+            
 
         FreeDataTempStorage(VirtualEntryPoint, sizeof(ENTRYPOINT));
     }

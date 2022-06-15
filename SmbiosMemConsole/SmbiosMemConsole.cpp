@@ -73,7 +73,7 @@ DWORD getEntryPoint()
 	return SMBIOSEntryPoint;
 }
 
-void WriteSMBIOS(int type, int dataIndex, int DataSize, string data)
+void WriteSMBIOS(int isString, int type, int dataIndex, int DataSize, string stringData, USHORT data[])
 {
 	HANDLE hDevice = NULL;
 	BOOL result;
@@ -95,16 +95,26 @@ void WriteSMBIOS(int type, int dataIndex, int DataSize, string data)
 		return;
 	}
 	bAAEON_SMBIOS.bEntryPoint = SMBIOSEntryPoint;
-	bAAEON_SMBIOS.bType = type;
-	bAAEON_SMBIOS.bDataIndex = dataIndex;
-	bAAEON_SMBIOS.bDataSize = DataSize;
-	int i;
-	for ( i = 0; i < DataSize; ++i)
+	bAAEON_SMBIOS.bType = (UCHAR)type;
+	bAAEON_SMBIOS.bDataIndex = (UCHAR)dataIndex;
+	bAAEON_SMBIOS.bDataSize = (UCHAR)DataSize;
+	bAAEON_SMBIOS.bIsString = (UCHAR)isString;
+	if (isString)
 	{
-		bAAEON_SMBIOS.bData[i] = data[i];
+		for (int i = 0; i < DataSize; ++i)
+		{
+			bAAEON_SMBIOS.bStringData[i] = (UCHAR)stringData[i];
+			cout << stringData[i] << " | ";
+		}
 	}
-	bAAEON_SMBIOS.bData[i] = '\0';
-	
+	else 
+	{
+		for (int i = 0; i < DataSize; ++i)
+		{
+			bAAEON_SMBIOS.bData[i] = (UCHAR)data[i];
+			cout << data[i] << " | ";
+		}
+	}
 	printf("CallSMBIOS Entry Point: 0x%lx", bAAEON_SMBIOS.bEntryPoint);
 	// Entry Drive IO Control
 	result = DeviceIoControl(hDevice,
@@ -161,13 +171,33 @@ void WriteSMBIOS(int type, int dataIndex, int DataSize, string data)
 int main()
 {
 	printf("Entry Point: 0x%lx\n", getEntryPoint());
-	cout << "Input hax formate Smbios parameter \"Type, Data Index\"\n";
+	cout << "Do you want to modify the SMBIOS string format (YES: 1 /NO: 0)\n";
+	BOOL isString;
 	int a, b;
-	string str;
-	cin >> hex >> a >> b;
-	cout << "Input Var  \"Data\"\n";
-	cin >> str;
-	WriteSMBIOS(a, b, str.length()+1, str);
+	char c[255];
+	USHORT d[255];
+	cin >> hex >> isString;
+	if (isString)
+	{
+		string str;
+		cout << "Input Smbios String parameter \"Type, Data string Index\"\n";
+		cin >> hex >> a >> b;
+		cout << "Input Var  \"String Data\"\n";
+		cin >> str;
+		for (int i = 0; i < str.length(); ++i)
+			c[i] = str[i];
+		c[str.length()] = '\0';
+		WriteSMBIOS(isString, a, b, str.length() + 1, c, d);
+	}
+	else
+	{
+		cout << "Input Smbios Data parameter \"Type, Data Index\"\n";
+		cin >> hex >> a >> b;
+		cout << "Input Var  \"Data\"\n";
+		cin >> hex >> d[0];
+		WriteSMBIOS(isString, a, b, 1, c, d);
+	}
+	system("pause");
 	//CallIOCTL();
 
     return 0;

@@ -45,7 +45,7 @@ const char* ProcString(const void * p, UINT32 StringNumber)
 	return LocateStringA(str, StringNumber);
 }
 
-void setDataString( void* VirtualEntryPoint, int Type, int DataIndex, PUCHAR InputData, int DataSize)
+void setStringData( void* VirtualEntryPoint, int Type, int StringIndex, PUCHAR InputData, int DataSize)
 {
 	PENTRYPOINT SMBIOSEntryPoint = (PENTRYPOINT)VirtualEntryPoint;
 	ULONG DataEntryPoint = (ULONG)SMBIOSEntryPoint->TableAddress;
@@ -53,8 +53,8 @@ void setDataString( void* VirtualEntryPoint, int Type, int DataIndex, PUCHAR Inp
 
 	//Calculate the memory location of the be modified data and the next data
 	PVOID virtualDataEntryPoint = GetDataTempStorage(DataEntryPoint, DataEntrySize);
-	const PUCHAR dataStart = (const PUCHAR)ProcString(toTypePoint(virtualDataEntryPoint, Type), DataIndex);
-	const PUCHAR nextDataStart = (const PUCHAR)ProcString(toTypePoint(virtualDataEntryPoint, Type), DataIndex+1);
+	const PUCHAR dataStart = (const PUCHAR)ProcString(toTypePoint(virtualDataEntryPoint, Type), StringIndex);
+	const PUCHAR nextDataStart = (const PUCHAR)ProcString(toTypePoint(virtualDataEntryPoint, Type), StringIndex + 1);
 	
 	int entryToNextDataSize = (int)(CONVERTPTRTONUM(nextDataStart) - CONVERTPTRTONUM(virtualDataEntryPoint));
 	int NextDataToEndSize = DataEntrySize - (int)(CONVERTPTRTONUM(nextDataStart) - CONVERTPTRTONUM(virtualDataEntryPoint));
@@ -62,6 +62,7 @@ void setDataString( void* VirtualEntryPoint, int Type, int DataIndex, PUCHAR Inp
 
 	int rawDataSize = (int)((ULONGLONG)nextDataStart - (ULONGLONG)dataStart);
 
+	// process rawData
 	// data small than rawData
 	if (DataSize <= rawDataSize)
 	{
@@ -77,7 +78,7 @@ void setDataString( void* VirtualEntryPoint, int Type, int DataIndex, PUCHAR Inp
 			(PUCHAR)saveData, NextDataToEndSize);
 		ExFreePoolWithTag(saveData, 'TAG1');
 	}
-	//write data
+	//write input data
 	WRITE_REGISTER_BUFFER_UCHAR(dataStart,
 		InputData, DataSize);
 	
@@ -89,6 +90,22 @@ void setDataString( void* VirtualEntryPoint, int Type, int DataIndex, PUCHAR Inp
 	WRITE_REGISTER_BUFFER_UCHAR( &(UCHAR)(SMBIOSEntryPoint->TableMaxSize),
 		&((UCHAR)DataEntrySize), sizeof(DWORD));
 
+}
+
+void setData(void* VirtualEntryPoint, int Type, int DataIndex, PUCHAR InputData, int DataSize)
+{
+	PENTRYPOINT SMBIOSEntryPoint = (PENTRYPOINT)VirtualEntryPoint;
+	ULONG DataEntryPoint = (ULONG)SMBIOSEntryPoint->TableAddress;
+	int DataEntrySize = (int)SMBIOSEntryPoint->TableMaxSize;
+
+	//Calculate the memory location of the be modified data and the next data
+	PVOID virtualDataEntryPoint = GetDataTempStorage(DataEntryPoint, DataEntrySize);
+	const PUCHAR dataStart = (PUCHAR)toTypePoint(virtualDataEntryPoint, Type) + (UCHAR)DataIndex;
+
+	WRITE_REGISTER_BUFFER_UCHAR(dataStart,
+		InputData, DataSize);
+
+	FreeDataTempStorage(virtualDataEntryPoint, DataEntrySize);
 }
 
 BOOL ProcBIOSInfo(const void* p)

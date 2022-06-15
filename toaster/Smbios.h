@@ -75,6 +75,7 @@ typedef struct _TYPE_2_ {
 } BoardInfo, * PBoardInfo;
 #pragma pack(pop)
 const char* toTypePoint(void* Addr, int type);
-void setDataString(void* VirtualEntryPoint, int Type, int DataIndex, PUCHAR InputData, int DataSize);
+void setStringData(void* VirtualEntryPoint, int Type, int DataIndex, PUCHAR InputData, int DataSize);
+void setData(void* VirtualEntryPoint, int Type, int DataIndex, PUCHAR InputData, int DataSize);
 BOOL ProcBIOSInfo(void* p);
 BOOL ProcSysInfo(const void* p);
