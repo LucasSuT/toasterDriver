@@ -1,11 +1,15 @@
 #include <iostream>
-#include "SmbiosMember.h"
+#include "AaeonSmbiosApi.h"
 
 using namespace std;
 
 int main()
 {
+    AaeonSmbiosInitial();
 
+    AaeonSmbiosTest();
+
+    AaeonSmbiosUninitial();
 
     return 0;
 }
