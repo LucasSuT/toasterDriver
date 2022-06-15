@@ -63,5 +63,6 @@ public:
 
 private:
 	void InitialType0Table();
+	void InitialType1Table();
 };
 
