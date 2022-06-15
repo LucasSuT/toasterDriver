@@ -9,6 +9,55 @@
 #define AAEONSMBIOS_API __declspec(dllimport)
 #endif
 
+// SMBIOS type macros which is according to SMBIOS 2.7 specification.
+enum SmbiosType
+{
+	kSmbiosTypeBiosInformation = 0,
+	kSmbiosTypeSystemInformation,
+	kSmbiosTypeBaseboardInformation,
+	kSmbiosTypeSystemEnclosure,
+	kSmbiosTypeProcessorInformation,
+	kSmbiosTypeMemoryControllerInformation,
+	kSmbiosTypeMemoryModuleInformaton,
+	kSmbiosTypeCacheInformation,
+	kSmbiosTypePortConnectorInformation,
+	kSmbiosTypeSystemSlots,
+	kSmbiosTypeOnboardDeviceInformation,
+	kSmbiosTypeOemStrings,
+	kSmbiosTypeSystemConfigurationOptions,
+	kSmbiosTypeBiosLanguageInformation,
+	kSmbiosTypeGroupAssociations,
+	kSmbiosTypeSystemEventLog,
+	kSmbiosTypePhysicalMemoryArray,
+	kSmbiosTypeMemoryDevice,
+	kSmbiosType32bitMemoryErrorInformation,
+	kSmbiosTypeMemoryArrayMappedAddress,
+	kSmbiosTypeMemoryDeviceMappedAddress,
+	kSmbiosTypeBuiltInPointingDevice,
+	kSmbiosTypePortableBattery,
+	kSmbiosTypeSystemReset,
+	kSmbiosTypeHardwareSecurity,
+	kSmbiosTypeSystemPowerControls,
+	kSmbiosTypeVoltageProbe,
+	kSmbiosTypeCoolingDevice,
+	kSmbiosTypeTemperatureProbe,
+	kSmbiosTypeElectricalCurrentProbe,
+	kSmbiosTypeOutOfBandRemoteAccess,
+	kSmbiosTypeBootIntegrityService,
+	kSmbiosTypeSystemBootInformation,
+	kSmbiosType64bitMemoryErrorInformation,
+	kSmbiosTypeManagementDevice,
+	kSmbiosTypeManagementDeviceComponent,
+	kSmbiosTypeManagementDeviceThresholdData,
+	kSmbiosTypeMemoryChannel,
+	kSmbiosTypeIpmiDeviceInformation,
+	kSmbiosTypeSystemPowerSupply,
+	kSmbiosTypeAdditionalInformation,
+	kSmbiosTypeOnboardDevicesExtendedInformation,
+	kSmbiosTypeManagementControllerHostInterface,
+	kSmbiosTypeTpmDevice
+};
+
 SmbiosMember* smbios_member;
 
 extern "C"
