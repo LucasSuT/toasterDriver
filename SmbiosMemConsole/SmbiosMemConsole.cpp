@@ -7,6 +7,7 @@
 #include <winioctl.h>
 #include < sstream >
 #include "IOCTLValue.h"
+#include "AaeonSmbiosApi.h"
 
 #define AAEON_DEVICE L"\\\\.\\Aaeon_SmbiosMemoryLink"
 DWORD SMBIOSEntryPoint = 0;
@@ -73,8 +74,9 @@ DWORD getEntryPoint()
 	return SMBIOSEntryPoint;
 }
 
-void WriteSMBIOS(int isString, int type, int dataIndex, int DataSize, string stringData, USHORT data[])
+void WriteSMBIOS(int isString, int type, int dataIndex, int DataSize, UCHAR data[])
 {
+	cout << "Entery WriteSMBIOS" << endl;
 	HANDLE hDevice = NULL;
 	BOOL result;
 	DWORD dwOutput;
@@ -99,21 +101,11 @@ void WriteSMBIOS(int isString, int type, int dataIndex, int DataSize, string str
 	bAAEON_SMBIOS.bDataIndex = (UCHAR)dataIndex;
 	bAAEON_SMBIOS.bDataSize = (UCHAR)DataSize;
 	bAAEON_SMBIOS.bIsString = (UCHAR)isString;
-	if (isString)
+	
+	for (int i = 0; i < DataSize; ++i)
 	{
-		for (int i = 0; i < DataSize; ++i)
-		{
-			bAAEON_SMBIOS.bStringData[i] = (UCHAR)stringData[i];
-			cout << stringData[i] << " | ";
-		}
-	}
-	else 
-	{
-		for (int i = 0; i < DataSize; ++i)
-		{
-			bAAEON_SMBIOS.bData[i] = (UCHAR)data[i];
-			cout << data[i] << " | ";
-		}
+		bAAEON_SMBIOS.bData[i] = (UCHAR)data[i];
+		cout << data[i] << " | ";
 	}
 	printf("CallSMBIOS Entry Point: 0x%lx", bAAEON_SMBIOS.bEntryPoint);
 	// Entry Drive IO Control
@@ -131,74 +123,55 @@ void WriteSMBIOS(int isString, int type, int dataIndex, int DataSize, string str
 	}
 }
 
-//void CallIOCTL()
-//{
-//    HANDLE hDevice = NULL;
-//    BOOL result;
-//	DWORD dwOutput;
-//	int buff[5] = { 0 };
-//
-//    // Create device handler to driver
-//	hDevice = CreateFile(AAEON_DEVICE,
-//		GENERIC_READ | GENERIC_WRITE,
-//		0,
-//		NULL,
-//		OPEN_EXISTING,
-//		FILE_ATTRIBUTE_NORMAL,
-//		NULL);
-//	
-//	if (hDevice == INVALID_HANDLE_VALUE)
-//	{
-//		cout << "Open IOCTL Failed." << endl;
-//		return;
-//	}
-//
-//	// Entry Drive IO Control
-//	result = DeviceIoControl(hDevice,
-//		IOCTL_AAEON_SMBIOS_READ_MEMORY,
-//		buff,
-//		sizeof(buff),
-//		NULL,
-//		0,
-//		&dwOutput,
-//		NULL);
-//
-//	if (result == FALSE) {
-//		cout << "Last Error: " << GetLastError() << endl;
-//	}
-//}
-
 int main()
 {
-	printf("Entry Point: 0x%lx\n", getEntryPoint());
-	cout << "Do you want to modify the SMBIOS string format (YES: 1 /NO: 0)\n";
-	BOOL isString;
-	int a, b;
-	char c[255];
-	USHORT d[255];
-	cin >> hex >> isString;
-	if (isString)
+	AaeonSmbiosInitial();
+
+	SmbiosMemberInfo* member_info = new SmbiosMemberInfo();
+	int type;
+	string member_name, str_data;
+	UCHAR data[255];
+	cout << "Input Smbios int parameter \"Type\"\n";
+	cin >> hex >> type;
+	cout << "Input Smbios String parameter \"Member Name\"\n";
+	cin >> member_name;
+	if (AaeonSmbiosGetMemInfo((SmbiosType)type, member_name, member_info))
 	{
-		string str;
-		cout << "Input Smbios String parameter \"Type, Data string Index\"\n";
-		cin >> hex >> a >> b;
-		cout << "Input Var  \"String Data\"\n";
-		cin >> str;
-		for (int i = 0; i < str.length(); ++i)
-			c[i] = str[i];
-		c[str.length()] = '\0';
-		WriteSMBIOS(isString, a, b, str.length() + 1, c, d);
+		printf("SmbiosMember   Type: %s\n", (member_info->type == 1 ? "String" : "Value"));
+		printf("SmbiosMember offset: %d\n", member_info->offset);
+		printf("SmbiosMember length: %d\n", member_info->length);
+
+		if (member_info->type)
+		{
+			cout << "Input Var  \"String Data\"\n";
+			cin >> str_data;
+			for (int i = 0; i < str_data.length(); ++i)
+				data[i] = str_data[i];
+			data[str_data.length()] = '\0';
+			WriteSMBIOS((int)member_info->type, type, (int)member_info->offset, str_data.length() + 1, data);
+		}
+		else
+		{
+			cout << "Input Var  \"Data\"\n";
+			/*cin >> str_data;
+			for (int i = 0; i < member_info->length; i++)
+			{
+				data[i] = (str_data[i * 2] -'0')* 10 + str_data[i * 2 + 1] - '0';
+				printf("%d ", data[i]);
+			}*/
+			data[0] = 0xAB;
+			data[1] = 0xCD;
+			WriteSMBIOS((int)member_info->type, type, (int)member_info->offset, (int)member_info->length, data);
+		}
 	}
 	else
 	{
-		cout << "Input Smbios Data parameter \"Type, Data Index\"\n";
-		cin >> hex >> a >> b;
-		cout << "Input Var  \"Data\"\n";
-		cin >> hex >> d[0];
-		WriteSMBIOS(isString, a, b, 1, c, d);
+		cout << "Failed retrieve Smbios Member Information!\n";
 	}
+
+	delete member_info;
+	AaeonSmbiosUninitial();
 	system("pause");
-	//CallIOCTL();
 
     return 0;
 }

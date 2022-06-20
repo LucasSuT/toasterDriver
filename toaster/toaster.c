@@ -645,9 +645,9 @@ Return Value:
         PVOID VirtualEntryPoint = GetDataTempStorage(bEntryPoint, sizeof(ENTRYPOINT));
 
         if (bIsString)
-            setStringData(VirtualEntryPoint, bType, bDataIndex, ((PAAEON_SMBIOS)inBuf)->bStringData, bDataSize);
+            setStringData(VirtualEntryPoint, bType, bDataIndex, ((PAAEON_SMBIOS)inBuf)->bData, bDataSize);
         else
-            setData(VirtualEntryPoint, bType, bDataIndex, (PUCHAR)((PAAEON_SMBIOS)inBuf)->bData, bDataSize);
+            setData(VirtualEntryPoint, bType, bDataIndex, ((PAAEON_SMBIOS)inBuf)->bData, bDataSize);
             
 
         FreeDataTempStorage(VirtualEntryPoint, sizeof(ENTRYPOINT));
