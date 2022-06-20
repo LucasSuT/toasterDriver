@@ -19,7 +19,7 @@ AAEONSMBIOS_API bool AaeonSmbiosGetMemInfo(SmbiosType smbios_table_number, strin
 	try
 	{
 		smbios_member_object = smbios_member->smbios_tables[smbios_table_number].at(member_name);
-		strncpy_s(member_info->type, smbios_member_object.type_.c_str(), smbios_member_object.type_.length());
+		member_info->type = smbios_member_object.type_;
 		member_info->offset = smbios_member_object.offset_;
 		member_info->length = smbios_member_object.length_;
 

@@ -60,7 +60,7 @@ enum SmbiosType
 
 struct SmbiosMemberInfo
 {
-	char type[8];
+	unsigned char type;
 	unsigned char offset;
 	unsigned char length;
 };
