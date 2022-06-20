@@ -62,3 +62,26 @@ void SmbiosMember::InitialType2Table()
 		{"ContainedObjectHandles",         MemberProp(IS_VAL_TYPE, 0xF, 2)}
 	};
 }
+
+void SmbiosMember::InitialType3Table()
+{
+	type3_table =
+	{
+		{"Manufacturer",                 MemberProp(IS_STR_TYPE, 0x4, 1)},
+		{"Type",                         MemberProp(IS_VAL_TYPE, 0x5, 1)},
+		{"Version",                      MemberProp(IS_STR_TYPE, 0x6, 1)},
+		{"SerialNumber",                 MemberProp(IS_STR_TYPE, 0x7, 1)},
+		{"AssetTag",                     MemberProp(IS_STR_TYPE, 0x8, 1)},
+		{"BootupState",                  MemberProp(IS_VAL_TYPE, 0x9, 1)},
+		{"PowerSupplyState",             MemberProp(IS_VAL_TYPE, 0xA, 1)},
+		{"ThermalState",                 MemberProp(IS_VAL_TYPE, 0xB, 1)},
+		{"SecurityStatus",               MemberProp(IS_VAL_TYPE, 0xC, 1)},
+		{"OemDefined",                   MemberProp(IS_VAL_TYPE, 0xD, 4)},
+		{"Height",                       MemberProp(IS_VAL_TYPE, 0x11, 1)},
+		{"NumberofPowerCords",           MemberProp(IS_VAL_TYPE, 0x12, 1)},
+		{"ContainedElementCount",        MemberProp(IS_VAL_TYPE, 0x13, 1)},
+		{"ContainedElementRecordLength", MemberProp(IS_VAL_TYPE, 0x14, 1)},
+		{"ContainedElements",            MemberProp(IS_VAL_TYPE, 0x15, 1)}
+		//{"SKUNumber",                    MemberProp(IS_VAL_TYPE, 0x16, 1)}
+	};
+}
