@@ -21,8 +21,9 @@ public:
 	SmbiosMember();
 
 private:
-	SmbiosDictionary type0_table, type1_table;
+	SmbiosDictionary type0_table, type1_table, type2_table;
 	void InitialType0Table();
 	void InitialType1Table();
+	void InitialType2Table();
 };
 

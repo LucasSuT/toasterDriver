@@ -44,3 +44,21 @@ void SmbiosMember::InitialType1Table()
 		{"Family",       MemberProp(IS_STR_TYPE, 0x1A, 1)}
 	};
 }
+
+void SmbiosMember::InitialType2Table()
+{
+	type2_table =
+	{
+		{"Manufacturer",                   MemberProp(IS_STR_TYPE, 0x4, 1)},
+		{"ProductName",                    MemberProp(IS_STR_TYPE, 0x5, 1)},
+		{"Version",                        MemberProp(IS_STR_TYPE, 0x6, 1)},
+		{"SerialNumber",                   MemberProp(IS_STR_TYPE, 0x7, 1)},
+		{"AssetTag",                       MemberProp(IS_STR_TYPE, 0x8, 1)},
+		{"FeatureFlag",                    MemberProp(IS_VAL_TYPE, 0x9, 1)},
+		{"LocationInChassis",              MemberProp(IS_STR_TYPE, 0xA, 1)},
+		{"ChassisHandle",                  MemberProp(IS_VAL_TYPE, 0xB, 2)},
+		{"BoardType",                      MemberProp(IS_VAL_TYPE, 0xD, 1)},
+		{"NumberOfContainedObjectHandles", MemberProp(IS_VAL_TYPE, 0xE, 1)},
+		{"ContainedObjectHandles",         MemberProp(IS_VAL_TYPE, 0xF, 2)}
+	};
+}
