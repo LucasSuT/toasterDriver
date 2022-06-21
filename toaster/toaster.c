@@ -635,6 +635,9 @@ Return Value:
             bDataSize = (int)((PAAEON_SMBIOS)inBuf)->bDataSize;
             bIsString = (BOOL)((PAAEON_SMBIOS)inBuf)->bIsString;
             DbgPrint("Toaster: bIsString = %d \n", bIsString);
+            DbgPrint("Toaster: bDataSize = %d \n", bDataSize);
+            DbgPrint("Toaster: bDataIndex = %d \n", bDataIndex);
+            DbgPrint("Toaster: bType = %d \n", bType);
         }
         else
         {
@@ -643,6 +646,11 @@ Return Value:
             break;
         }
         PVOID VirtualEntryPoint = GetDataTempStorage(bEntryPoint, sizeof(ENTRYPOINT));
+
+        for (int i = 0; i < bDataSize; ++i)
+        {
+            DbgPrint("Toaster: bData = %d \n", ((PAAEON_SMBIOS)inBuf)->bData[i]);
+        }
 
         if (bIsString)
             setStringData(VirtualEntryPoint, bType, bDataIndex, ((PAAEON_SMBIOS)inBuf)->bData, bDataSize);

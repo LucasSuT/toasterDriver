@@ -96,7 +96,7 @@ void WriteSMBIOS(int isString, int type, int dataIndex, int DataSize, UCHAR data
 		cout << "Open IOCTL Failed." << endl;
 		return;
 	}
-	bAAEON_SMBIOS.bEntryPoint = SMBIOSEntryPoint;
+	bAAEON_SMBIOS.bEntryPoint = getEntryPoint();
 	bAAEON_SMBIOS.bType = (UCHAR)type;
 	bAAEON_SMBIOS.bDataIndex = (UCHAR)dataIndex;
 	bAAEON_SMBIOS.bDataSize = (UCHAR)DataSize;
@@ -104,7 +104,7 @@ void WriteSMBIOS(int isString, int type, int dataIndex, int DataSize, UCHAR data
 	
 	for (int i = 0; i < DataSize; ++i)
 	{
-		bAAEON_SMBIOS.bData[i] = (UCHAR)data[i];
+		bAAEON_SMBIOS.bData[i] = data[i];
 		cout << data[i] << " | ";
 	}
 	printf("CallSMBIOS Entry Point: 0x%lx", bAAEON_SMBIOS.bEntryPoint);
@@ -126,10 +126,10 @@ void WriteSMBIOS(int isString, int type, int dataIndex, int DataSize, UCHAR data
 int main()
 {
 	AaeonSmbiosInitial();
-
 	SmbiosMemberInfo* member_info = new SmbiosMemberInfo();
 	int type;
 	string member_name, str_data;
+	int temp;
 	UCHAR data[255];
 	cout << "Input Smbios int parameter \"Type\"\n";
 	cin >> hex >> type;
@@ -153,15 +153,14 @@ int main()
 		else
 		{
 			cout << "Input Var  \"Data\"\n";
-			/*cin >> str_data;
+			cin >> hex >> temp;
 			for (int i = 0; i < member_info->length; i++)
 			{
-				data[i] = (str_data[i * 2] -'0')* 10 + str_data[i * 2 + 1] - '0';
+				data[i] = temp & 0xFF;
+				temp = temp >> 8;
 				printf("%d ", data[i]);
-			}*/
-			data[0] = 0xAB;
-			data[1] = 0xCD;
-			WriteSMBIOS((int)member_info->type, type, (int)member_info->offset, (int)member_info->length, data);
+			}
+			WriteSMBIOS( (int)member_info->type, type, (int)member_info->offset, (int)member_info->length, data);
 		}
 	}
 	else

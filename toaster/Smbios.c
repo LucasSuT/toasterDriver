@@ -53,8 +53,10 @@ void setStringData( void* VirtualEntryPoint, int Type, int StringIndex, PUCHAR I
 
 	//Calculate the memory location of the be modified data and the next data
 	PVOID virtualDataEntryPoint = GetDataTempStorage(DataEntryPoint, DataEntrySize);
-	const PUCHAR dataStart = (const PUCHAR)ProcString(toTypePoint(virtualDataEntryPoint, Type), StringIndex);
-	const PUCHAR nextDataStart = (const PUCHAR)ProcString(toTypePoint(virtualDataEntryPoint, Type), StringIndex + 1);
+	const PUCHAR typeStart = (PUCHAR)toTypePoint(virtualDataEntryPoint, Type);
+	UINT32 stringNumber = (UINT32)*(typeStart + StringIndex);
+	const PUCHAR dataStart = (const PUCHAR)ProcString(typeStart, stringNumber);
+	const PUCHAR nextDataStart = (const PUCHAR)ProcString(typeStart, stringNumber + 1);
 	
 	int entryToNextDataSize = (int)(CONVERTPTRTONUM(nextDataStart) - CONVERTPTRTONUM(virtualDataEntryPoint));
 	int NextDataToEndSize = DataEntrySize - (int)(CONVERTPTRTONUM(nextDataStart) - CONVERTPTRTONUM(virtualDataEntryPoint));
