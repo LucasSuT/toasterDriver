@@ -129,7 +129,6 @@ int main()
 	SmbiosMemberInfo* member_info = new SmbiosMemberInfo();
 	int type;
 	string member_name, str_data;
-	int temp;
 	UCHAR data[255];
 	cout << "Input Smbios int parameter \"Type\"\n";
 	cin >> hex >> type;
@@ -153,12 +152,13 @@ int main()
 		else
 		{
 			cout << "Input Var  \"Data\"\n";
-			cin >> hex >> temp;
+			int a[32];
+			//cin >> hex >> temp;
 			for (int i = 0; i < member_info->length; i++)
 			{
-				data[i] = temp & 0xFF;
-				temp = temp >> 8;
-				printf("%d ", data[i]);
+				printf("Data size %d byte. Input data %d byte\n", member_info->length, i+1);
+				cin >> hex >> a[i];
+				data[i] = a[i];
 			}
 			WriteSMBIOS( (int)member_info->type, type, (int)member_info->offset, (int)member_info->length, data);
 		}
