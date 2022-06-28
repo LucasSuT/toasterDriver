@@ -1,7 +1,9 @@
 // AaeonSmbiosApi.h - Contains declarations of smbios feature functions
 #pragma once
 #include <iostream>
+#include <winioctl.h>
 #include "SmbiosMember.h"
+#include "IOCTLValue.h"
 
 #ifdef AAEONSMBIOSAPI_EXPORTS
 #define AAEONSMBIOS_API __declspec(dllexport)
@@ -73,4 +75,7 @@ extern "C"
 	AAEONSMBIOS_API void AaeonSmbiosUninitial();
 
 	AAEONSMBIOS_API bool AaeonSmbiosGetMemInfo(SmbiosType smbios_table_number, const string& member_name, SmbiosMemberInfo* member_info);
+
+	AAEONSMBIOS_API DWORD AaeonSmbiosGetEntryPoint();
+	AAEONSMBIOS_API void AaeonSmbiosWrite(int is_string, int type, int data_index, int data_size, UCHAR data[]);
 }

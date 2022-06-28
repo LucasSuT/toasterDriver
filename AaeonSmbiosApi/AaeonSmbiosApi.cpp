@@ -1,6 +1,14 @@
 #include "pch.h"
 #include "AaeonSmbiosApi.h"
 
+#define AAEON_SMBIOS_DEVICE L"\\\\.\\Aaeon_SmbiosMemoryLink"
+
+typedef struct
+{
+	DWORD addr_low_part;
+	DWORD addr_high_part; // Currently, address won't use high part address.
+}SmbiosV3EntryPointTable, * PSmbiosV3EntryPointTable;
+
 AAEONSMBIOS_API void AaeonSmbiosInitial()
 {
 	smbios_member = new SmbiosMember();
@@ -33,5 +41,105 @@ AAEONSMBIOS_API bool AaeonSmbiosGetMemInfo(SmbiosType smbios_table_number, const
 	{
 		printf("[%s]: %s\n", typeid(e).name(), e.what());
 		return false;
+	}
+}
+
+void RaisePrivileges()
+{
+	HANDLE hToken;
+	TOKEN_PRIVILEGES tkp = { 0 };
+
+	if (!OpenProcessToken(GetCurrentProcess(),
+		TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY,
+		&hToken)) {
+		//printf("Failed OpenProcessToken\r\n");
+		return;
+	}
+
+	LookupPrivilegeValue(NULL, SE_SYSTEM_ENVIRONMENT_NAME, &tkp.Privileges[0].Luid);
+	tkp.PrivilegeCount = 1;
+	tkp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+
+	DWORD len;
+	AdjustTokenPrivileges(hToken, FALSE, &tkp, 0, NULL, &len);
+
+	if (GetLastError() != ERROR_SUCCESS) {
+		//printf("Failed RasiePrivileges()\r\n");
+		return;
+	}
+}
+
+AAEONSMBIOS_API DWORD AaeonSmbiosGetEntryPoint()
+{
+	unsigned long dwLen = 0;
+	wchar_t name[256] = L"SmbiosV3EntryPointTable";
+	TCHAR guid[256] = L"{4b3082a3-80c6-4d7e-9cd0-583917265df1}";
+	unsigned int query_buffer_size = 8;
+	PVOID pBuffer = malloc(query_buffer_size * sizeof(char));
+
+	// Need to raise privilege then could use GetFirmwareEnvironmentVariable().
+	RaisePrivileges();
+
+	dwLen = GetFirmwareEnvironmentVariable(name, guid, pBuffer, query_buffer_size);
+	PSmbiosV3EntryPointTable PEntryPoint = (PSmbiosV3EntryPointTable)pBuffer;
+	if ( 0 == dwLen || PEntryPoint == nullptr )
+	{
+		printf("ErrCode = %ld.\n", GetLastError());
+	}
+	else
+	{
+		printf("Variable size: %d.\n", dwLen);
+		printf("0x%lx\n", PEntryPoint->addr_low_part);
+	}
+
+	free(pBuffer);
+	return PEntryPoint ? PEntryPoint->addr_low_part : NULL;
+}
+
+AAEONSMBIOS_API void AaeonSmbiosWrite(int is_string, int type, int data_index, int data_size, UCHAR data[])
+{
+	HANDLE hDevice = NULL;
+	BOOL result;
+	DWORD dwOutput;
+	int buff[5] = { 0 };
+	AAEON_SMBIOS bAAEON_SMBIOS;
+	// Create device handler to driver
+	hDevice = CreateFile(AAEON_SMBIOS_DEVICE,
+		GENERIC_READ | GENERIC_WRITE,
+		0,
+		NULL,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+
+	if (hDevice == INVALID_HANDLE_VALUE)
+	{
+		std::cout << "Open IOCTL Failed." << std::endl;
+		return;
+	}
+	bAAEON_SMBIOS.bEntryPoint = AaeonSmbiosGetEntryPoint();
+	bAAEON_SMBIOS.bType = (UCHAR)type;
+	bAAEON_SMBIOS.bDataIndex = (UCHAR)data_index;
+	bAAEON_SMBIOS.bDataSize = (UCHAR)data_size;
+	bAAEON_SMBIOS.bIsString = (UCHAR)is_string;
+
+	for (int i = 0; i < data_size; ++i)
+	{
+		bAAEON_SMBIOS.bData[i] = data[i];
+		std::cout << data[i] << " | ";
+	}
+	printf("CallSMBIOS Entry Point: 0x%lx\n", bAAEON_SMBIOS.bEntryPoint);
+	// Entry Drive IO Control
+	result = DeviceIoControl(hDevice,
+		IOCTL_AAEON_WRITE_SMBIOS,
+		&bAAEON_SMBIOS,
+		sizeof(AAEON_SMBIOS),
+		&bAAEON_SMBIOS,
+		sizeof(AAEON_SMBIOS),
+		&dwOutput,
+		NULL);
+
+	if (result == FALSE) {
+		std::cout << "Last Error: " << GetLastError() << std::endl;
 	}
 }
