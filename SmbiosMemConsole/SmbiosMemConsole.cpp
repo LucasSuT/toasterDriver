@@ -6,7 +6,6 @@
 #include <Windows.h>
 #include <winioctl.h>
 #include < sstream >
-#include "IOCTLValue.h"
 #include "AaeonSmbiosApi.h"
 
 #define AAEON_DEVICE L"\\\\.\\Aaeon_SmbiosMemoryLink"
