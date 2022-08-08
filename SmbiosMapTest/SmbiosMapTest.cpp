@@ -8,7 +8,7 @@ int main()
     AaeonSmbiosInitial();
 
     SmbiosMemberInfo* member_info = new SmbiosMemberInfo();
-    if ( AaeonSmbiosGetMemInfo(kSmbiosTypeBiosInformation, "Vendor", member_info) )
+    if ( AaeonSmbiosGetMemInfo(kSmbiosTypeMemoryControllerInformation, "Vendor", member_info) )
     {
         printf("SmbiosMember   Type: %s\n", (member_info->type == 1 ? "String" : "Value"));
         printf("SmbiosMember offset: %d\n", member_info->offset);
