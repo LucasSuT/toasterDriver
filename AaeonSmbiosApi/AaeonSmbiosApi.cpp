@@ -2,7 +2,7 @@
 #include "AaeonSmbiosApi.h"
 
 #define AAEON_SMBIOS_DEVICE L"\\\\.\\Aaeon_SmbiosMemoryLink"
-
+#define IOCONTROL_SUCCESS 0
 typedef struct
 {
 	DWORD addr_low_part;
@@ -91,9 +91,9 @@ AAEONSMBIOS_API DWORD AaeonSmbiosGetEntryPoint()
 		printf("Variable size: %d.\n", dwLen);
 		printf("0x%lx\n", PEntryPoint->addr_low_part);
 	}
-
+	DWORD SMBIOSEntryPoint = PEntryPoint->addr_low_part;
 	free(pBuffer);
-	return PEntryPoint ? PEntryPoint->addr_low_part : NULL;
+	return SMBIOSEntryPoint ? SMBIOSEntryPoint : NULL;
 }
 
 AAEONSMBIOS_API void AaeonSmbiosWrite(int is_string, int type, int data_index, int data_size, UCHAR data[])
@@ -139,7 +139,7 @@ AAEONSMBIOS_API void AaeonSmbiosWrite(int is_string, int type, int data_index, i
 		&dwOutput,
 		NULL);
 
-	if (result == FALSE) {
+	if (result != IOCONTROL_SUCCESS) {
 		std::cout << "Last Error: " << GetLastError() << std::endl;
 	}
 }

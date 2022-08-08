@@ -67,7 +67,6 @@ DWORD getEntryPoint()
 	{
 		printf("Variable size: %d.\n", dwLen);
 		printf("0x%lx\n", PEntryPoint->SMBIOSAdr);
-		SMBIOSSize = 
 		SMBIOSEntryPoint = PEntryPoint->SMBIOSAdr;
 	}
 	free(pBuffer);
@@ -147,20 +146,21 @@ int main()
 			for (int i = 0; i < str_data.length(); ++i)
 				data[i] = str_data[i];
 			data[str_data.length()] = '\0';
-			WriteSMBIOS((int)member_info->type, type, (int)member_info->offset, str_data.length() + 1, data);
+			AaeonSmbiosWrite((int)member_info->type, type, (int)member_info->offset, str_data.length() + 1, data);
+			//WriteSMBIOS((int)member_info->type, type, (int)member_info->offset, str_data.length() + 1, data);
 		}
 		else
 		{
 			cout << "Input Var  \"Data\"\n";
 			int a[32];
-			//cin >> hex >> temp;
 			for (int i = 0; i < member_info->length; i++)
 			{
 				printf("Data size %d byte. Input data %d byte\n", member_info->length, i+1);
 				cin >> hex >> a[i];
 				data[i] = a[i];
 			}
-			WriteSMBIOS( (int)member_info->type, type, (int)member_info->offset, (int)member_info->length, data);
+			AaeonSmbiosWrite((int)member_info->type, type, (int)member_info->offset, (int)member_info->length, data);
+			//WriteSMBIOS( (int)member_info->type, type, (int)member_info->offset, (int)member_info->length, data);
 		}
 	}
 	else

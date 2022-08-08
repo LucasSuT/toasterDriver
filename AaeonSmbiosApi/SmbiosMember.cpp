@@ -5,9 +5,13 @@ SmbiosMember::SmbiosMember()
 {
 	InitialType0Table();
 	InitialType1Table();
+	InitialType2Table();
+	InitialType3Table();
 
 	smbios_tables.push_back(type0_table);
 	smbios_tables.push_back(type1_table);
+	smbios_tables.push_back(type2_table);
+	smbios_tables.push_back(type3_table);
 }
 
 void SmbiosMember::InitialType0Table()

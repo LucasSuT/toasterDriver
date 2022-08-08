@@ -657,7 +657,6 @@ Return Value:
         else
             setData(VirtualEntryPoint, bType, bDataIndex, ((PAAEON_SMBIOS)inBuf)->bData, bDataSize);
             
-
         FreeDataTempStorage(VirtualEntryPoint, sizeof(ENTRYPOINT));
     }
     default:
