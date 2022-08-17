@@ -31,7 +31,6 @@ void UEFIContorller::WriteDmiVariable(vector<UINT8>& data, const SMBIOSELEMENT& 
 	unsigned long dwLen = 0;
 	PVOID p_query_buffer;
 
-	data.push_back(0x0);
 	p_query_buffer = data.data();
 	wmemcpy_s(&name[0], sizeof(name), ConvertWString(ElementToName(element)).c_str(), sizeof(L"DmiVar0000000000"));
 	RasiePrivileges();

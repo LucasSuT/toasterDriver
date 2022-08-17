@@ -1,10 +1,6 @@
 // SmbiosMemConsole.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-
-#include <iostream>
 #include <string>
-#include <Windows.h>
-#include <winioctl.h>
 #include < sstream >
 #include "AaeonSmbiosApi.h"
 
@@ -128,12 +124,16 @@ int main()
 	int type, handle;
 	string member_name, str_data;
 	UCHAR data[255];
+	char member[255];
 	cout << "Input Smbios int parameter \"Type\"\n";
 	cin >> hex >> type;
 	cout << "Input Smbios int parameter \"Handle\"\n";
 	cin >> hex >> handle;
 	cout << "Input Smbios String parameter \"Member Name\"\n";
 	cin >> member_name;
+	for (int i = 0; i < member_name.length(); i++)
+		member[i] = member_name[i];
+
 	if (AaeonSmbiosGetMemInfo((SmbiosType)type, member_name, member_info))
 	{
 		printf("SmbiosMember   Type: %s\n", (member_info->type == 1 ? "String" : "Value"));
@@ -146,8 +146,8 @@ int main()
 			cin >> str_data;
 			for (int i = 0; i < str_data.length(); ++i)
 				data[i] = str_data[i];
-			data[str_data.length()] = '\0';
-			AaeonSmbiosWrite(type, handle, member_name, str_data.length() + 1, data);
+			
+			AaeonSmbiosWrite(type, handle, member, member_name.length(), data, str_data.length());
 			//WriteSMBIOS((int)member_info->type, type, (int)member_info->offset, str_data.length() + 1, data);
 		}
 		else
@@ -160,7 +160,7 @@ int main()
 				cin >> hex >> a[i];
 				data[i] = a[i];
 			}
-			AaeonSmbiosWrite((int)member_info->type, type, (int)member_info->offset, (int)member_info->length, data);
+			AaeonSmbiosWrite(type, handle, member, member_name.length(), data,(int)member_info->length);
 			//WriteSMBIOS( (int)member_info->type, type, (int)member_info->offset, (int)member_info->length, data);
 		}
 	}

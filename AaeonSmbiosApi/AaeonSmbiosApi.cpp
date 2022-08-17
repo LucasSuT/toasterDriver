@@ -147,21 +147,30 @@ void AaeonSmbiosWriteMemory(int is_string, int type, int handle, int offset, UCH
 	}
 }
 
-AAEONSMBIOS_API void AaeonSmbiosWrite(int type, int handle, CHAR member_name[], int name_size, UCHAR data[], int data_size)
+AAEONSMBIOS_API void AaeonSmbiosWrite(int type, int handle, CHAR member_name[], int name_length, UCHAR input_data[], int data_length)
 {
 	string memberName;
-	memberName.assign(member_name, name_size);
+	memberName.assign(member_name, name_length);
 	cout << memberName << endl;
 	SmbiosMemberInfo* member_info = new SmbiosMemberInfo();
 	if (AaeonSmbiosGetMemInfo((SmbiosType)type, memberName, member_info))
 	{
+		int raw_data_length = data_length;
+		if (member_info->type != VAL_TYPE)
+			data_length++;
+		PUCHAR data = (PUCHAR)calloc(data_length, sizeof(UCHAR));
+		memcpy_s(data, data_length, input_data, raw_data_length);
+
 		//call driver write SMBIOS memory data
-		AaeonSmbiosWriteMemory(member_info->type, type, handle, member_info->offset, data, data_size);
+		AaeonSmbiosWriteMemory(member_info->type, type, handle, member_info->offset, data, data_length);
 
 		//call UEFI Variable to write NVRAM data
-		vector<UINT8> vectorData(data, data + data_size);
+		
+		vector<UINT8> vectorData(data, data + data_length);
 		SmbiosEditor* smbios_editor = &SmbiosEditor::getInstance();
 		smbios_editor->SetSMBIOS((UINT8)type, (UINT16)handle, (UINT8)member_info->offset, 0, vectorData);
+
+		free(data);
 	}
 	else
 	{

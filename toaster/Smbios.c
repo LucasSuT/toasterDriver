@@ -116,7 +116,7 @@ void setStringData(void* VirtualEntryPoint, int Type, int Handle, int StringInde
 
 }
 
-void setData(void* VirtualEntryPoint, int Type, int Handle, int StringIndex, PUCHAR InputData, int DataSize)
+void setData(void* VirtualEntryPoint, int Type, int Handle, int DataIndex, PUCHAR InputData, int DataSize)
 {
 	PENTRYPOINT SMBIOSEntryPoint = (PENTRYPOINT)VirtualEntryPoint;
 	ULONG DataEntryPoint = (ULONG)SMBIOSEntryPoint->TableAddress;
@@ -124,9 +124,9 @@ void setData(void* VirtualEntryPoint, int Type, int Handle, int StringIndex, PUC
 
 	//Calculate the memory location of the be modified data and the next data
 	PVOID virtualDataEntryPoint = GetDataTempStorage(DataEntryPoint, DataEntrySize);
-	const PUCHAR TypeHandleStart = FindTypeHandle(virtualDataEntryPoint, Type, Handle);
+	const PUCHAR dataStart = FindTypeHandle(virtualDataEntryPoint, Type, Handle) + (UCHAR)DataIndex;
 
-	WRITE_REGISTER_BUFFER_UCHAR(TypeHandleStart,
+	WRITE_REGISTER_BUFFER_UCHAR(dataStart,
 		InputData, DataSize);
 
 	FreeDataTempStorage(virtualDataEntryPoint, DataEntrySize);
