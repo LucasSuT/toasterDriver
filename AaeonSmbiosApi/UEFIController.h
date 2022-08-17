@@ -13,6 +13,7 @@ using namespace std;
 #define STATUS_FAIL 0xFF
 #define STATUS_SUCCESS 0x00
 
+#pragma pack(push)
 #pragma pack(1)
 typedef struct _SMBIOSELEMENT {
 	UINT8 Type;
@@ -26,6 +27,7 @@ typedef struct _AAEONSMBIOS {
 	UINT8 DontCar[4] = { 0 };
 	SMBIOSELEMENT Element[255] = { 0 };
 } AAEONSMBIOS, * PAAEONSMBIOS;
+#pragma pack(pop)
 
 class UEFIContorller {
 public:
