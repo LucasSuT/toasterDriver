@@ -33,6 +33,12 @@
     <ClInclude Include="IOCTLValue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UEFIController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SmbiosEditor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -45,6 +51,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SmbiosMember.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UEFIController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SmbiosEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
