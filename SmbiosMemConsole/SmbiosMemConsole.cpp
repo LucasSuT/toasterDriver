@@ -96,7 +96,7 @@ void WriteSMBIOS(int isString, int type, int dataIndex, int DataSize, UCHAR data
 	}
 	bAAEON_SMBIOS.bEntryPoint = getEntryPoint();
 	bAAEON_SMBIOS.bType = (UCHAR)type;
-	bAAEON_SMBIOS.bDataIndex = (UCHAR)dataIndex;
+	bAAEON_SMBIOS.bOffset = (UCHAR)dataIndex;
 	bAAEON_SMBIOS.bDataSize = (UCHAR)DataSize;
 	bAAEON_SMBIOS.bIsString = (UCHAR)isString;
 	
@@ -125,11 +125,13 @@ int main()
 {
 	AaeonSmbiosInitial();
 	SmbiosMemberInfo* member_info = new SmbiosMemberInfo();
-	int type;
+	int type, handle;
 	string member_name, str_data;
 	UCHAR data[255];
 	cout << "Input Smbios int parameter \"Type\"\n";
 	cin >> hex >> type;
+	cout << "Input Smbios int parameter \"Handle\"\n";
+	cin >> hex >> handle;
 	cout << "Input Smbios String parameter \"Member Name\"\n";
 	cin >> member_name;
 	if (AaeonSmbiosGetMemInfo((SmbiosType)type, member_name, member_info))
@@ -145,7 +147,7 @@ int main()
 			for (int i = 0; i < str_data.length(); ++i)
 				data[i] = str_data[i];
 			data[str_data.length()] = '\0';
-			AaeonSmbiosWrite((int)member_info->type, type, (int)member_info->offset, str_data.length() + 1, data);
+			AaeonSmbiosWrite(type, handle, member_name, str_data.length() + 1, data);
 			//WriteSMBIOS((int)member_info->type, type, (int)member_info->offset, str_data.length() + 1, data);
 		}
 		else

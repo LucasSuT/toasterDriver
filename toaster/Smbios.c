@@ -28,6 +28,21 @@ const char* toTypePoint(void* Addr, int type)
 	return (const char*)str;
 }
 
+const char* toHandlePoint(void* Addr, int handle)
+{
+	char* str = Addr;
+	PSMBIOSHEADER p = (PSMBIOSHEADER)str;
+	while (p->Handle != handle)
+	{
+		str = (char*)toPointString(str); // point to struct end
+		while (0 != (*((char*)str) | *((char*)str + 1))) (char*)str++; // skip string area
+		(char*)str += 2;// skip the last two nulls of the type
+		p = (PSMBIOSHEADER)str;
+	}
+	//DbgPrint("AAEON Framework - SMBIOS get end Type =%d\n", p->Type);
+	return (const char*)str;
+}
+
 const char* LocateStringA(const char* str, UINT32 i)
 {
 	static const char strNull[] = "Null String";
@@ -45,18 +60,25 @@ const char* ProcString(const void * p, UINT32 StringNumber)
 	return LocateStringA(str, StringNumber);
 }
 
-void setStringData( void* VirtualEntryPoint, int Type, int StringIndex, PUCHAR InputData, int DataSize)
+PUCHAR FindTypeHandle(PVOID virtualDataEntryPoint, int Type, int Handle)
+{
+	const PUCHAR typeStart = (PUCHAR)toTypePoint(virtualDataEntryPoint, Type);
+	const PUCHAR handleStart = (PUCHAR)toHandlePoint(typeStart, Handle);
+	return handleStart;
+}
+
+void setStringData(void* VirtualEntryPoint, int Type, int Handle, int StringIndex, PUCHAR InputData, int DataSize)
 {
 	PENTRYPOINT SMBIOSEntryPoint = (PENTRYPOINT)VirtualEntryPoint;
 	ULONG DataEntryPoint = (ULONG)SMBIOSEntryPoint->TableAddress;
 	int DataEntrySize = (int)SMBIOSEntryPoint->TableMaxSize;
-
-	//Calculate the memory location of the be modified data and the next data
 	PVOID virtualDataEntryPoint = GetDataTempStorage(DataEntryPoint, DataEntrySize);
-	const PUCHAR typeStart = (PUCHAR)toTypePoint(virtualDataEntryPoint, Type);
-	UINT32 stringNumber = (UINT32)*(typeStart + StringIndex);
-	const PUCHAR dataStart = (const PUCHAR)ProcString(typeStart, stringNumber);
-	const PUCHAR nextDataStart = (const PUCHAR)ProcString(typeStart, stringNumber + 1);
+
+	const PUCHAR TypeHandleStart = FindTypeHandle(virtualDataEntryPoint, Type, Handle);
+
+	UINT32 stringNumber = (UINT32)*(TypeHandleStart + StringIndex);
+	const PUCHAR dataStart = (const PUCHAR)ProcString(TypeHandleStart, stringNumber);
+	const PUCHAR nextDataStart = (const PUCHAR)ProcString(TypeHandleStart, stringNumber + 1);
 	
 	int entryToNextDataSize = (int)(CONVERTPTRTONUM(nextDataStart) - CONVERTPTRTONUM(virtualDataEntryPoint));
 	int NextDataToEndSize = DataEntrySize - (int)(CONVERTPTRTONUM(nextDataStart) - CONVERTPTRTONUM(virtualDataEntryPoint));
@@ -94,7 +116,7 @@ void setStringData( void* VirtualEntryPoint, int Type, int StringIndex, PUCHAR I
 
 }
 
-void setData(void* VirtualEntryPoint, int Type, int DataIndex, PUCHAR InputData, int DataSize)
+void setData(void* VirtualEntryPoint, int Type, int Handle, int StringIndex, PUCHAR InputData, int DataSize)
 {
 	PENTRYPOINT SMBIOSEntryPoint = (PENTRYPOINT)VirtualEntryPoint;
 	ULONG DataEntryPoint = (ULONG)SMBIOSEntryPoint->TableAddress;
@@ -102,9 +124,9 @@ void setData(void* VirtualEntryPoint, int Type, int DataIndex, PUCHAR InputData,
 
 	//Calculate the memory location of the be modified data and the next data
 	PVOID virtualDataEntryPoint = GetDataTempStorage(DataEntryPoint, DataEntrySize);
-	const PUCHAR dataStart = (PUCHAR)toTypePoint(virtualDataEntryPoint, Type) + (UCHAR)DataIndex;
+	const PUCHAR TypeHandleStart = FindTypeHandle(virtualDataEntryPoint, Type, Handle);
 
-	WRITE_REGISTER_BUFFER_UCHAR(dataStart,
+	WRITE_REGISTER_BUFFER_UCHAR(TypeHandleStart,
 		InputData, DataSize);
 
 	FreeDataTempStorage(virtualDataEntryPoint, DataEntrySize);

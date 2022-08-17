@@ -13,12 +13,12 @@
 typedef struct _AAEON_SMBIOS
 {
 	DWORD bEntryPoint;
-	UCHAR bType;
-	UCHAR bHandle;
+	UINT8 bType;
+	UINT16 bHandle;
+	UINT8 bOffset;
 	UCHAR bIsString;
-	UCHAR bDataIndex;
 	UCHAR bDataSize;
-	UCHAR bData[255];
+	UINT8 bData[255];
 } AAEON_SMBIOS, * PAAEON_SMBIOS;
 
 #define IOCTL_AAEON_CALL_BFPI_METHOD CTL_CODE\

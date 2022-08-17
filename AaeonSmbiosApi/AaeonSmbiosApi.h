@@ -79,5 +79,5 @@ extern "C"
 	AAEONSMBIOS_API bool AaeonSmbiosGetMemInfo(SmbiosType smbios_table_number, const string& member_name, SmbiosMemberInfo* member_info);
 
 	AAEONSMBIOS_API DWORD AaeonSmbiosGetEntryPoint();
-	AAEONSMBIOS_API void AaeonSmbiosWrite(int is_string, int type, int data_index, int data_size, UCHAR data[]);
+	AAEONSMBIOS_API void AaeonSmbiosWrite(int type, int handle, CHAR member_name[], int name_size, UCHAR data[], int data_size);
 }

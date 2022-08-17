@@ -98,7 +98,7 @@ AAEONSMBIOS_API DWORD AaeonSmbiosGetEntryPoint()
 	return SMBIOSEntryPoint ? SMBIOSEntryPoint : NULL;
 }
 
-void AaeonSmbiosWriteMemory(int is_string, int type, int data_index, int data_size, UCHAR data[])
+void AaeonSmbiosWriteMemory(int is_string, int type, int handle, int offset, UCHAR data[], int data_size)
 {
 	HANDLE hDevice = NULL;
 	BOOL result;
@@ -120,8 +120,9 @@ void AaeonSmbiosWriteMemory(int is_string, int type, int data_index, int data_si
 		return;
 	}
 	bAAEON_SMBIOS.bEntryPoint = AaeonSmbiosGetEntryPoint();
-	bAAEON_SMBIOS.bType = (UCHAR)type;
-	bAAEON_SMBIOS.bDataIndex = (UCHAR)data_index;
+	bAAEON_SMBIOS.bType = (UINT8)type;
+	bAAEON_SMBIOS.bHandle = (UINT16)handle;
+	bAAEON_SMBIOS.bOffset = (UINT8)offset;
 	bAAEON_SMBIOS.bDataSize = (UCHAR)data_size;
 	bAAEON_SMBIOS.bIsString = (UCHAR)is_string;
 
@@ -146,14 +147,25 @@ void AaeonSmbiosWriteMemory(int is_string, int type, int data_index, int data_si
 	}
 }
 
-AAEONSMBIOS_API void AaeonSmbiosWrite(int is_string, int type, int data_index, int data_size, UCHAR data[])
+AAEONSMBIOS_API void AaeonSmbiosWrite(int type, int handle, CHAR member_name[], int name_size, UCHAR data[], int data_size)
 {
-	//call driver write SMBIOS memory data
-	AaeonSmbiosWriteMemory(is_string, type, data_index, data_size, data);
-	
-	//call UEFI Variable to write NVRAM data
-	vector<UINT8> v(data, data + data_size);
-	smbios_editor->SetSMBIOS((UINT8)type, 0, (UINT8)data_index, 0, v);
+	string memberName;
+	memberName.assign(member_name, name_size);
+	cout << memberName << endl;
+	SmbiosMemberInfo* member_info = new SmbiosMemberInfo();
+	if (AaeonSmbiosGetMemInfo((SmbiosType)type, memberName, member_info))
+	{
+		//call driver write SMBIOS memory data
+		AaeonSmbiosWriteMemory(member_info->type, type, handle, member_info->offset, data, data_size);
+
+		//call UEFI Variable to write NVRAM data
+		vector<UINT8> vectorData(data, data + data_size);
+		smbios_editor->SetSMBIOS((UINT8)type, (UINT16)handle, (UINT8)member_info->offset, 0, vectorData);
+	}
+	else
+	{
+		cout << "Failed retrieve Smbios Member Information!\n";
+	}
 }
 
 
