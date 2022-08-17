@@ -19,12 +19,16 @@ class SmbiosMember
 {
 public:
 	vector<SmbiosDictionary> smbios_tables;
-	SmbiosMember();
+	static SmbiosMember& GetInstance();
 
 private:
 	SmbiosDictionary type0_table, type1_table, type2_table, type3_table, type4_table, 
 					 type5_table, type6_table, type7_table, type8_table, type9_table,
 					 type10_table, type11_table;
+
+	SmbiosMember();
+	SmbiosMember(SmbiosMember const&) = delete;
+	void operator=(SmbiosMember const&) = delete;
 
 	void InitialType0Table();
 	void InitialType1Table();

@@ -1,6 +1,12 @@
 #include "pch.h"
 #include "SmbiosMember.h"
 
+SmbiosMember& SmbiosMember::GetInstance()
+{
+	static SmbiosMember smbios_member;
+	return smbios_member;
+}
+
 SmbiosMember::SmbiosMember()
 {
 	InitialType0Table();
