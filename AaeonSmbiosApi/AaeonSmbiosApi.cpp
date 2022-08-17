@@ -160,6 +160,7 @@ AAEONSMBIOS_API void AaeonSmbiosWrite(int type, int handle, CHAR member_name[], 
 
 		//call UEFI Variable to write NVRAM data
 		vector<UINT8> vectorData(data, data + data_size);
+		SmbiosEditor* smbios_editor = &SmbiosEditor::getInstance();
 		smbios_editor->SetSMBIOS((UINT8)type, (UINT16)handle, (UINT8)member_info->offset, 0, vectorData);
 	}
 	else

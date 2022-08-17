@@ -69,7 +69,6 @@ struct SmbiosMemberInfo
 };
 
 SmbiosMember* smbios_member;
-SmbiosEditor* smbios_editor = &SmbiosEditor::getInstance();
 
 extern "C"
 {
