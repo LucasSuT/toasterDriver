@@ -65,7 +65,6 @@ struct SmbiosMemberInfo
 	unsigned char length;
 };
 
-SmbiosMember* smbios_member;
 
 extern "C"
 {

@@ -3,19 +3,17 @@
 
 AAEONSMBIOS_API void AaeonSmbiosInitial()
 {
-	smbios_member = new SmbiosMember();
 	return;
 }
 
 AAEONSMBIOS_API void AaeonSmbiosUninitial()
 {
-	delete smbios_member;
 	return;
 }
 
 AAEONSMBIOS_API bool AaeonSmbiosGetMemInfo(SmbiosType smbios_table_number, const string& member_name, SmbiosMemberInfo* member_info)
 {
-	
+	SmbiosMember* smbios_member = &SmbiosMember::GetInstance();
 	MemberProp smbios_member_object;
 	try
 	{
