@@ -4,6 +4,7 @@
 #include <winioctl.h>
 #include "SmbiosMember.h"
 #include "IOCTLValue.h"
+#include "SmbiosEditor.h"
 
 #ifdef AAEONSMBIOSAPI_EXPORTS
 #define AAEONSMBIOS_API __declspec(dllexport)
@@ -68,6 +69,7 @@ struct SmbiosMemberInfo
 };
 
 SmbiosMember* smbios_member;
+SmbiosEditor* smbios_editor = &SmbiosEditor::getInstance();
 
 extern "C"
 {

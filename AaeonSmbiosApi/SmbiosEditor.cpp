@@ -1,6 +1,12 @@
 #include "pch.h"
 #include "SmbiosEditor.h"
 
+SmbiosEditor& SmbiosEditor::getInstance()
+{
+	static SmbiosEditor smbios_editor;
+	return smbios_editor;
+}
+
 void SmbiosEditor::SetSMBIOS(UINT8 Type, UINT16 Handle, UINT8 Offset, UINT8 Flag, vector<UINT8> data)
 {
 	SMBIOSELEMENT element{ Type,Handle,Offset ,Flag };

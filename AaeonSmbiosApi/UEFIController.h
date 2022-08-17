@@ -37,8 +37,6 @@ public:
 
 	void WriteDmiVariable(vector<UINT8>& data, const SMBIOSELEMENT& element);
 	
-	void Initial();
-
 	AAEONSMBIOS GetDmiArray();
 
 	void DebugPrintDmiArray();
@@ -50,6 +48,8 @@ private:
 	wchar_t name[256] = L"DmiArray";
 	TCHAR guid[256] = L"{4b3082a3-80c6-4d7e-9cd0-583917265df1}";
 	DWORD dwAttributes = 0x00000001 | 0x00000002 | 0x00000004; /*VARIABLE_ATTRIBUTE_NON_VOLATILE*/
+
+	void Initial();
 
 	bool ErrorHandle(ULONG dwLen);
 

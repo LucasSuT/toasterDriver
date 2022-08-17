@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "AaeonSmbiosApi.h"
-#include "SmbiosEditor.h"
 
 #define AAEON_SMBIOS_DEVICE L"\\\\.\\Aaeon_SmbiosMemoryLink"
 #define IOCONTROL_SUCCESS 0
@@ -154,7 +153,7 @@ AAEONSMBIOS_API void AaeonSmbiosWrite(int is_string, int type, int data_index, i
 	
 	//call UEFI Variable to write NVRAM data
 	vector<UINT8> v(data, data + data_size);
-	SmbiosEditor().SetSMBIOS((UINT8)type, 0, (UINT8)data_index, 0, v);
+	smbios_editor->SetSMBIOS((UINT8)type, 0, (UINT8)data_index, 0, v);
 }
 
 
