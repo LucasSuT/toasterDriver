@@ -1,6 +1,7 @@
 // AaeonSmbiosApi.h - Contains declarations of smbios feature functions
 #pragma once
 #include <iostream>
+#include <string>
 #include <Windows.h>
 #include <winioctl.h>
 #include "SmbiosMember.h"
