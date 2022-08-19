@@ -654,11 +654,7 @@ Return Value:
         {
             DbgPrint("Toaster: bData = %d \n", ((PAAEON_SMBIOS)inBuf)->bData[i]);
         }
-
-        if (bIsString)
-            setStringData(VirtualEntryPoint, bType, bHandle, bOffset, ((PAAEON_SMBIOS)inBuf)->bData, bDataSize);
-        else
-            setData(VirtualEntryPoint, bType, bHandle, bOffset, ((PAAEON_SMBIOS)inBuf)->bData, bDataSize);
+        setSmbios(bIsString, VirtualEntryPoint, bType, bHandle, bOffset, ((PAAEON_SMBIOS)inBuf)->bData, bDataSize);
             
         FreeDataTempStorage(VirtualEntryPoint, sizeof(ENTRYPOINT));
     }

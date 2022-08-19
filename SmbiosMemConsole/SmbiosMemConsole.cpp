@@ -140,7 +140,7 @@ int main()
 		printf("SmbiosMember offset: %d\n", member_info->offset);
 		printf("SmbiosMember length: %d\n", member_info->length);
 
-		if (member_info->type)
+		if (member_info->type != VAL_TYPE)
 		{
 			cout << "Input Var  \"String Data\"\n";
 			cin >> str_data;

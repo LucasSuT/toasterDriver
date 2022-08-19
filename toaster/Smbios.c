@@ -8,6 +8,11 @@
 #define CONVERTPTRTONUM(X) ((ULONG)(X))
 #endif
 
+// SMBIOS Member may be string, value or NUM_STR(Type11¡BType12) type.
+#define VAL_TYPE 0
+#define STR_TYPE 1
+#define NUM_STR_TYPE 2
+
 const char* toPointString(const void* p)
 {
 	return (char*)p + ((PSMBIOSHEADER)p)->Length;
@@ -116,6 +121,54 @@ void setStringData(void* VirtualEntryPoint, int Type, int Handle, int StringInde
 
 }
 
+void setNumsString(void* VirtualEntryPoint, int Type, int Handle, int StringNumber, PUCHAR InputData, int DataSize)
+{
+	PENTRYPOINT SMBIOSEntryPoint = (PENTRYPOINT)VirtualEntryPoint;
+	ULONG DataEntryPoint = (ULONG)SMBIOSEntryPoint->TableAddress;
+	int DataEntrySize = (int)SMBIOSEntryPoint->TableMaxSize;
+	PVOID virtualDataEntryPoint = GetDataTempStorage(DataEntryPoint, DataEntrySize);
+
+	const PUCHAR TypeHandleStart = FindTypeHandle(virtualDataEntryPoint, Type, Handle);
+
+	const PUCHAR dataStart = (const PUCHAR)ProcString(TypeHandleStart, StringNumber);
+	const PUCHAR nextDataStart = (const PUCHAR)ProcString(TypeHandleStart, StringNumber + 1);
+
+	int entryToNextDataSize = (int)(CONVERTPTRTONUM(nextDataStart) - CONVERTPTRTONUM(virtualDataEntryPoint));
+	int NextDataToEndSize = DataEntrySize - (int)(CONVERTPTRTONUM(nextDataStart) - CONVERTPTRTONUM(virtualDataEntryPoint));
+	PVOID virtualNextData = GetDataTempStorage((ULONG)(DataEntryPoint + entryToNextDataSize), NextDataToEndSize);
+
+	int rawDataSize = (int)((ULONGLONG)nextDataStart - (ULONGLONG)dataStart);
+
+	// process rawData
+	// data small than rawData
+	if (DataSize <= rawDataSize)
+	{
+		WRITE_REGISTER_BUFFER_UCHAR((PUCHAR)(dataStart + DataSize),
+			(PUCHAR)virtualNextData, NextDataToEndSize);
+	}
+	else /// data bigger than rawData, must to allocate space to save data, avoid data be modified
+	{
+		PVOID saveData = ExAllocatePoolWithTag(NonPagedPool, NextDataToEndSize, 'TAG1');
+		RtlCopyMemory(saveData, (const void*)virtualNextData, NextDataToEndSize);
+
+		WRITE_REGISTER_BUFFER_UCHAR((PUCHAR)(dataStart + DataSize),
+			(PUCHAR)saveData, NextDataToEndSize);
+		ExFreePoolWithTag(saveData, 'TAG1');
+	}
+	//write input data
+	WRITE_REGISTER_BUFFER_UCHAR(dataStart,
+		InputData, DataSize);
+
+	FreeDataTempStorage(virtualNextData, NextDataToEndSize);
+	FreeDataTempStorage(virtualDataEntryPoint, DataEntrySize);
+
+	//write data length
+	DataEntrySize = DataEntrySize + DataSize - rawDataSize;
+	WRITE_REGISTER_BUFFER_UCHAR(&(UCHAR)(SMBIOSEntryPoint->TableMaxSize),
+		&((UCHAR)DataEntrySize), sizeof(DWORD));
+
+}
+
 void setData(void* VirtualEntryPoint, int Type, int Handle, int DataIndex, PUCHAR InputData, int DataSize)
 {
 	PENTRYPOINT SMBIOSEntryPoint = (PENTRYPOINT)VirtualEntryPoint;
@@ -131,6 +184,28 @@ void setData(void* VirtualEntryPoint, int Type, int Handle, int DataIndex, PUCHA
 
 	FreeDataTempStorage(virtualDataEntryPoint, DataEntrySize);
 }
+
+NTSTATUS setSmbios(int DataType, void* VirtualEntryPoint, int Type, int Handle, int Offset, PUCHAR InputData, int DataSize)
+{
+	NTSTATUS status = STATUS_SUCCESS;
+	switch (DataType)
+	{
+		case VAL_TYPE:
+			setData(VirtualEntryPoint, Type, Handle, Offset, InputData, DataSize);
+			break;
+		case STR_TYPE:
+			setStringData(VirtualEntryPoint, Type, Handle, Offset, InputData, DataSize);
+			break;
+		case NUM_STR_TYPE:
+			setNumsString(VirtualEntryPoint, Type, Handle, Offset, InputData, DataSize);
+			break;
+		default:
+			status = STATUS_INVALID_PARAMETER_1;
+			break;
+	}
+	return status;
+}
+
 
 BOOL ProcBIOSInfo(const void* p)
 {

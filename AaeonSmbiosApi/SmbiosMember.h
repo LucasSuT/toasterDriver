@@ -7,7 +7,7 @@ using std::string;
 using std::unordered_map;
 using std::vector;
 
-// SMBIOS Member may be only string or value type.
+// SMBIOS Member may be string, value or NUM_STR(Type11,Type12) type.
 #define VAL_TYPE 0
 #define STR_TYPE 1
 #define NUM_STR_TYPE 2

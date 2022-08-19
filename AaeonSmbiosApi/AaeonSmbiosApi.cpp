@@ -160,13 +160,17 @@ AAEONSMBIOS_API void AaeonSmbiosWrite(int type, int handle, CHAR member_name[], 
 		PUCHAR data = (PUCHAR)calloc(data_length, sizeof(UCHAR));
 		memcpy_s(data, data_length, input_data, raw_data_length);
 
-		// Call driver write SMBIOS memory data
-		AaeonSmbiosWriteMemory(member_info->type, type, handle, member_info->offset, data, data_length);
-
 		// Call UEFI Variable to write NVRAM data
 		vector<UINT8> vectorData(data, data + data_length);
 		SmbiosEditor* smbios_editor = &SmbiosEditor::getInstance();
 		smbios_editor->SetSMBIOS((UINT8)type, (UINT16)handle, (UINT8)member_info->offset, 0, vectorData);
+
+		// If set data is NUM_STR_TYPE, offset need to add 1, the starting number is 1 (String1).
+		UCHAR offset = member_info->offset;
+		if (member_info->type == NUM_STR_TYPE)
+			++offset;
+		// Call driver write SMBIOS memory data
+		AaeonSmbiosWriteMemory(member_info->type, type, handle, offset, data, data_length);
 
 		free(data);
 	}
