@@ -1,12 +1,7 @@
 // SmbiosMemConsole.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-
-#include <iostream>
 #include <string>
-#include <Windows.h>
-#include <winioctl.h>
 #include < sstream >
-#include "IOCTLValue.h"
 #include "AaeonSmbiosApi.h"
 
 #define AAEON_DEVICE L"\\\\.\\Aaeon_SmbiosMemoryLink"
@@ -67,7 +62,6 @@ DWORD getEntryPoint()
 	{
 		printf("Variable size: %d.\n", dwLen);
 		printf("0x%lx\n", PEntryPoint->SMBIOSAdr);
-		SMBIOSSize = 
 		SMBIOSEntryPoint = PEntryPoint->SMBIOSAdr;
 	}
 	free(pBuffer);
@@ -98,7 +92,7 @@ void WriteSMBIOS(int isString, int type, int dataIndex, int DataSize, UCHAR data
 	}
 	bAAEON_SMBIOS.bEntryPoint = getEntryPoint();
 	bAAEON_SMBIOS.bType = (UCHAR)type;
-	bAAEON_SMBIOS.bDataIndex = (UCHAR)dataIndex;
+	bAAEON_SMBIOS.bOffset = (UCHAR)dataIndex;
 	bAAEON_SMBIOS.bDataSize = (UCHAR)DataSize;
 	bAAEON_SMBIOS.bIsString = (UCHAR)isString;
 	
@@ -127,40 +121,47 @@ int main()
 {
 	AaeonSmbiosInitial();
 	SmbiosMemberInfo* member_info = new SmbiosMemberInfo();
-	int type;
+	int type, handle;
 	string member_name, str_data;
 	UCHAR data[255];
+	char member[255];
 	cout << "Input Smbios int parameter \"Type\"\n";
 	cin >> hex >> type;
+	cout << "Input Smbios int parameter \"Handle\"\n";
+	cin >> hex >> handle;
 	cout << "Input Smbios String parameter \"Member Name\"\n";
 	cin >> member_name;
+	for (int i = 0; i < member_name.length(); i++)
+		member[i] = member_name[i];
+
 	if (AaeonSmbiosGetMemInfo((SmbiosType)type, member_name, member_info))
 	{
 		printf("SmbiosMember   Type: %s\n", (member_info->type == 1 ? "String" : "Value"));
 		printf("SmbiosMember offset: %d\n", member_info->offset);
 		printf("SmbiosMember length: %d\n", member_info->length);
 
-		if (member_info->type)
+		if (member_info->type != VAL_TYPE)
 		{
 			cout << "Input Var  \"String Data\"\n";
 			cin >> str_data;
 			for (int i = 0; i < str_data.length(); ++i)
 				data[i] = str_data[i];
-			data[str_data.length()] = '\0';
-			WriteSMBIOS((int)member_info->type, type, (int)member_info->offset, str_data.length() + 1, data);
+			
+			AaeonSmbiosWrite(type, handle, member, member_name.length(), data, str_data.length());
+			//WriteSMBIOS((int)member_info->type, type, (int)member_info->offset, str_data.length() + 1, data);
 		}
 		else
 		{
 			cout << "Input Var  \"Data\"\n";
 			int a[32];
-			//cin >> hex >> temp;
 			for (int i = 0; i < member_info->length; i++)
 			{
 				printf("Data size %d byte. Input data %d byte\n", member_info->length, i+1);
 				cin >> hex >> a[i];
 				data[i] = a[i];
 			}
-			WriteSMBIOS( (int)member_info->type, type, (int)member_info->offset, (int)member_info->length, data);
+			AaeonSmbiosWrite(type, handle, member, member_name.length(), data,(int)member_info->length);
+			//WriteSMBIOS( (int)member_info->type, type, (int)member_info->offset, (int)member_info->length, data);
 		}
 	}
 	else

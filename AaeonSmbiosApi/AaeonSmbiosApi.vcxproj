@@ -158,9 +158,12 @@
   <ItemGroup>
     <ClInclude Include="AaeonSmbiosApi.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="IOCTLValue.h" />
     <ClInclude Include="MemberProp.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="SmbiosEditor.h" />
     <ClInclude Include="SmbiosMember.h" />
+    <ClInclude Include="UEFIController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AaeonSmbiosApi.cpp" />
@@ -171,7 +174,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SmbiosEditor.cpp" />
     <ClCompile Include="SmbiosMember.cpp" />
+    <ClCompile Include="UEFIController.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

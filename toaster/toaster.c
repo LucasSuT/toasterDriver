@@ -624,19 +624,22 @@ Return Value:
     {
         DbgPrint("Toaster: enter IOCTL_AAEON_WRITE_SMBIOS\n");
         DWORD bEntryPoint = 0;
-        int bDataSize = 0, bType = 0, bDataIndex = 0;
-        BOOL bIsString = 0;
+        UINT8 bType = 0, bOffset = 0;
+        UINT16 bHandle = 0;
+        int bDataSize = 0, bIsString = 0;
+         
         status = WdfRequestRetrieveInputBuffer(Request, sizeof(AAEON_SMBIOS), &inBuf, &inbufSize);
         if (NT_SUCCESS(status))
         {
             bEntryPoint = ((PAAEON_SMBIOS)inBuf)->bEntryPoint;
-            bType = (int)((PAAEON_SMBIOS)inBuf)->bType;
-            bDataIndex = (int)((PAAEON_SMBIOS)inBuf)->bDataIndex;
+            bType = ((PAAEON_SMBIOS)inBuf)->bType;
+            bHandle = ((PAAEON_SMBIOS)inBuf)->bHandle;
+            bOffset = ((PAAEON_SMBIOS)inBuf)->bOffset;
             bDataSize = (int)((PAAEON_SMBIOS)inBuf)->bDataSize;
-            bIsString = (BOOL)((PAAEON_SMBIOS)inBuf)->bIsString;
+            bIsString = (int)((PAAEON_SMBIOS)inBuf)->bIsString;
             DbgPrint("Toaster: bIsString = %d \n", bIsString);
             DbgPrint("Toaster: bDataSize = %d \n", bDataSize);
-            DbgPrint("Toaster: bDataIndex = %d \n", bDataIndex);
+            DbgPrint("Toaster: bDataIndex = %d \n", bOffset);
             DbgPrint("Toaster: bType = %d \n", bType);
         }
         else
@@ -651,13 +654,8 @@ Return Value:
         {
             DbgPrint("Toaster: bData = %d \n", ((PAAEON_SMBIOS)inBuf)->bData[i]);
         }
-
-        if (bIsString)
-            setStringData(VirtualEntryPoint, bType, bDataIndex, ((PAAEON_SMBIOS)inBuf)->bData, bDataSize);
-        else
-            setData(VirtualEntryPoint, bType, bDataIndex, ((PAAEON_SMBIOS)inBuf)->bData, bDataSize);
+        setSmbios(bIsString, VirtualEntryPoint, bType, bHandle, bOffset, ((PAAEON_SMBIOS)inBuf)->bData, bDataSize);
             
-
         FreeDataTempStorage(VirtualEntryPoint, sizeof(ENTRYPOINT));
     }
     default:
