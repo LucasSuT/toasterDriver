@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="WriteComponent">
+      <UniqueIdentifier>{555bdf3c-dbcd-4510-8325-221d6e4fbe94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WriteComponent\Header Files">
+      <UniqueIdentifier>{8b7dbba4-1299-43e5-b323-d4d75776ea64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WriteComponent\Source Files">
+      <UniqueIdentifier>{dec5cdcf-b8e6-41d5-aa0f-ecf8d17b79bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -24,20 +33,20 @@
     <ClInclude Include="AaeonSmbiosApi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MemberProp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SmbiosMember.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IOCTLValue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UEFIController.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="WriteComponent\MemberProp.h">
+      <Filter>WriteComponent\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SmbiosEditor.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="WriteComponent\SmbiosEditor.h">
+      <Filter>WriteComponent\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WriteComponent\SmbiosMember.h">
+      <Filter>WriteComponent\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WriteComponent\UEFIController.h">
+      <Filter>WriteComponent\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -50,14 +59,14 @@
     <ClCompile Include="AaeonSmbiosApi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SmbiosMember.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="WriteComponent\SmbiosEditor.cpp">
+      <Filter>WriteComponent\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UEFIController.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="WriteComponent\SmbiosMember.cpp">
+      <Filter>WriteComponent\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SmbiosEditor.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="WriteComponent\UEFIController.cpp">
+      <Filter>WriteComponent\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -4,9 +4,9 @@
 #include <string>
 #include <Windows.h>
 #include <winioctl.h>
-#include "SmbiosMember.h"
+#include "WriteComponent/SmbiosMember.h"
 #include "IOCTLValue.h"
-#include "SmbiosEditor.h"
+#include "WriteComponent/SmbiosEditor.h"
 
 #ifdef AAEONSMBIOSAPI_EXPORTS
 #define AAEONSMBIOS_API __declspec(dllexport)
