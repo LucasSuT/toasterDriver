@@ -22,6 +22,15 @@
     <Filter Include="WriteComponent\Source Files">
       <UniqueIdentifier>{dec5cdcf-b8e6-41d5-aa0f-ecf8d17b79bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ReadComponent">
+      <UniqueIdentifier>{52a03d64-8bb4-4fc6-b9ec-8d745c6d7b66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ReadComponent\Header Files">
+      <UniqueIdentifier>{a019ba53-9085-4ddd-8d2a-dabb649b053f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ReadComponent\Source Files">
+      <UniqueIdentifier>{6d013f26-e0a8-4751-a2ad-76ec242b095f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -48,6 +57,33 @@
     <ClInclude Include="WriteComponent\UEFIController.h">
       <Filter>WriteComponent\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ReadComponent\Factory.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadComponent\Parser.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadComponent\ParserType0.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadComponent\ParserType1.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadComponent\ParserType2.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadComponent\smbios.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadComponent\SmbiosData.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadComponent\SmbiosStructure.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadComponent\SmbiosTable.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -67,6 +103,21 @@
     </ClCompile>
     <ClCompile Include="WriteComponent\UEFIController.cpp">
       <Filter>WriteComponent\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadComponent\ParserType0.cpp">
+      <Filter>ReadComponent\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadComponent\ParserType1.cpp">
+      <Filter>ReadComponent\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadComponent\ParserType2.cpp">
+      <Filter>ReadComponent\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadComponent\smbios.cpp">
+      <Filter>ReadComponent\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadComponent\SmbiosTable.cpp">
+      <Filter>ReadComponent\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -162,6 +162,15 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="IOCTLValue.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="ReadComponent\Factory.h" />
+    <ClInclude Include="ReadComponent\Parser.h" />
+    <ClInclude Include="ReadComponent\ParserType0.h" />
+    <ClInclude Include="ReadComponent\ParserType1.h" />
+    <ClInclude Include="ReadComponent\ParserType2.h" />
+    <ClInclude Include="ReadComponent\smbios.h" />
+    <ClInclude Include="ReadComponent\SmbiosData.h" />
+    <ClInclude Include="ReadComponent\SmbiosStructure.h" />
+    <ClInclude Include="ReadComponent\SmbiosTable.h" />
     <ClInclude Include="WriteComponent\MemberProp.h" />
     <ClInclude Include="WriteComponent\SmbiosEditor.h" />
     <ClInclude Include="WriteComponent\SmbiosMember.h" />
@@ -176,6 +185,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="ReadComponent\ParserType0.cpp" />
+    <ClCompile Include="ReadComponent\ParserType1.cpp" />
+    <ClCompile Include="ReadComponent\ParserType2.cpp" />
+    <ClCompile Include="ReadComponent\smbios.cpp" />
+    <ClCompile Include="ReadComponent\SmbiosTable.cpp" />
     <ClCompile Include="WriteComponent\SmbiosEditor.cpp" />
     <ClCompile Include="WriteComponent\SmbiosMember.cpp" />
     <ClCompile Include="WriteComponent\UEFIController.cpp" />
