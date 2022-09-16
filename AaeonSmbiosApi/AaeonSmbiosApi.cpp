@@ -203,4 +203,25 @@ AAEONSMBIOS_API void AaeonSmbiosWrite(int type, int handle, CHAR member_name[], 
 	}
 }
 
+AAEONSMBIOS_API vector<SmbiosTable> AaeonSmbiosGetAllSmbiosTables()
+{
+	SMBIOS* Smbios = SMBIOS::getInstance();
+
+	return Smbios->GetAllSmbiosTables();
+}
+
+AAEONSMBIOS_API bool AaeonSmbiosGetSmbiosTable(int type, WORD handle, SmbiosTable& smbios_table)
+{
+	SMBIOS* Smbios = SMBIOS::getInstance();
+
+	return Smbios->GetSmbiosTable(type, handle, smbios_table);
+}
+
+AAEONSMBIOS_API bool AaeonSmbiosUpdateSmbiosTableData(int type, WORD handle, string& key, vector<BYTE> data)
+{
+	SMBIOS* Smbios = SMBIOS::getInstance();
+
+	return Smbios->UpdateTableData(type, handle, key, data);
+}
+
 

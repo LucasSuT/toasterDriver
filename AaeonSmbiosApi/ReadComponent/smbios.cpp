@@ -76,6 +76,16 @@ bool SMBIOS::UpdateTableData(int type, WORD handle, string key, vector<BYTE> dat
 			return true;
 		}
 	}
+	return false;
+}
+
+bool SMBIOS::GetData(int type, WORD handle, string key, vector<BYTE>& data)
+{
+	SmbiosTable st;
+	if (!GetSmbiosTable(type, handle, st))return false;
+	SmbiosData sd = st.Query(key);
+	data = sd.Data();
+	return true;
 }
 
 SMBIOS* SMBIOS::getInstance(void)

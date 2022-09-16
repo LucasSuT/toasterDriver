@@ -4,9 +4,10 @@
 #include <string>
 #include <Windows.h>
 #include <winioctl.h>
-#include "WriteComponent/SmbiosMember.h"
 #include "IOCTLValue.h"
+#include "WriteComponent/SmbiosMember.h"
 #include "WriteComponent/SmbiosEditor.h"
+#include "ReadComponent/smbios.h"
 
 #ifdef AAEONSMBIOSAPI_EXPORTS
 #define AAEONSMBIOS_API __declspec(dllexport)
@@ -80,4 +81,8 @@ extern "C"
 
 	AAEONSMBIOS_API DWORD AaeonSmbiosGetEntryPoint();
 	AAEONSMBIOS_API void AaeonSmbiosWrite(int type, int handle, CHAR member_name[], int name_length, UCHAR input_data[], int data_length);
+
+	AAEONSMBIOS_API vector<SmbiosTable> AaeonSmbiosGetAllSmbiosTables();
+	AAEONSMBIOS_API bool AaeonSmbiosGetSmbiosTable(int type, WORD handle, SmbiosTable& smbios_table);
+	AAEONSMBIOS_API bool AaeonSmbiosUpdateSmbiosTableData(int type, WORD handle, string& key, vector<BYTE> data);
 }

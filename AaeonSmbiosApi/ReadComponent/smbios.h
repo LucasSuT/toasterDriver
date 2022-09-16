@@ -19,6 +19,7 @@ public:
 	bool GetSmbiosTable(int type, WORD handle, SmbiosTable&) const;
 	vector<SmbiosTable> GetAllSmbiosTables(void) const;
 	bool UpdateTableData(int type, WORD handle, string key, vector<BYTE> data);
+	bool GetData(int type, WORD handle, string key, vector<BYTE>& data);
 
 private:
 	// helper function
