@@ -170,6 +170,7 @@
     <ClInclude Include="ReadComponent\ParserType0.h" />
     <ClInclude Include="ReadComponent\ParserType1.h" />
     <ClInclude Include="ReadComponent\ParserType2.h" />
+    <ClInclude Include="ReadComponent\ParserType3.h" />
     <ClInclude Include="ReadComponent\smbios.h" />
     <ClInclude Include="ReadComponent\SmbiosData.h" />
     <ClInclude Include="ReadComponent\SmbiosStructure.h" />
@@ -192,6 +193,7 @@
     <ClCompile Include="ReadComponent\ParserType0.cpp" />
     <ClCompile Include="ReadComponent\ParserType1.cpp" />
     <ClCompile Include="ReadComponent\ParserType2.cpp" />
+    <ClCompile Include="ReadComponent\ParserType3.cpp" />
     <ClCompile Include="ReadComponent\smbios.cpp" />
     <ClCompile Include="ReadComponent\SmbiosTable.cpp" />
     <ClCompile Include="WriteComponent\SmbiosEditor.cpp" />

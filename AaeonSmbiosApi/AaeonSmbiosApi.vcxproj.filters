@@ -99,6 +99,9 @@
     <ClInclude Include="JsonCpp\json\json-forwards.h">
       <Filter>JsonCpp\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ReadComponent\ParserType3.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -136,6 +139,9 @@
     </ClCompile>
     <ClCompile Include="JsonCpp\jsoncpp.cpp">
       <Filter>JsonCpp\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadComponent\ParserType3.cpp">
+      <Filter>ReadComponent\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
