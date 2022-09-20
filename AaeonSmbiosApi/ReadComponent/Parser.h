@@ -93,8 +93,8 @@ public:
 	}
 	void UpdateJsonObject(Json::Value& json_object, BYTE type, WORD handle, string key, string value)
 	{
-		string json_type = "Table " + to_string(type);
-		string json_handle = "Handle " + to_string(handle);
+		string json_type = "Table_" + to_string(type);
+		string json_handle = "Handle_" + to_string(handle);
 
 		json_object[json_type][json_handle][key] = Json::Value(value);
 	}
