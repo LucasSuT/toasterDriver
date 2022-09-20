@@ -224,4 +224,28 @@ AAEONSMBIOS_API bool AaeonSmbiosUpdateSmbiosTableData(int type, WORD handle, str
 	return Smbios->UpdateTableData(type, handle, key, data);
 }
 
+AAEONSMBIOS_API void testParser()
+{
+	SMBIOS* Smbios = SMBIOS::getInstance();
+}
 
+AAEONSMBIOS_API bool getData(int type, WORD handle, const string& key, char* data,int* size)
+{
+	vector<BYTE> data_vec;
+	SMBIOS* Smbios = SMBIOS::getInstance();
+
+	if(!Smbios->GetData(type, handle, key, data_vec))return false;
+
+	if (data == NULL)
+	{
+		*size = data_vec.size();
+		return false;
+	}
+
+	if (*size > data_vec.size())*size = data_vec.size();
+	for (int i = 0; i < *size; i++)
+	{
+		*(data + i) = data_vec[i];
+	}
+	return true;
+}
