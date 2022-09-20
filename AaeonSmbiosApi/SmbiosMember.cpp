@@ -33,19 +33,19 @@ void SmbiosMember::InitialType0Table()
 {
 	type0_table =
 	{
-		{"Vendor",                                 MemberProp(STR_TYPE, 0x4, 1)},
-		{"BiosVersion",                            MemberProp(STR_TYPE, 0x5, 1)},
-		{"BiosSegment",                            MemberProp(VAL_TYPE, 0x6, 2)},
-		{"BiosReleaseDate",                        MemberProp(STR_TYPE, 0x8, 1)},
-		{"BiosSize",                               MemberProp(VAL_TYPE, 0x9, 1)},
-		{"BiosCharacteristics",                    MemberProp(VAL_TYPE, 0xA, 8)},
-		{"BIOSCharacteristicsExtensionBytes",      MemberProp(VAL_TYPE, 0x12, 2)},
-		{"SystemBiosMajorRelease",                 MemberProp(VAL_TYPE, 0x14, 1)},
-		{"SystemBiosMinorRelease",                 MemberProp(VAL_TYPE, 0x15, 1)},
-		{"EmbeddedControllerFirmwareMajorRelease", MemberProp(VAL_TYPE, 0x16, 1)},
-		{"EmbeddedControllerFirmwareMinorRelease", MemberProp(VAL_TYPE, 0x17, 1)},
+		{"vendor",                                      MemberProp(STR_TYPE, 0x4, 1)},
+		{"bios_version",                                MemberProp(STR_TYPE, 0x5, 1)},
+		{"bios_segment",                                MemberProp(VAL_TYPE, 0x6, 2)},
+		{"bios_release_date",                           MemberProp(STR_TYPE, 0x8, 1)},
+		{"biossize",                                    MemberProp(VAL_TYPE, 0x9, 1)},
+		{"bios_characteristics",                        MemberProp(VAL_TYPE, 0xA, 8)},
+		{"bios_characteristics_extension_bytes",        MemberProp(VAL_TYPE, 0x12, 2)},
+		{"system_bios_major_release",                   MemberProp(VAL_TYPE, 0x14, 1)},
+		{"system_bios_minor_release",                   MemberProp(VAL_TYPE, 0x15, 1)},
+		{"embedded_controller_firmware_major_release",  MemberProp(VAL_TYPE, 0x16, 1)},
+		{"embedded_controller_firmware_minor_release",  MemberProp(VAL_TYPE, 0x17, 1)},
 		// Add for smbus 3.1.0
-		{"ExtendedBiosSize",                       MemberProp(VAL_TYPE, 0x18, 2)}
+		{"extended_bios_size",                          MemberProp(VAL_TYPE, 0x18, 2)}
 	};
 }
 
@@ -53,14 +53,14 @@ void SmbiosMember::InitialType1Table()
 {
 	type1_table =
 	{
-		{"Manufacturer", MemberProp(STR_TYPE, 0x4, 1)},
-		{"ProductName",  MemberProp(STR_TYPE, 0x5, 1)},
-		{"Version",      MemberProp(STR_TYPE, 0x6, 1)},
-		{"SerialNumber", MemberProp(STR_TYPE, 0x7, 1)},
-		{"Uuid",         MemberProp(VAL_TYPE, 0x8, 16)},
-		{"WakeUpType",   MemberProp(VAL_TYPE, 0x18, 1)},
-		{"SKUNumber",    MemberProp(STR_TYPE, 0x19, 1)},
-		{"Family",       MemberProp(STR_TYPE, 0x1A, 1)}
+		{"manufacturer",    MemberProp(STR_TYPE, 0x4, 1)},
+		{"product_name",    MemberProp(STR_TYPE, 0x5, 1)},
+		{"version",         MemberProp(STR_TYPE, 0x6, 1)},
+		{"serial_number",   MemberProp(STR_TYPE, 0x7, 1)},
+		{"uuid",            MemberProp(VAL_TYPE, 0x8, 16)},
+		{"wake_up_type",    MemberProp(VAL_TYPE, 0x18, 1)},
+		{"sku_number",      MemberProp(STR_TYPE, 0x19, 1)},
+		{"family",          MemberProp(STR_TYPE, 0x1A, 1)}
 	};
 }
 
@@ -68,17 +68,17 @@ void SmbiosMember::InitialType2Table()
 {
 	type2_table =
 	{
-		{"Manufacturer",                   MemberProp(STR_TYPE, 0x4, 1)},
-		{"ProductName",                    MemberProp(STR_TYPE, 0x5, 1)},
-		{"Version",                        MemberProp(STR_TYPE, 0x6, 1)},
-		{"SerialNumber",                   MemberProp(STR_TYPE, 0x7, 1)},
-		{"AssetTag",                       MemberProp(STR_TYPE, 0x8, 1)},
-		{"FeatureFlag",                    MemberProp(VAL_TYPE, 0x9, 1)},
-		{"LocationInChassis",              MemberProp(STR_TYPE, 0xA, 1)},
-		{"ChassisHandle",                  MemberProp(VAL_TYPE, 0xB, 2)},
-		{"BoardType",                      MemberProp(VAL_TYPE, 0xD, 1)},
-		{"NumberOfContainedObjectHandles", MemberProp(VAL_TYPE, 0xE, 1)},
-		{"ContainedObjectHandles",         MemberProp(VAL_TYPE, 0xF, 2)}
+		{"manufacturer",                        MemberProp(STR_TYPE, 0x4, 1)},
+		{"product_name",                        MemberProp(STR_TYPE, 0x5, 1)},
+		{"version",                             MemberProp(STR_TYPE, 0x6, 1)},
+		{"serial_number",                       MemberProp(STR_TYPE, 0x7, 1)},
+		{"asset_tag",                           MemberProp(STR_TYPE, 0x8, 1)},
+		{"feature_flag",                        MemberProp(VAL_TYPE, 0x9, 1)},
+		{"location_in_chassis",                 MemberProp(STR_TYPE, 0xA, 1)},
+		{"chassis_handle",                      MemberProp(VAL_TYPE, 0xB, 2)},
+		{"board_type",                          MemberProp(VAL_TYPE, 0xD, 1)},
+		{"number_of_contained_object_handles",  MemberProp(VAL_TYPE, 0xE, 1)},
+		{"contained_object_handles",            MemberProp(VAL_TYPE, 0xF, 2)}
 	};
 }
 
@@ -86,21 +86,21 @@ void SmbiosMember::InitialType3Table()
 {
 	type3_table =
 	{
-		{"Manufacturer",                 MemberProp(STR_TYPE, 0x4, 1)},
-		{"Type",                         MemberProp(VAL_TYPE, 0x5, 1)},
-		{"Version",                      MemberProp(STR_TYPE, 0x6, 1)},
-		{"SerialNumber",                 MemberProp(STR_TYPE, 0x7, 1)},
-		{"AssetTag",                     MemberProp(STR_TYPE, 0x8, 1)},
-		{"BootupState",                  MemberProp(VAL_TYPE, 0x9, 1)},
-		{"PowerSupplyState",             MemberProp(VAL_TYPE, 0xA, 1)},
-		{"ThermalState",                 MemberProp(VAL_TYPE, 0xB, 1)},
-		{"SecurityStatus",               MemberProp(VAL_TYPE, 0xC, 1)},
-		{"OemDefined",                   MemberProp(VAL_TYPE, 0xD, 4)},
-		{"Height",                       MemberProp(VAL_TYPE, 0x11, 1)},
-		{"NumberofPowerCords",           MemberProp(VAL_TYPE, 0x12, 1)},
-		{"ContainedElementCount",        MemberProp(VAL_TYPE, 0x13, 1)},
-		{"ContainedElementRecordLength", MemberProp(VAL_TYPE, 0x14, 1)},
-		{"ContainedElements",            MemberProp(VAL_TYPE, 0x15, 1)}
+		{"manufacturer",                    MemberProp(STR_TYPE, 0x4, 1)},
+		{"type",                            MemberProp(VAL_TYPE, 0x5, 1)},
+		{"version",                         MemberProp(STR_TYPE, 0x6, 1)},
+		{"serial_number",                   MemberProp(STR_TYPE, 0x7, 1)},
+		{"asset_tag",                       MemberProp(STR_TYPE, 0x8, 1)},
+		{"bootup_state",                    MemberProp(VAL_TYPE, 0x9, 1)},
+		{"power_supply_state",              MemberProp(VAL_TYPE, 0xA, 1)},
+		{"thermal_state",                   MemberProp(VAL_TYPE, 0xB, 1)},
+		{"security_status",                 MemberProp(VAL_TYPE, 0xC, 1)},
+		{"oem_defined",                     MemberProp(VAL_TYPE, 0xD, 4)},
+		{"height",                          MemberProp(VAL_TYPE, 0x11, 1)},
+		{"number_of_power_cords",           MemberProp(VAL_TYPE, 0x12, 1)},
+		{"contained_element_count",         MemberProp(VAL_TYPE, 0x13, 1)},
+		{"contained_element_record_length", MemberProp(VAL_TYPE, 0x14, 1)},
+		{"contained_elements",              MemberProp(VAL_TYPE, 0x15, 1)}
 		//{"SKUNumber",                    MemberProp(VAL_TYPE, 0x16, 1)}
 	};
 }
@@ -165,6 +165,6 @@ void SmbiosMember::InitialType11Table()
 {
 	type11_table =
 	{
-		{"Count", MemberProp(VAL_TYPE, 0x04, 1)}
+		{"count", MemberProp(VAL_TYPE, 0x04, 1)}
 	};
 }
