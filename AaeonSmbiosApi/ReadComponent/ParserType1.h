@@ -26,6 +26,16 @@ public:
 		smbios_table.Add(ToLowerCase("Family"),       SmbiosData(true, GetString(p, pBIOS->Family)));
 		//DebugVectorByte(GetString(p, pBIOS->Family));
 
+		// Json Test
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("manufacturer"),  GetJsonString(p, pBIOS->Manufacturer));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("product_name"),  GetJsonString(p, pBIOS->ProductName));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("version"),       GetJsonString(p, pBIOS->Version));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("serial_number"), GetJsonString(p, pBIOS->SN));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("uuid"),          GetJsonString(pBIOS->UUID, 16));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("wake_up_type"),  GetJsonString(pBIOS->WakeUpType, 1));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("sku_number"),    GetJsonString(p, pBIOS->SKUNumber));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("family"),        GetJsonString(p, pBIOS->Family));
+
 		return smbios_table;
 	}
 };
