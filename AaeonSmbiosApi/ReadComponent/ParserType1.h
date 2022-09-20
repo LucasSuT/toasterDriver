@@ -5,7 +5,7 @@
 class ParserType1 : public Parser
 {
 public:
-	SmbiosTable Parse(void* p)
+	SmbiosTable Parse(void* p, Json::Value& json_object)
 	{
 		PSystemInfo pBIOS = (PSystemInfo)p;
 		SmbiosTable smbios_table(pBIOS->Header.Type, pBIOS->Header.Handle);

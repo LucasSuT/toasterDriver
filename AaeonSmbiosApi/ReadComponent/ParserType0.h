@@ -5,10 +5,11 @@
 class ParserType0 : public Parser
 {
 public:
-	SmbiosTable Parse(void* p)
+	SmbiosTable Parse(void* p, Json::Value& json_object)
 	{
 		PBIOSInfo pBIOS = (PBIOSInfo)p;
 		SmbiosTable smbios_table(pBIOS->Header.Type, pBIOS->Header.Handle);
+
 		smbios_table.Add(ToLowerCase("Vendor"),                                 SmbiosData(true, GetString(p, pBIOS->Vendor)));
 		//DebugVectorString(GetString(p, pBIOS->Vendor));
 		smbios_table.Add(ToLowerCase("BiosVersion"),                            SmbiosData(true, GetString(p, pBIOS->Version)));
@@ -33,8 +34,22 @@ public:
 		//DebugVectorByte(ToVector(pBIOS->ECFirmwareMinor, 1));
 		smbios_table.Add(ToLowerCase("ExtendedBiosSize"),                       SmbiosData(false, ToVector(pBIOS->ExtendedBiosSize, 2)));
 		//DebugVectorByte(ToVector(pBIOS->ExtendedBiosSize, 2));
+
+		// Json Test
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("Vendor"),                                 GetJsonString(p, pBIOS->Vendor));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("BiosVersion"),                            GetJsonString(p, pBIOS->Version));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("BiosSegment"),                            GetJsonString(pBIOS->StartingAddrSeg, 2));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("BiosReleaseDate"),                        GetJsonString(p, pBIOS->ReleaseDate));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("BiosSize"),                               GetJsonString(pBIOS->ROMSize, 1));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("BiosCharacteristics"),                    GetJsonString(pBIOS->Characteristics, 8));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("BIOSCharacteristicsExtensionBytes"),      GetJsonString(pBIOS->Extension, 2));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("SystemBiosMajorRelease"),                 GetJsonString(pBIOS->MajorRelease, 1));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("SystemBiosMinorRelease"),                 GetJsonString(pBIOS->MinorRelease, 1));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("EmbeddedControllerFirmwareMajorRelease"), GetJsonString(pBIOS->ECFirmwareMajor, 1));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("EmbeddedControllerFirmwareMinorRelease"), GetJsonString(pBIOS->ECFirmwareMinor, 1));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("ExtendedBiosSize"),                       GetJsonString(pBIOS->ExtendedBiosSize, 2));
+
 		return smbios_table;
 	}
-	
 };
 
