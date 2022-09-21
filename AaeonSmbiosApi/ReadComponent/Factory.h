@@ -3,6 +3,7 @@
 #include "ParserType1.h"
 #include "ParserType2.h"
 #include "ParserType3.h"
+#include "ParserType11.h"
 
 class Factory {
 public:
@@ -36,6 +37,12 @@ public:
 			case 3:
 			{
 				s = new ParserType3();
+				return s;
+				break;
+			}
+			case 11:
+			{
+				s = new ParserType11();
 				return s;
 				break;
 			}
