@@ -40,6 +40,7 @@ AAEONSMBIOS_API bool AaeonSmbiosGetMemInfo(SmbiosType smbios_table_number, const
 			member_info->type = NUM_STR_TYPE;
 			member_info->offset = ParsingStringNumber(member_name) - 1; // Refer to DmiVar naming rule.
 			member_info->length = 1;
+			member_info->revise = true;
 		}
 		else
 		{
@@ -47,6 +48,7 @@ AAEONSMBIOS_API bool AaeonSmbiosGetMemInfo(SmbiosType smbios_table_number, const
 			member_info->type = smbios_member_object.type_;
 			member_info->offset = smbios_member_object.offset_;
 			member_info->length = smbios_member_object.length_;
+			member_info->revise = smbios_member_object.revise_;
 		}
 
 		return true;
