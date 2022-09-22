@@ -73,5 +73,5 @@ extern "C"
 	AAEONSMBIOS_API void AaeonSmbiosInitial();
 	AAEONSMBIOS_API void AaeonSmbiosUninitial();
 
-	AAEONSMBIOS_API bool AaeonSmbiosGetMemInfo(SmbiosType smbios_table_number, const string& member_name, SmbiosMemberInfo* member_info);
+	AAEONSMBIOS_API bool AaeonSmbiosGetMemInfo(SmbiosType smbios_table_number, const char* member_name, SmbiosMemberInfo* member_info);
 }
