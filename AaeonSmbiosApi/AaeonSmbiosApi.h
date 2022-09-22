@@ -64,7 +64,7 @@ struct SmbiosMemberInfo
 	unsigned char type;
 	unsigned char offset;
 	unsigned char length;
-	bool revise;
+	bool can_be_modified;
 };
 
 
