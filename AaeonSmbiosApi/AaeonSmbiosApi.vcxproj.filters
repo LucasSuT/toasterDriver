@@ -31,6 +31,15 @@
     <Filter Include="ReadComponent\Source Files">
       <UniqueIdentifier>{6d013f26-e0a8-4751-a2ad-76ec242b095f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="JsonCpp">
+      <UniqueIdentifier>{0ddab949-3a30-4915-8207-a65da3bc1e01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="JsonCpp\Header Files">
+      <UniqueIdentifier>{0cf758ae-52f8-4b72-8114-118d2fca378f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="JsonCpp\Source Files">
+      <UniqueIdentifier>{7813da78-8427-452b-a2ed-a357632a7b2f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -84,6 +93,15 @@
     <ClInclude Include="ReadComponent\SmbiosTable.h">
       <Filter>ReadComponent\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="JsonCpp\json\json.h">
+      <Filter>JsonCpp\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonCpp\json\json-forwards.h">
+      <Filter>JsonCpp\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadComponent\ParserType3.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -117,6 +135,12 @@
       <Filter>ReadComponent\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ReadComponent\SmbiosTable.cpp">
+      <Filter>ReadComponent\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonCpp\jsoncpp.cpp">
+      <Filter>JsonCpp\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadComponent\ParserType3.cpp">
       <Filter>ReadComponent\Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -8,11 +8,12 @@ int main()
     AaeonSmbiosInitial();
 
     SmbiosMemberInfo* member_info = new SmbiosMemberInfo();
-    if ( AaeonSmbiosGetMemInfo(kSmbiosTypeOemStrings, "String11", member_info) )
+    if ( AaeonSmbiosGetMemInfo(kSmbiosTypeBiosInformation, "vendor", member_info) )
     {
-        printf("SmbiosMember   Type: %s\n", (member_info->type == 1 ? "String" : (member_info->type == 2 ? "NumberOfStrings" : "Value")));
-        printf("SmbiosMember offset: %d\n", member_info->offset);
-        printf("SmbiosMember length: %d\n", member_info->length);
+        printf("SmbiosMember Type         : %s\n", (member_info->type == 1 ? "String" : (member_info->type == 2 ? "NumberOfStrings" : "Value")));
+        printf("SmbiosMember offset       : %d\n", member_info->offset);
+        printf("SmbiosMember length       : %d\n", member_info->length);
+        printf("SmbiosMember CanBeModified: %s\n", ( member_info->can_be_modified == 1 ? "Yes" : "No"));
     }
     else
     {

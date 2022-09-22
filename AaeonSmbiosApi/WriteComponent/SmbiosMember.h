@@ -24,7 +24,8 @@ public:
 private:
 	SmbiosDictionary type0_table, type1_table, type2_table, type3_table, type4_table, 
 					 type5_table, type6_table, type7_table, type8_table, type9_table,
-					 type10_table, type11_table;
+					 type10_table, type11_table, type12_table, type13_table, type14_table, 
+                     type15_table, type16_table, type17_table;
 
 	SmbiosMember();
 	SmbiosMember(SmbiosMember const&) = delete;
@@ -42,5 +43,11 @@ private:
 	void InitialType9Table();
 	void InitialType10Table();
 	void InitialType11Table();
+	void InitialType12Table();
+	void InitialType13Table();
+	void InitialType14Table();
+	void InitialType15Table();
+	void InitialType16Table();
+	void InitialType17Table();
 };
 
