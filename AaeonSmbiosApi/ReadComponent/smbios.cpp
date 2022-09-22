@@ -51,7 +51,7 @@ void SMBIOS::WriteJsonToFile(Json::Value& json_object)
 {
 	Json::FastWriter fast_writer;
 	string res = fast_writer.write(json_object);
-	ofstream out("SmbiosTable.txt");
+	ofstream out("SmbiosTable.json");
 	out << res;
 	out.close();
 }

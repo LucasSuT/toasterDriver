@@ -3,10 +3,15 @@
 
 using namespace std;
 
+#define MAPPING_TABLE_TEST 0
+#define READ_SMBIOS_API_TEST 1
+
 int main()
 {
     AaeonSmbiosInitial();
 
+#if MAPPING_TABLE_TEST
+    // Mapping Table Test
     SmbiosMemberInfo* member_info = new SmbiosMemberInfo();
     if ( AaeonSmbiosGetMemInfo(kSmbiosTypeBiosInformation, "vendor", member_info) )
     {
@@ -21,6 +26,11 @@ int main()
     }
 
     delete member_info;
+#endif
+
+#if READ_SMBIOS_API_TEST
+    AaeonSmbiosGenerateJson();
+#endif
 
     AaeonSmbiosUninitial();
 
