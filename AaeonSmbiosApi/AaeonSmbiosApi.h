@@ -82,9 +82,7 @@ extern "C"
 	AAEONSMBIOS_API DWORD AaeonSmbiosGetEntryPoint();
 	AAEONSMBIOS_API void AaeonSmbiosWrite(int type, int handle, CHAR member_name[], int name_length, UCHAR input_data[], int data_length);
 
-	AAEONSMBIOS_API vector<SmbiosTable> AaeonSmbiosGetAllSmbiosTables();
-	AAEONSMBIOS_API bool AaeonSmbiosGetSmbiosTable(int type, WORD handle, SmbiosTable& smbios_table);
-	AAEONSMBIOS_API bool AaeonSmbiosUpdateSmbiosTableData(int type, WORD handle, string& key, vector<BYTE> data);
+	AAEONSMBIOS_API bool AaeonSmbiosUpdateTableData(int type, WORD handle, string& key, vector<BYTE> data);
 	AAEONSMBIOS_API void testParser();
-	AAEONSMBIOS_API bool getData(int type, WORD handle, const string& key, char* data, int* size);
+	AAEONSMBIOS_API bool AaeonSmbiosGetTableData(int type, WORD handle, const string& key, char* data, int* size);
 }

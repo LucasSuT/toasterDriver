@@ -203,21 +203,21 @@ AAEONSMBIOS_API void AaeonSmbiosWrite(int type, int handle, CHAR member_name[], 
 	}
 }
 
-AAEONSMBIOS_API vector<SmbiosTable> AaeonSmbiosGetAllSmbiosTables()
-{
-	SMBIOS* Smbios = SMBIOS::getInstance();
+//AAEONSMBIOS_API vector<SmbiosTable> AaeonSmbiosGetAllSmbiosTables()
+//{
+//	SMBIOS* Smbios = SMBIOS::getInstance();
+//
+//	return Smbios->GetAllSmbiosTables();
+//}
+//
+//AAEONSMBIOS_API bool AaeonSmbiosGetSmbiosTable(int type, WORD handle, SmbiosTable& smbios_table)
+//{
+//	SMBIOS* Smbios = SMBIOS::getInstance();
+//
+//	return Smbios->GetSmbiosTable(type, handle, smbios_table);
+//}
 
-	return Smbios->GetAllSmbiosTables();
-}
-
-AAEONSMBIOS_API bool AaeonSmbiosGetSmbiosTable(int type, WORD handle, SmbiosTable& smbios_table)
-{
-	SMBIOS* Smbios = SMBIOS::getInstance();
-
-	return Smbios->GetSmbiosTable(type, handle, smbios_table);
-}
-
-AAEONSMBIOS_API bool AaeonSmbiosUpdateSmbiosTableData(int type, WORD handle, string& key, vector<BYTE> data)
+AAEONSMBIOS_API bool AaeonSmbiosUpdateTableData(int type, WORD handle, string& key, vector<BYTE> data)
 {
 	SMBIOS* Smbios = SMBIOS::getInstance();
 
@@ -229,12 +229,12 @@ AAEONSMBIOS_API void testParser()
 	SMBIOS* Smbios = SMBIOS::getInstance();
 }
 
-AAEONSMBIOS_API bool getData(int type, WORD handle, const string& key, char* data,int* size)
+AAEONSMBIOS_API bool AaeonSmbiosGetTableData(int type, WORD handle, const string& key, char* data,int* size)
 {
 	vector<BYTE> data_vec;
 	SMBIOS* Smbios = SMBIOS::getInstance();
 
-	if(!Smbios->GetData(type, handle, key, data_vec))return false;
+	if(!Smbios->GetTableData(type, handle, key, data_vec))return false;
 
 	if (data == NULL)
 	{

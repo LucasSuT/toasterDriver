@@ -79,7 +79,7 @@ bool SMBIOS::UpdateTableData(int type, WORD handle, string key, vector<BYTE> dat
 	return false;
 }
 
-bool SMBIOS::GetData(int type, WORD handle, string key, vector<BYTE>& data)
+bool SMBIOS::GetTableData(int type, WORD handle, string key, vector<BYTE>& data)
 {
 	SmbiosTable st;
 	if (!GetSmbiosTable(type, handle, st))return false;
