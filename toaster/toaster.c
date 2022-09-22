@@ -661,7 +661,7 @@ Return Value:
     default:
         status = STATUS_INVALID_DEVICE_REQUEST;
     }
-	
+    UNREFERENCED_PARAMETER(InputBufferLength);
     //
     // Complete the Request.
     //
