@@ -45,7 +45,7 @@ class ParserType2 : public Parser
 		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("feature_flag"),                       GetJsonString(pBIOS->FeatureFlags, 1));
 		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("location_in_chassis"),                GetJsonString(p, pBIOS->LocationInChassis));
 		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("chassis_handle"),                     GetJsonString(pBIOS->ChassisHandle, 2));
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("board_type"),                         GetJsonString(p, pBIOS->Type));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("board_type"),                         GetJsonString(pBIOS->Type, 1));
 		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("number_of_contained_object_handles"), GetJsonString(pBIOS->NumObjHandle, 1));
 
 		// To add "ContainedObjectHandles" this member, need to check "NumberOfContainedObjectHandles"
