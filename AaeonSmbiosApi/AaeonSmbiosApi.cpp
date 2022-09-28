@@ -224,10 +224,9 @@ AAEONSMBIOS_API bool AaeonSmbiosUpdateSmbiosTableData(int type, WORD handle, str
 	return Smbios->UpdateTableData(type, handle, key, data);
 }
 
-AAEONSMBIOS_API void AaeonSmbiosGenerateJson()
+AAEONSMBIOS_API void AaeonSmbiosRead()
 {
 	SMBIOS* Smbios = SMBIOS::getInstance();
-	Smbios->GenerateJson();
 
 	return;
 }

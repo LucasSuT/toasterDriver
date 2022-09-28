@@ -108,6 +108,7 @@ SMBIOS* SMBIOS::getInstance(void)
 		{
 			pInstance = new SMBIOS();
 			pInstance->initialization();
+			pInstance->GenerateJson();
 		}
 	}
 	const SMBIOS& ref = (*pInstance);

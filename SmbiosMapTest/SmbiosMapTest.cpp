@@ -29,7 +29,7 @@ int main()
 #endif
 
 #if READ_SMBIOS_API_TEST
-    AaeonSmbiosGenerateJson();
+    AaeonSmbiosRead();
 #endif
 
     AaeonSmbiosUninitial();

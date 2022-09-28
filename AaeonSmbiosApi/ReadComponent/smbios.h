@@ -24,11 +24,11 @@ public:
 	vector<SmbiosTable> GetAllSmbiosTables(void) const;
 	bool UpdateTableData(int type, WORD handle, string key, vector<BYTE> data);
 	bool GetData(int type, WORD handle, string key, vector<BYTE>& data);
-	void GenerateJson();
 
 private:
 	// helper function
 	void ParseSMBIOSStruct(void* Addr, UINT Len);
 	bool getWmiSmbios(BYTE ** data, UINT * length);
 	void Decode(void* Addr, UINT Len);
+	void GenerateJson();
 };
