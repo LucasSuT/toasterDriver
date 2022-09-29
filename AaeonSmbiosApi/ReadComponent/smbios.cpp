@@ -46,10 +46,8 @@ void SMBIOS::Decode(void* Addr, UINT Len)
 
 void SMBIOS::GenerateJson()
 {
-	Json::FastWriter fast_writer;
-	string res = fast_writer.write(json_object);
 	ofstream out("SmbiosTable.json");
-	out << res;
+	out << json_object << std::endl;
 	out.close();
 }
 

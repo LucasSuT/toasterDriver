@@ -1,12 +1,12 @@
 #pragma once
 #include "SmbiosTable.h"
 #include "SmbiosStructure.h"
-#include "JsonCpp/json/json.h"
+#include "nlohmann/json.hpp"
 #include <sstream>
 
 class Parser {
 public:
-	virtual SmbiosTable Parse(void* p, Json::Value& json_object) = 0;
+	virtual SmbiosTable Parse(void* p, nlohmann::ordered_json& json_object) = 0;
 	string ToLowerCase(string s)
 	{
 		for (int i = 0; i < s.size(); i++)
@@ -91,12 +91,12 @@ public:
 
 		return ss.str();
 	}
-	void UpdateJsonObject(Json::Value& json_object, BYTE type, WORD handle, string key, string value)
+	void UpdateJsonObject(nlohmann::ordered_json& json_object, BYTE type, WORD handle, string key, string value)
 	{
 		string json_type = "Table_" + to_string(type);
 		string json_handle = "Handle_" + to_string(handle);
 
-		json_object[json_type][json_handle][key] = Json::Value(value);
+		json_object[json_type][json_handle][key] = value;
 	}
 
 private:
