@@ -32,7 +32,7 @@
       <UniqueIdentifier>{6d013f26-e0a8-4751-a2ad-76ec242b095f}</UniqueIdentifier>
     </Filter>
     <Filter Include="nlohmann">
-      <UniqueIdentifier>{f0838ac8-87fc-4035-85ed-0da76e6d10be}</UniqueIdentifier>
+      <UniqueIdentifier>{c297c6fa-9525-4078-ab32-9a12ad2f30ca}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -90,6 +90,9 @@
     <ClInclude Include="ReadComponent\ParserType3.h">
       <Filter>ReadComponent\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ReadComponent\ParserType11.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="nlohmann\json.hpp">
       <Filter>nlohmann</Filter>
     </ClInclude>
@@ -132,6 +135,9 @@
       <Filter>ReadComponent\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ReadComponent\ParserType3.cpp">
+      <Filter>ReadComponent\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadComponent\ParserType11.cpp">
       <Filter>ReadComponent\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
