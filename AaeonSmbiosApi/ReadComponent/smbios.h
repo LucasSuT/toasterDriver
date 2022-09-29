@@ -3,7 +3,7 @@
 #include "pch.h"
 #include <vector>
 #include "SmbiosTable.h"
-#include "JsonCpp/json/json.h"
+#include "nlohmann/json.hpp"
 
 class SMBIOS {
 private:
@@ -13,7 +13,7 @@ private:
 	UINT MinorVersion;
 	DWORD DMIRevision;
 	vector<SmbiosTable> vec;
-	Json::Value json_object;
+	nlohmann::ordered_json json_object;
 
 public:
 	virtual ~SMBIOS() {}
