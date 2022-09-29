@@ -19,7 +19,6 @@ void SMBIOS::Decode(void* Addr, UINT Len)
 	Factory factory;
 	Parser* parser;
 	SmbiosTable smbios_table;
-	Json::Value smbios_json_object;
 
 	for (;;) {
 		pHeader = (PSMBIOSHEADER)p;
@@ -28,7 +27,7 @@ void SMBIOS::Decode(void* Addr, UINT Len)
 		parser = factory.GetParser(pHeader->Type);
 		if (parser)
 		{
-			smbios_table = parser->Parse(p, smbios_json_object);
+			smbios_table = parser->Parse(p, json_object);
 			smbios_table.DebugMap();
 			vec.push_back(smbios_table);
 		}
@@ -43,16 +42,12 @@ void SMBIOS::Decode(void* Addr, UINT Len)
 			break;
 		p = nt;
 	}
-
-	WriteJsonToFile(smbios_json_object);
 }
 
-void SMBIOS::WriteJsonToFile(Json::Value& json_object)
+void SMBIOS::GenerateJson()
 {
-	Json::FastWriter fast_writer;
-	string res = fast_writer.write(json_object);
-	ofstream out("SmbiosTable.txt");
-	out << res;
+	ofstream out("SmbiosTable.json");
+	out << json_object << std::endl;
 	out.close();
 }
 
@@ -111,6 +106,7 @@ SMBIOS* SMBIOS::getInstance(void)
 		{
 			pInstance = new SMBIOS();
 			pInstance->initialization();
+			pInstance->GenerateJson();
 		}
 	}
 	const SMBIOS& ref = (*pInstance);

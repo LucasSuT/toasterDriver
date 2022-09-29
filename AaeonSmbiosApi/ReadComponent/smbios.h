@@ -3,7 +3,7 @@
 #include "pch.h"
 #include <vector>
 #include "SmbiosTable.h"
-#include "JsonCpp/json/json.h"
+#include "nlohmann/json.hpp"
 
 class SMBIOS {
 private:
@@ -13,9 +13,12 @@ private:
 	UINT MinorVersion;
 	DWORD DMIRevision;
 	vector<SmbiosTable> vec;
+	nlohmann::ordered_json json_object;
+
 public:
 	virtual ~SMBIOS() {}
 	static SMBIOS* getInstance(void);
+
 public:
 	bool GetSmbiosTable(int type, WORD handle, SmbiosTable&) const;
 	vector<SmbiosTable> GetAllSmbiosTables(void) const;
@@ -27,5 +30,5 @@ private:
 	void ParseSMBIOSStruct(void* Addr, UINT Len);
 	bool getWmiSmbios(BYTE ** data, UINT * length);
 	void Decode(void* Addr, UINT Len);
-	void WriteJsonToFile(Json::Value& json_object);
+	void GenerateJson();
 };

@@ -1,12 +1,12 @@
 #pragma once
 #include "SmbiosTable.h"
 #include "SmbiosStructure.h"
-#include "JsonCpp/json/json.h"
+#include "nlohmann/json.hpp"
 #include <sstream>
 
 class Parser {
 public:
-	virtual SmbiosTable Parse(void* p, Json::Value& json_object) = 0;
+	virtual SmbiosTable Parse(void* p, nlohmann::ordered_json& json_object) = 0;
 	string ToLowerCase(string s)
 	{
 		for (int i = 0; i < s.size(); i++)
@@ -44,6 +44,21 @@ public:
 		const char* str = toPointString(p);
 		const string s = LocateStringA(str, offset);
 		return ToVector(s);
+	}
+	vector<BYTE> GetOEMString(void* p)
+	{
+		vector<BYTE> data;
+		const char* str = toPointString(p);
+		const int counts_string = *((char*)p + 4);
+
+		for (int i = 1; i <= counts_string; ++i)
+		{
+			vector<BYTE> each_string = ToVector(LocateStringA(str, i));
+			data.insert(data.end(), each_string.begin(), each_string.end());
+			data.push_back(',');
+		}
+
+		return data;
 	}
 	void DebugVectorString(vector<BYTE> vec)
 	{
@@ -91,12 +106,34 @@ public:
 
 		return ss.str();
 	}
-	void UpdateJsonObject(Json::Value& json_object, BYTE type, WORD handle, string key, string value)
+	nlohmann::ordered_json GetJsonOEMString(void* p)
+	{
+		const char* str = toPointString(p);
+		const int counts_string = *((char*)p + 4);
+
+		nlohmann::ordered_json oem_string;
+		for (int i = 1; i <= counts_string; ++i)
+		{
+			string index = "string_" + to_string(i);
+			oem_string[index] = LocateStringA(str, i);
+		}
+
+		return oem_string;
+	}
+	void UpdateJsonObject(nlohmann::ordered_json& json_object, BYTE type, WORD handle, string key, string value)
 	{
 		string json_type = "Table_" + to_string(type);
 		string json_handle = "Handle_" + to_string(handle);
 
-		json_object[json_type][json_handle][key] = Json::Value(value);
+		json_object[json_type][json_handle][key] = value;
+	}
+	void UpdateJsonObject(nlohmann::ordered_json& json_object, BYTE type, WORD handle, nlohmann::ordered_json json_value)
+	{
+		string json_type = "Table_" + to_string(type);
+		string json_handle = "Handle_" + to_string(handle);
+
+		for (auto itr = json_value.begin(); itr != json_value.end(); ++itr)
+			json_object[json_type][json_handle][itr.key()] = *itr;
 	}
 
 private:
