@@ -163,6 +163,11 @@ typedef struct _TYPE_17_ {
 	UCHAR	AssetTag;
 	UCHAR	PN;
 	UCHAR	Attributes;
+	UINT32  ExtendedSize;
+	UINT16  ConfiguredMemoryClockSpeed;
+	UINT16  MinimumVoltage;
+	UINT16  MaximumVoltage;
+	UINT16  ConfiguredVoltage;
 } MemoryDevice, * PMemoryDevice;
 
 typedef struct _TYPE_19_ {
