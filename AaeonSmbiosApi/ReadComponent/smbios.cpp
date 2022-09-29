@@ -19,7 +19,7 @@ void SMBIOS::Decode(void* Addr, UINT Len)
 	Factory factory;
 	Parser* parser;
 	SmbiosTable smbios_table;
-	Json::Value smbios_json_object;
+	nlohmann::ordered_json smbios_json_object;
 
 	for (;;) {
 		pHeader = (PSMBIOSHEADER)p;
@@ -47,12 +47,10 @@ void SMBIOS::Decode(void* Addr, UINT Len)
 	WriteJsonToFile(smbios_json_object);
 }
 
-void SMBIOS::WriteJsonToFile(Json::Value& json_object)
+void SMBIOS::WriteJsonToFile(nlohmann::ordered_json& json_object)
 {
-	Json::FastWriter fast_writer;
-	string res = fast_writer.write(json_object);
-	ofstream out("SmbiosTable.txt");
-	out << res;
+	ofstream out("SmbiosTable.json");
+	out << json_object << std::endl;
 	out.close();
 }
 

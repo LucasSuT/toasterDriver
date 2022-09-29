@@ -3,7 +3,7 @@
 #include "pch.h"
 #include <vector>
 #include "SmbiosTable.h"
-#include "JsonCpp/json/json.h"
+#include "nlohmann/json.hpp"
 
 class SMBIOS {
 private:
@@ -27,5 +27,5 @@ private:
 	void ParseSMBIOSStruct(void* Addr, UINT Len);
 	bool getWmiSmbios(BYTE ** data, UINT * length);
 	void Decode(void* Addr, UINT Len);
-	void WriteJsonToFile(Json::Value& json_object);
+	void WriteJsonToFile(nlohmann::ordered_json& json_object);
 };
