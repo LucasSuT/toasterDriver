@@ -99,6 +99,12 @@
     <ClInclude Include="nlohmann\json_fwd.hpp">
       <Filter>nlohmann</Filter>
     </ClInclude>
+    <ClInclude Include="ReadComponent\ParserType16.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadComponent\ParserType17.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -138,6 +144,12 @@
       <Filter>ReadComponent\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ReadComponent\ParserType11.cpp">
+      <Filter>ReadComponent\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadComponent\ParserType16.cpp">
+      <Filter>ReadComponent\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadComponent\ParserType17.cpp">
       <Filter>ReadComponent\Source Files</Filter>
     </ClCompile>
   </ItemGroup>

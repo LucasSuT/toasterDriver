@@ -133,6 +133,17 @@ typedef struct _TYPE_11_ {
 	UCHAR	Count;
 } OemString, * POemString;
 
+typedef struct _TYPE_16_ {
+	SMBIOSHEADER Header;
+	UINT8   Location;
+	UINT8   Use;
+	UINT8   MemoryErrorCorrection;
+	UINT32  MaximumCapacity;
+	UINT16  MemoryErrorInformationHandle;
+	UINT16  NumberOfMemoryDevices;
+	UINT64  ExtendedMaximumCapacity;
+} PhysicalMemoryArray, * PPhysicalMemoryArray;
+
 typedef struct _TYPE_17_ {
 	SMBIOSHEADER Header;
 	UINT16	PhysicalArrayHandle;
@@ -152,6 +163,11 @@ typedef struct _TYPE_17_ {
 	UCHAR	AssetTag;
 	UCHAR	PN;
 	UCHAR	Attributes;
+	UINT32  ExtendedSize;
+	UINT16  ConfiguredMemoryClockSpeed;
+	UINT16  MinimumVoltage;
+	UINT16  MaximumVoltage;
+	UINT16  ConfiguredVoltage;
 } MemoryDevice, * PMemoryDevice;
 
 typedef struct _TYPE_19_ {
