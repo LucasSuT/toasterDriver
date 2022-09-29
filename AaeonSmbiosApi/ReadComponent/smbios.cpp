@@ -28,7 +28,7 @@ void SMBIOS::Decode(void* Addr, UINT Len)
 		if (parser)
 		{
 			smbios_table = parser->Parse(p, json_object);
-			smbios_table.DebugMap();
+			//smbios_table.DebugMap();
 			vec.push_back(smbios_table);
 		}
 		//vec.push_back(smbios_table);
