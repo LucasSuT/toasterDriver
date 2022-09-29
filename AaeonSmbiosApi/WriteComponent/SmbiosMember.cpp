@@ -165,7 +165,8 @@ void SmbiosMember::InitialType11Table()
 {
 	type11_table =
 	{
-		{"count", MemberProp(VAL_TYPE, 0x04, 1, false)}
+		{"count", MemberProp(VAL_TYPE, 0x04, 1, false)},
+		{"string", MemberProp(NUM_STR_TYPE, 0x00, 1, true)}
 	};
 }
 

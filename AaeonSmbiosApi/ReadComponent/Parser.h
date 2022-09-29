@@ -1,4 +1,5 @@
 #pragma once
+#include "AaeonSmbiosApi.h"
 #include "SmbiosTable.h"
 #include "SmbiosStructure.h"
 #include "nlohmann/json.hpp"
@@ -120,20 +121,31 @@ public:
 
 		return oem_string;
 	}
-	void UpdateJsonObject(nlohmann::ordered_json& json_object, BYTE type, WORD handle, string key, string value)
+	void UpdateJsonObject(nlohmann::ordered_json& json_object, BYTE type, WORD handle, string key, string value, SmbiosMemberInfo *member_info)
 	{
 		string json_type = "Table_" + to_string(type);
 		string json_handle = "Handle_" + to_string(handle);
 
-		json_object[json_type][json_handle][key] = value;
+		json_object[json_type][json_handle][key]["value"] = value;
+		json_object[json_type][json_handle][key]["type"] = member_info->type;
+		json_object[json_type][json_handle][key]["offset"] = member_info->offset;
+		json_object[json_type][json_handle][key]["length"] = member_info->length;
+		json_object[json_type][json_handle][key]["can_be_modified"] = member_info->can_be_modified;
 	}
-	void UpdateJsonObject(nlohmann::ordered_json& json_object, BYTE type, WORD handle, nlohmann::ordered_json json_value)
+	void UpdateJsonObject(nlohmann::ordered_json& json_object, BYTE type, WORD handle, nlohmann::ordered_json json_value, SmbiosMemberInfo *member_info)
 	{
 		string json_type = "Table_" + to_string(type);
 		string json_handle = "Handle_" + to_string(handle);
 
 		for (auto itr = json_value.begin(); itr != json_value.end(); ++itr)
-			json_object[json_type][json_handle][itr.key()] = *itr;
+		{
+			json_object[json_type][json_handle][itr.key()]["value"] = *itr;
+			json_object[json_type][json_handle][itr.key()]["type"] = member_info->type;
+			json_object[json_type][json_handle][itr.key()]["offset"] = member_info->offset++;
+			json_object[json_type][json_handle][itr.key()]["length"] = member_info->length;
+			json_object[json_type][json_handle][itr.key()]["can_be_modified"] = member_info->can_be_modified;
+		}
+			
 	}
 
 private:
