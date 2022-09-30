@@ -13,16 +13,14 @@ public:
 		smbios_table.Add(ToLowerCase("Count"), SmbiosData(true, GetOEMString(p)));
 
 		// Json Test
-		AaeonSmbiosGetMemInfo((SmbiosType)pBIOS->Header.Type, "count", member_info);
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("count"), GetJsonString(pBIOS->Count, 1), member_info);
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("count"), GetJsonString(pBIOS->Count, 1));
 
 		AaeonSmbiosGetMemInfo((SmbiosType)pBIOS->Header.Type, "string", member_info);
 		if ( pBIOS->Count )
 		{
-			UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, GetJsonOEMString(p), member_info);
+			UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, GetJsonOEMString(p));
 		}
 
-		delete member_info;
 		return smbios_table;
 	}
 };

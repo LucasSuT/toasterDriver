@@ -121,31 +121,20 @@ public:
 
 		return oem_string;
 	}
-	void UpdateJsonObject(nlohmann::ordered_json& json_object, BYTE type, WORD handle, string key, string value, SmbiosMemberInfo *member_info)
+	void UpdateJsonObject(nlohmann::ordered_json& json_object, BYTE type, WORD handle, string key, string value)
 	{
 		string json_type = "Table_" + to_string(type);
 		string json_handle = "Handle_" + to_string(handle);
 
-		json_object[json_type][json_handle][key]["value"] = value;
-		json_object[json_type][json_handle][key]["type"] = member_info->type;
-		json_object[json_type][json_handle][key]["offset"] = member_info->offset;
-		json_object[json_type][json_handle][key]["length"] = member_info->length;
-		json_object[json_type][json_handle][key]["can_be_modified"] = member_info->can_be_modified;
+		json_object[json_type][json_handle][key] = PackageMemberObject(type, key, value);
 	}
-	void UpdateJsonObject(nlohmann::ordered_json& json_object, BYTE type, WORD handle, nlohmann::ordered_json json_value, SmbiosMemberInfo *member_info)
+	void UpdateJsonObject(nlohmann::ordered_json& json_object, BYTE type, WORD handle, nlohmann::ordered_json json_value)
 	{
 		string json_type = "Table_" + to_string(type);
 		string json_handle = "Handle_" + to_string(handle);
 
-		for (auto itr = json_value.begin(); itr != json_value.end(); ++itr)
-		{
-			json_object[json_type][json_handle][itr.key()]["value"] = *itr;
-			json_object[json_type][json_handle][itr.key()]["type"] = member_info->type;
-			json_object[json_type][json_handle][itr.key()]["offset"] = member_info->offset++;
-			json_object[json_type][json_handle][itr.key()]["length"] = member_info->length;
-			json_object[json_type][json_handle][itr.key()]["can_be_modified"] = member_info->can_be_modified;
-		}
-			
+		auto package = PackageOemMemberObject(type, json_value);
+		json_object[json_type][json_handle].insert(package.begin(), package.end());
 	}
 
 private:
@@ -164,6 +153,48 @@ private:
 	const char* toPointString(void* p)
 	{
 		return (char*)p + ((PSMBIOSHEADER)p)->Length;
+	}
+	nlohmann::ordered_json PackageMemberObject(BYTE type, string key, string value)
+	{
+		nlohmann::ordered_json root;
+		SmbiosMemberInfo* member_info = new SmbiosMemberInfo();
+		AaeonSmbiosGetMemInfo((SmbiosType)type, key.c_str(), member_info);
+
+		root = nlohmann::ordered_json::object(
+			{
+				{"value", value},
+				{"type", member_info->type},
+				{"offset", member_info->offset},
+				{"length", member_info->length},
+				{"can_be_modified", member_info->can_be_modified}
+			}
+		);
+
+		delete member_info;
+		return root;
+	}
+	nlohmann::ordered_json PackageOemMemberObject(BYTE type, nlohmann::ordered_json oem_json_value)
+	{
+		nlohmann::ordered_json root;
+		SmbiosMemberInfo* member_info = new SmbiosMemberInfo();
+		AaeonSmbiosGetMemInfo((SmbiosType)type, "string", member_info);
+
+		for (auto itr = oem_json_value.begin(); itr != oem_json_value.end(); ++itr)
+		{
+			nlohmann::ordered_json each_string_object = nlohmann::ordered_json::object(
+				{
+					{"value", *itr},
+					{"type", member_info->type},
+					{"offset", member_info->offset},
+					{"length", member_info->length},
+					{"can_be_modified", member_info->can_be_modified}
+				}
+			);
+			root[itr.key()] = each_string_object;
+		}
+
+		delete member_info;
+		return root;
 	}
 };
 

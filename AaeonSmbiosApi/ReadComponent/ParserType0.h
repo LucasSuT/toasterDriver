@@ -9,7 +9,6 @@ public:
 	{
 		PBIOSInfo pBIOS = (PBIOSInfo)p;
 		SmbiosTable smbios_table(pBIOS->Header.Type, pBIOS->Header.Handle);
-		SmbiosMemberInfo *member_info = new SmbiosMemberInfo();
 
 		smbios_table.Add(ToLowerCase("Vendor"),                                 SmbiosData(true, GetString(p, pBIOS->Vendor)));
 		//DebugVectorString(GetString(p, pBIOS->Vendor));
@@ -37,32 +36,19 @@ public:
 		//DebugVectorByte(ToVector(pBIOS->ExtendedBiosSize, 2));
 
 		// Json Test
-		AaeonSmbiosGetMemInfo((SmbiosType)pBIOS->Header.Type, "vendor", member_info);
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("vendor"),                                     GetJsonString(p, pBIOS->Vendor),           member_info);
-		AaeonSmbiosGetMemInfo((SmbiosType)pBIOS->Header.Type, "bios_version", member_info);																							  
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("bios_version"),                               GetJsonString(p, pBIOS->Version),          member_info);
-		AaeonSmbiosGetMemInfo((SmbiosType)pBIOS->Header.Type, "bios_segment", member_info);																							  
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("bios_segment"),                               GetJsonString(pBIOS->StartingAddrSeg, 2),  member_info);
-		AaeonSmbiosGetMemInfo((SmbiosType)pBIOS->Header.Type, "bios_release_date", member_info);																					  
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("bios_release_date"),                          GetJsonString(p, pBIOS->ReleaseDate),      member_info);
-		AaeonSmbiosGetMemInfo((SmbiosType)pBIOS->Header.Type, "bios_size", member_info);																							  
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("bios_size"),                                  GetJsonString(pBIOS->ROMSize, 1),          member_info);
-		AaeonSmbiosGetMemInfo((SmbiosType)pBIOS->Header.Type, "bios_characteristics", member_info);																					  
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("bios_characteristics"),                       GetJsonString(pBIOS->Characteristics, 8),  member_info);
-		AaeonSmbiosGetMemInfo((SmbiosType)pBIOS->Header.Type, "bios_characteristics_extension_bytes", member_info);																	  
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("bios_characteristics_extension_bytes"),       GetJsonString(pBIOS->Extension, 2),        member_info);
-		AaeonSmbiosGetMemInfo((SmbiosType)pBIOS->Header.Type, "system_bios_major_release", member_info);
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("system_bios_major_release"),                  GetJsonString(pBIOS->MajorRelease, 1),     member_info);
-		AaeonSmbiosGetMemInfo((SmbiosType)pBIOS->Header.Type, "system_bios_minor_release", member_info);
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("system_bios_minor_release"),                  GetJsonString(pBIOS->MinorRelease, 1),     member_info);
-		AaeonSmbiosGetMemInfo((SmbiosType)pBIOS->Header.Type, "embedded_controller_firmware_major_release", member_info);
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("embedded_controller_firmware_major_release"), GetJsonString(pBIOS->ECFirmwareMajor, 1),  member_info);
-		AaeonSmbiosGetMemInfo((SmbiosType)pBIOS->Header.Type, "embedded_controller_firmware_minor_release", member_info);
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("embedded_controller_firmware_minor_release"), GetJsonString(pBIOS->ECFirmwareMinor, 1),  member_info);
-		AaeonSmbiosGetMemInfo((SmbiosType)pBIOS->Header.Type, "extended_bios_size", member_info);
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("extended_bios_size"),                         GetJsonString(pBIOS->ExtendedBiosSize, 2), member_info);
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("vendor"),                                     GetJsonString(p, pBIOS->Vendor));																						
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("bios_version"),                               GetJsonString(p, pBIOS->Version));																					
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("bios_segment"),                               GetJsonString(pBIOS->StartingAddrSeg, 2));																				
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("bios_release_date"),                          GetJsonString(p, pBIOS->ReleaseDate));																							
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("bios_size"),                                  GetJsonString(pBIOS->ROMSize, 1));																				
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("bios_characteristics"),                       GetJsonString(pBIOS->Characteristics, 8));																
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("bios_characteristics_extension_bytes"),       GetJsonString(pBIOS->Extension, 2));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("system_bios_major_release"),                  GetJsonString(pBIOS->MajorRelease, 1));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("system_bios_minor_release"),                  GetJsonString(pBIOS->MinorRelease, 1));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("embedded_controller_firmware_major_release"), GetJsonString(pBIOS->ECFirmwareMajor, 1));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("embedded_controller_firmware_minor_release"), GetJsonString(pBIOS->ECFirmwareMinor, 1));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("extended_bios_size"),                         GetJsonString(pBIOS->ExtendedBiosSize, 2));
 
-		delete member_info;
 		return smbios_table;
 	}
 };
