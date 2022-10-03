@@ -66,12 +66,20 @@ enum SmbiosType
 
 struct SmbiosMemberInfo
 {
-	unsigned char type;
+	unsigned char data_type;
 	unsigned char offset;
 	unsigned char length;
 	bool can_be_modified;
 };
 
+struct WriteSmbios
+{
+	unsigned char type;
+	unsigned char handle;
+	unsigned char data_type;
+	unsigned char offset;
+	unsigned char length;
+};
 
 extern "C"
 {

@@ -45,7 +45,7 @@ AAEONSMBIOS_API bool AaeonSmbiosGetMemInfo(SmbiosType smbios_table_number, const
 		if ( smbios_table_number >= smbios_member->smbios_tables.size() ) throw std::invalid_argument("Not support selected table number");
 
 		smbios_member_object = smbios_member->smbios_tables[smbios_table_number].at(str_member_name);
-		member_info->type = smbios_member_object.type_;
+		member_info->data_type = smbios_member_object.data_type_;
 		member_info->offset = smbios_member_object.offset_;
 		member_info->length = smbios_member_object.length_;
 		member_info->can_be_modified = smbios_member_object.can_be_modified_;
@@ -168,7 +168,7 @@ AAEONSMBIOS_API void AaeonSmbiosWrite(int type, int handle, const char* member_n
 	{
 		// If input data is string, must add 0x00 at the end, so calloc initial (size + 1) space for string data.
 		int raw_data_length = data_length;
-		if (member_info->type != VAL_TYPE)
+		if (member_info->data_type != VAL_TYPE)
 			data_length++;
 		PUCHAR data = (PUCHAR)calloc(data_length, sizeof(UCHAR));
 		memcpy_s(data, data_length, input_data, raw_data_length);
@@ -180,10 +180,10 @@ AAEONSMBIOS_API void AaeonSmbiosWrite(int type, int handle, const char* member_n
 
 		// If set data is NUM_STR_TYPE, offset need to add 1, the starting number is 1 (String1).
 		UCHAR offset = member_info->offset;
-		if (member_info->type == NUM_STR_TYPE)
+		if (member_info->data_type == NUM_STR_TYPE)
 			++offset;
 		// Call driver write SMBIOS memory data
-		AaeonSmbiosWriteMemory(member_info->type, type, handle, offset, data, data_length);
+		AaeonSmbiosWriteMemory(member_info->data_type, type, handle, offset, data, data_length);
 
 		free(data);
 	}
