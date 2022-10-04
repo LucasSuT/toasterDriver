@@ -44,22 +44,12 @@ AAEONSMBIOS_API bool AaeonSmbiosGetMemInfo(SmbiosType smbios_table_number, const
 		if ( str_member_name.empty() ) throw std::invalid_argument("member_name is empty");
 		if ( smbios_table_number >= smbios_member->smbios_tables.size() ) throw std::invalid_argument("Not support selected table number");
 
-		if ( (smbios_table_number == kSmbiosTypeOemStrings || smbios_table_number == kSmbiosTypeSystemConfigurationOptions) && str_member_name != "Count" )
-		{
-			member_info->type = NUM_STR_TYPE;
-			member_info->offset = ParsingStringNumber(str_member_name) - 1; // Refer to DmiVar naming rule.
-			member_info->length = 1;
-			member_info->can_be_modified = true;
-		}
-		else
-		{
-			smbios_member_object = smbios_member->smbios_tables[smbios_table_number].at(str_member_name);
-			member_info->type = smbios_member_object.type_;
-			member_info->offset = smbios_member_object.offset_;
-			member_info->length = smbios_member_object.length_;
-			member_info->can_be_modified = smbios_member_object.can_be_modified_;
-		}
-
+		smbios_member_object = smbios_member->smbios_tables[smbios_table_number].at(str_member_name);
+		member_info->data_type = smbios_member_object.data_type_;
+		member_info->offset = smbios_member_object.offset_;
+		member_info->length = smbios_member_object.length_;
+		member_info->can_be_modified = smbios_member_object.can_be_modified_;
+		
 		return true;
 	}
 	catch (const std::exception& e)
@@ -95,7 +85,7 @@ void RaisePrivileges()
 	}
 }
 
-AAEONSMBIOS_API DWORD AaeonSmbiosGetEntryPoint()
+DWORD AaeonSmbiosGetEntryPoint()
 {
 	unsigned long dwLen = 0;
 	wchar_t name[256] = L"SmbiosV3EntryPointTable";
@@ -171,36 +161,27 @@ void AaeonSmbiosWriteMemory(int is_string, int type, int handle, int offset, UCH
 	}
 }
 
-AAEONSMBIOS_API void AaeonSmbiosWrite(int type, int handle, const char* member_name, UCHAR input_data[], int data_length)
+AAEONSMBIOS_API void AaeonSmbiosWrite(WriteSmbiosMember *member_info, UCHAR input_data[])
 {
-	SmbiosMemberInfo* member_info = new SmbiosMemberInfo();
-	if (AaeonSmbiosGetMemInfo((SmbiosType)type, member_name, member_info))
-	{
-		// If input data is string, must add 0x00 at the end, so calloc initial (size + 1) space for string data.
-		int raw_data_length = data_length;
-		if (member_info->type != VAL_TYPE)
-			data_length++;
-		PUCHAR data = (PUCHAR)calloc(data_length, sizeof(UCHAR));
-		memcpy_s(data, data_length, input_data, raw_data_length);
+	// If input data is string, must add 0x00 at the end, so calloc initial (size + 1) space for string data.
+	int raw_data_length = member_info->length;
+	if (member_info->data_type != VAL_TYPE)
+		member_info->length++;
+	PUCHAR data = (PUCHAR)calloc(member_info->length, sizeof(UCHAR));
+	memcpy_s(data, member_info->length, input_data, raw_data_length);
 
-		// Call UEFI Variable to write NVRAM data
-		vector<UINT8> vectorData(data, data + data_length);
-		SmbiosEditor* smbios_editor = &SmbiosEditor::getInstance();
-		smbios_editor->SetSMBIOS((UINT8)type, (UINT16)handle, (UINT8)member_info->offset, 0, vectorData);
+	// Call UEFI Variable to write NVRAM data
+	vector<UINT8> vectorData(data, data + member_info->length);
+	SmbiosEditor* smbios_editor = &SmbiosEditor::getInstance();
+	smbios_editor->SetSMBIOS((UINT8)member_info->type, (UINT16)member_info->handle, (UINT8)member_info->offset, 0, vectorData);
 
-		// If set data is NUM_STR_TYPE, offset need to add 1, the starting number is 1 (String1).
-		UCHAR offset = member_info->offset;
-		if (member_info->type == NUM_STR_TYPE)
-			++offset;
-		// Call driver write SMBIOS memory data
-		AaeonSmbiosWriteMemory(member_info->type, type, handle, offset, data, data_length);
-
-		free(data);
-	}
-	else
-	{
-		cout << "Failed retrieve Smbios Member Information!\n";
-	}
+	// If set data is NUM_STR_TYPE, offset need to add 1, the starting number is 1 (String1).
+	UCHAR offset = member_info->offset;
+	if (member_info->data_type == NUM_STR_TYPE)
+		++offset;
+	// Call driver write SMBIOS memory data
+	AaeonSmbiosWriteMemory(member_info->data_type, member_info->type, member_info->handle, offset, data, member_info->length);
+	free(data);
 }
 
 AAEONSMBIOS_API vector<SmbiosTable> AaeonSmbiosGetAllSmbiosTables()

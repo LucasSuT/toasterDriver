@@ -1,11 +1,13 @@
 #pragma once
 #include "Parser.h"
+
 class ParserType3 : public Parser
 {
 	SmbiosTable Parse(void* p, nlohmann::ordered_json& json_object)
 	{
 		PSystemEnclosure pBIOS = (PSystemEnclosure)p;
 		SmbiosTable smbios_table(pBIOS->Header.Type, pBIOS->Header.Handle);
+
 		smbios_table.Add(ToLowerCase("Manufacturer"),                 SmbiosData(true, GetString(p, pBIOS->Manufacturer)));
 		smbios_table.Add(ToLowerCase("Type"),                         SmbiosData(false, ToVector(pBIOS->Type, 1)));
 		smbios_table.Add(ToLowerCase("Version"),                      SmbiosData(true, GetString(p, pBIOS->Version)));
@@ -34,11 +36,11 @@ class ParserType3 : public Parser
 		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("security_status"),                 GetJsonString(pBIOS->SecurityStatus, 1));
 		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("oem_defined"),                     GetJsonString(pBIOS->OEMDefine, 4));
 		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("height"),                          GetJsonString(pBIOS->Height, 1));
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("numberof_power_cords"),            GetJsonString(pBIOS->NumPowerCord, 1));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("number_of_power_cords"),            GetJsonString(pBIOS->NumPowerCord, 1));
 		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("contained_element_count"),         GetJsonString(pBIOS->ElementCount, 1));
 		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("contained_element_record_length"), GetJsonString(pBIOS->ElementRecordLength, 1));
 		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("contained_elements"),              GetJsonString(pBIOS->pElements, 1));
-
+		
 		return smbios_table;
 	}
 };

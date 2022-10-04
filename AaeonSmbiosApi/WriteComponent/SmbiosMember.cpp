@@ -37,7 +37,7 @@ void SmbiosMember::InitialType0Table()
 		{"bios_version",                                MemberProp(STR_TYPE, 0x5, 1, true)},
 		{"bios_segment",                                MemberProp(VAL_TYPE, 0x6, 2, false)},
 		{"bios_release_date",                           MemberProp(STR_TYPE, 0x8, 1, true)},
-		{"biossize",                                    MemberProp(VAL_TYPE, 0x9, 1, false)},
+		{"bios_size",                                    MemberProp(VAL_TYPE, 0x9, 1, false)},
 		{"bios_characteristics",                        MemberProp(VAL_TYPE, 0xA, 8, false)},
 		{"bios_characteristics_extension_bytes",        MemberProp(VAL_TYPE, 0x12, 2, false)},
 		{"system_bios_major_release",                   MemberProp(VAL_TYPE, 0x14, 1, false)},
@@ -165,7 +165,8 @@ void SmbiosMember::InitialType11Table()
 {
 	type11_table =
 	{
-		{"count", MemberProp(VAL_TYPE, 0x04, 1, false)}
+		{"count", MemberProp(VAL_TYPE, 0x04, 1, false)},
+		{"string", MemberProp(NUM_STR_TYPE, 0x00, 1, true)}
 	};
 }
 

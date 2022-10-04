@@ -1,6 +1,5 @@
 #pragma once
 #include "Parser.h"
-#include "SmbiosStructure.h"
 
 class ParserType2 : public Parser
 {
@@ -8,6 +7,7 @@ class ParserType2 : public Parser
 	{
 		PBoardInfo pBIOS = (PBoardInfo)p;
 		SmbiosTable smbios_table(pBIOS->Header.Type, pBIOS->Header.Handle);
+
 		smbios_table.Add(ToLowerCase("Manufacturer"),                   SmbiosData(true, GetString(p, pBIOS->Manufacturer)));
 		//DebugVectorString(GetString(p, pBIOS->Manufacturer));
 		smbios_table.Add(ToLowerCase("ProductName"),                    SmbiosData(true, GetString(p, pBIOS->Product)));
@@ -37,9 +37,9 @@ class ParserType2 : public Parser
 		}
 
 		// Json Test
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("manufacturer"),                       GetJsonString(p, pBIOS->Manufacturer));
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("product_name"),                       GetJsonString(p, pBIOS->Product));
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("version"),                            GetJsonString(p, pBIOS->Version));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("manufacturer"),                       GetJsonString(p, pBIOS->Manufacturer));																			     
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("product_name"),                       GetJsonString(p, pBIOS->Product));																				       
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("version"),                            GetJsonString(p, pBIOS->Version));																				 
 		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("serial_number"),                      GetJsonString(p, pBIOS->SN));
 		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("asset_tag"),                          GetJsonString(p, pBIOS->AssetTag));
 		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("feature_flag"),                       GetJsonString(pBIOS->FeatureFlags, 1));
