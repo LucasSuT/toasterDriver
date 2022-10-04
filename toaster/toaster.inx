@@ -12,7 +12,7 @@ CatalogFile = toaster.cat
 Contoso = Contoso, NT$ARCH$
 
 [Contoso.NT$ARCH$]
-"Basic Toaster" = Toaster_Device, TOASTER\BASIC_TOASTER
+"AAEON SMBIOS" = Toaster_Device, TOASTER\BASIC_TOASTER
 
 [Toaster_Device.NT]
 CopyFiles = Toaster_Device.NT.Copy
@@ -38,7 +38,7 @@ HKR,,Security,,"D:P(A;;GA;;;WD)"
 
 
 [Toaster_Service_Inst]
-DisplayName    = "Basic Toaster Device Driver"
+DisplayName    = "AAEON SMBIOS Driver"
 ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
 StartType      = 3               ; SERVICE_DEMAND_START
 ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
