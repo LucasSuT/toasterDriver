@@ -37,9 +37,9 @@ class ParserType2 : public Parser
 		}
 
 		// Json Test
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("manufacturer"),                       GetJsonString(p, pBIOS->Manufacturer));																			     
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("product_name"),                       GetJsonString(p, pBIOS->Product));																				       
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("version"),                            GetJsonString(p, pBIOS->Version));																				 
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("manufacturer"),                       GetJsonString(p, pBIOS->Manufacturer));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("product_name"),                       GetJsonString(p, pBIOS->Product));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("version"),                            GetJsonString(p, pBIOS->Version));
 		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("serial_number"),                      GetJsonString(p, pBIOS->SN));
 		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("asset_tag"),                          GetJsonString(p, pBIOS->AssetTag));
 		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("feature_flag"),                       GetJsonString(pBIOS->FeatureFlags, 1));
