@@ -1,6 +1,5 @@
 #pragma once
 #include "Parser.h"
-#include "SmbiosStructure.h"
 
 class ParserType11 : public Parser
 {
@@ -10,10 +9,10 @@ public:
 		POemString pBIOS = (POemString)p;
 		SmbiosTable smbios_table(pBIOS->Header.Type, pBIOS->Header.Handle);
 
-		smbios_table.Add(ToLowerCase("StringCount"), SmbiosData(true, GetOEMString(p)));
+		smbios_table.Add(ToLowerCase("Count"), SmbiosData(true, GetOEMString(p)));
 
 		// Json Test
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("string_count"), GetJsonString(pBIOS->Count, 1));
+		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("count"), GetJsonString(pBIOS->Count, 1));
 
 		if ( pBIOS->Count )
 		{

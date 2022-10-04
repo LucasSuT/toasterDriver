@@ -1,6 +1,5 @@
 #pragma once
 #include "Parser.h"
-#include "SmbiosStructure.h"
 
 class ParserType2 : public Parser
 {
@@ -8,6 +7,7 @@ class ParserType2 : public Parser
 	{
 		PBoardInfo pBIOS = (PBoardInfo)p;
 		SmbiosTable smbios_table(pBIOS->Header.Type, pBIOS->Header.Handle);
+
 		smbios_table.Add(ToLowerCase("Manufacturer"),                   SmbiosData(true, GetString(p, pBIOS->Manufacturer)));
 		//DebugVectorString(GetString(p, pBIOS->Manufacturer));
 		smbios_table.Add(ToLowerCase("ProductName"),                    SmbiosData(true, GetString(p, pBIOS->Product)));

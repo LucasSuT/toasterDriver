@@ -14,6 +14,8 @@ SmbiosMember::SmbiosMember()
 	InitialType2Table();
 	InitialType3Table();
 	InitialType11Table();
+	InitialType16Table();
+	InitialType17Table();
 
 	smbios_tables.push_back(type0_table);
 	smbios_tables.push_back(type1_table);
@@ -27,6 +29,12 @@ SmbiosMember::SmbiosMember()
 	smbios_tables.push_back(type9_table);
 	smbios_tables.push_back(type10_table);
 	smbios_tables.push_back(type11_table);
+	smbios_tables.push_back(type12_table);
+	smbios_tables.push_back(type13_table);
+	smbios_tables.push_back(type14_table);
+	smbios_tables.push_back(type15_table);
+	smbios_tables.push_back(type16_table);
+	smbios_tables.push_back(type17_table);
 }
 
 void SmbiosMember::InitialType0Table()
@@ -37,7 +45,7 @@ void SmbiosMember::InitialType0Table()
 		{"bios_version",                                MemberProp(STR_TYPE, 0x5, 1, true)},
 		{"bios_segment",                                MemberProp(VAL_TYPE, 0x6, 2, false)},
 		{"bios_release_date",                           MemberProp(STR_TYPE, 0x8, 1, true)},
-		{"bios_size",                                    MemberProp(VAL_TYPE, 0x9, 1, false)},
+		{"bios_size",                                   MemberProp(VAL_TYPE, 0x9, 1, false)},
 		{"bios_characteristics",                        MemberProp(VAL_TYPE, 0xA, 8, false)},
 		{"bios_characteristics_extension_bytes",        MemberProp(VAL_TYPE, 0x12, 2, false)},
 		{"system_bios_major_release",                   MemberProp(VAL_TYPE, 0x14, 1, false)},
@@ -165,7 +173,8 @@ void SmbiosMember::InitialType11Table()
 {
 	type11_table =
 	{
-		{"count", MemberProp(VAL_TYPE, 0x04, 1, false)}
+		{"count", MemberProp(VAL_TYPE, 0x04, 1, false)},
+		{"string", MemberProp(NUM_STR_TYPE, 0x00, 1, true)}
 	};
 }
 

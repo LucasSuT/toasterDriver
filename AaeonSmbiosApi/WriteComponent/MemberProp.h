@@ -3,20 +3,20 @@
 class MemberProp
 {
 public:
-	unsigned char type_;
+	unsigned char data_type_;
 	unsigned char offset_;
 	unsigned char length_;
 	bool can_be_modified_;
 
 	MemberProp()
 	{
-		type_ = 0xFF;
+		data_type_ = 0xFF;
 		offset_ = 0;
 		length_ = 0;
 		can_be_modified_ = false;
 	}
 
-	MemberProp(unsigned char type, unsigned char offset, unsigned char length, bool can_be_modified)
-		: type_(type), offset_(offset), length_(length), can_be_modified_(can_be_modified){}
+	MemberProp(unsigned char data_type, unsigned char offset, unsigned char length, bool can_be_modified)
+		: data_type_(data_type), offset_(offset), length_(length), can_be_modified_(can_be_modified){}
 };
 

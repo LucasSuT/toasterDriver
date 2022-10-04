@@ -66,22 +66,27 @@ enum SmbiosType
 
 struct SmbiosMemberInfo
 {
-	unsigned char type;
+	unsigned char data_type;
 	unsigned char offset;
 	unsigned char length;
 	bool can_be_modified;
 };
 
+struct WriteSmbiosMember
+{
+	unsigned char type;
+	unsigned char handle;
+	unsigned char data_type;
+	unsigned char offset;
+	unsigned char length;
+};
 
 extern "C"
 {
 	AAEONSMBIOS_API void AaeonSmbiosInitial();
 	AAEONSMBIOS_API void AaeonSmbiosUninitial();
-
 	AAEONSMBIOS_API bool AaeonSmbiosGetMemInfo(SmbiosType smbios_table_number, const char* member_name, SmbiosMemberInfo* member_info);
-
-	AAEONSMBIOS_API DWORD AaeonSmbiosGetEntryPoint();
-	AAEONSMBIOS_API void AaeonSmbiosWrite(int type, int handle, const char* member_name, UCHAR input_data[], int data_length);
+	AAEONSMBIOS_API void AaeonSmbiosWrite(WriteSmbiosMember* member_info, UCHAR input_data[]);
 
 	AAEONSMBIOS_API vector<SmbiosTable> AaeonSmbiosGetAllSmbiosTables();
 	AAEONSMBIOS_API bool AaeonSmbiosGetSmbiosTable(int type, WORD handle, SmbiosTable& smbios_table);
