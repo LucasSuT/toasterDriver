@@ -108,8 +108,10 @@ void SmbiosMember::InitialType3Table()
 		{"number_of_power_cords",           MemberProp(VAL_TYPE, 0x12, 1, true)},
 		{"contained_element_count",         MemberProp(VAL_TYPE, 0x13, 1, false)},
 		{"contained_element_record_length", MemberProp(VAL_TYPE, 0x14, 1, false)},
-		{"contained_elements",              MemberProp(VAL_TYPE, 0x15, 1, false)}
-		//{"SKUNumber",                    MemberProp(VAL_TYPE, 0x16, 1)}
+		// Below these two properties, please refer to the datasheet.
+		// Because these two properties some info is dynamic.
+		{"contained_elements",              MemberProp(VAL_TYPE, 0x15, 1, false)},
+		{"sku_number",                      MemberProp(STR_TYPE, 0x15, 1, true)}
 	};
 }
 
