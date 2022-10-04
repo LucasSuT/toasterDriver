@@ -163,7 +163,7 @@ private:
 		root = nlohmann::ordered_json::object(
 			{
 				{"value", value},
-				{"type", member_info->data_type},
+				{"data_type", member_info->data_type},
 				{"offset", member_info->offset},
 				{"length", member_info->length},
 				{"can_be_modified", member_info->can_be_modified}
@@ -184,7 +184,7 @@ private:
 			nlohmann::ordered_json each_string_object = nlohmann::ordered_json::object(
 				{
 					{"value", *itr},
-					{"type", member_info->data_type},
+					{"data_type", member_info->data_type},
 					{"offset", member_info->offset++},
 					{"length", member_info->length},
 					{"can_be_modified", member_info->can_be_modified}
