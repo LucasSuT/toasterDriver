@@ -121,6 +121,7 @@ int main()
 {
 	AaeonSmbiosInitial();
 	SmbiosMemberInfo* member_info = new SmbiosMemberInfo();
+	WriteSmbiosMember* write_member_info = new WriteSmbiosMember();
 	int type, handle;
 	string member_name, str_data;
 	UCHAR data[255];
@@ -136,22 +137,33 @@ int main()
 
 	if (AaeonSmbiosGetMemInfo((SmbiosType)type, member, member_info))
 	{
-		printf("SmbiosMember   Type: %s\n", (member_info->type == 1 ? "String" : "Value"));
+		printf("SmbiosMember   Type: %s\n", (member_info->data_type == 1 ? "String" : "Value"));
 		printf("SmbiosMember offset: %d\n", member_info->offset);
 		printf("SmbiosMember length: %d\n", member_info->length);
-
-		if (member_info->type != VAL_TYPE)
+		write_member_info->type = type;
+		write_member_info->handle = handle;
+		write_member_info->data_type = member_info->data_type;
+		write_member_info->offset = member_info->offset;
+		
+		if (member_info->can_be_modified == false)
 		{
+			cout << "This Member Value Can Not Be Modified\n";
+			system("pause");
+			return 0;
+		}
+		else if (member_info->data_type != VAL_TYPE)
+		{
+			
 			cout << "Input Var  \"String Data\"\n";
 			cin >> str_data;
 			for (int i = 0; i < str_data.length(); ++i)
 				data[i] = str_data[i];
-			
-			AaeonSmbiosWrite(type, handle, member, data, str_data.length());
-			//WriteSMBIOS((int)member_info->type, type, (int)member_info->offset, str_data.length() + 1, data);
+			write_member_info->length = str_data.length();
+			AaeonSmbiosWrite(write_member_info, data);
 		}
 		else
 		{
+			write_member_info->length = member_info->length;
 			cout << "Input Var  \"Data\"\n";
 			int a[32];
 			for (int i = 0; i < member_info->length; i++)
@@ -160,9 +172,9 @@ int main()
 				cin >> hex >> a[i];
 				data[i] = a[i];
 			}
-			AaeonSmbiosWrite(type, handle, member, data,(int)member_info->length);
-			//WriteSMBIOS( (int)member_info->type, type, (int)member_info->offset, (int)member_info->length, data);
+			AaeonSmbiosWrite(write_member_info, data);
 		}
+		
 	}
 	else
 	{
@@ -170,6 +182,7 @@ int main()
 	}
 
 	delete member_info;
+	delete write_member_info;
 	AaeonSmbiosUninitial();
 	system("pause");
 

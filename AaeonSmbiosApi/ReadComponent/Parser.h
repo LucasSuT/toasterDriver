@@ -185,7 +185,7 @@ private:
 				{
 					{"value", *itr},
 					{"type", member_info->data_type},
-					{"offset", member_info->offset},
+					{"offset", member_info->offset++},
 					{"length", member_info->length},
 					{"can_be_modified", member_info->can_be_modified}
 				}
