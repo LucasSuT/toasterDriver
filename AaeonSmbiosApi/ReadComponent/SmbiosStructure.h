@@ -203,4 +203,17 @@ typedef struct _TYPE_22_ {
 	UCHAR   DesignCapacityMultiplie;
 	UINT32  OEM;
 } PortableBattery, * PPortableBattery;
+
+typedef struct _TYPE_29_ {
+	SMBIOSHEADER Header;
+	UCHAR	description;
+	UCHAR	location_and_status;
+	UINT16	maximum_value;
+	UINT16	minimum_value;
+	UINT16	resolution;
+	UINT16	tolerance;
+	UINT16	accuracy;
+	UINT32	oem_defined;
+	UINT16	nominal_value;
+} ElectricalCurrentProbe, * PElectricalCurrentProbe;
 #pragma pack(pop)

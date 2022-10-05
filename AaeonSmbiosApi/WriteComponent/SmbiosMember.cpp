@@ -404,7 +404,15 @@ void SmbiosMember::InitialType29Table()
 {
 	type29_table =
 	{
-
+		{"description",         MemberProp(STR_TYPE, 0x4,  1, false)},
+		{"location_and_status", MemberProp(VAL_TYPE, 0x5,  1, false)},
+		{"maximum_value",       MemberProp(VAL_TYPE, 0x6,  2, false)},
+		{"minimum_value",       MemberProp(VAL_TYPE, 0x8,  2, false)},
+		{"resolution",          MemberProp(VAL_TYPE, 0xA,  2, false)},
+		{"tolerance",           MemberProp(VAL_TYPE, 0xC,  2, false)},
+		{"accuracy",            MemberProp(VAL_TYPE, 0xE,  2, false)},
+		{"oem_defined",         MemberProp(VAL_TYPE, 0x10, 4, false)},
+		{"nominal_value",       MemberProp(VAL_TYPE, 0x14, 2, false)},
 	};
 }
 
