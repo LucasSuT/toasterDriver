@@ -9,14 +9,37 @@ SmbiosMember& SmbiosMember::GetInstance()
 
 SmbiosMember::SmbiosMember()
 {
+#pragma region Intial Each Type Table
 	InitialType0Table();
 	InitialType1Table();
 	InitialType2Table();
 	InitialType3Table();
+	InitialType4Table();
+	InitialType7Table();
+	InitialType8Table();
+	InitialType9Table();
+	InitialType10Table();
 	InitialType11Table();
+	InitialType12Table();
+	InitialType13Table();
+	InitialType14Table();
 	InitialType16Table();
 	InitialType17Table();
+	InitialType19Table();
+	InitialType20Table();
+	InitialType26Table();
+	InitialType27Table();
+	InitialType28Table();
+	InitialType29Table();
+	InitialType32Table();
+	InitialType34Table();
+	InitialType35Table();
+	InitialType36Table();
+	InitialType39Table();
+	InitialType41Table();
+#pragma endregion
 
+#pragma region Push Each Type Table To Container
 	smbios_tables.push_back(type0_table);
 	smbios_tables.push_back(type1_table);
 	smbios_tables.push_back(type2_table);
@@ -35,6 +58,31 @@ SmbiosMember::SmbiosMember()
 	smbios_tables.push_back(type15_table);
 	smbios_tables.push_back(type16_table);
 	smbios_tables.push_back(type17_table);
+	smbios_tables.push_back(type18_table);
+	smbios_tables.push_back(type19_table);
+	smbios_tables.push_back(type20_table);
+	smbios_tables.push_back(type21_table);
+	smbios_tables.push_back(type22_table);
+	smbios_tables.push_back(type23_table);
+	smbios_tables.push_back(type24_table);
+	smbios_tables.push_back(type25_table);
+	smbios_tables.push_back(type26_table);
+	smbios_tables.push_back(type27_table);
+	smbios_tables.push_back(type28_table);
+	smbios_tables.push_back(type29_table);
+	smbios_tables.push_back(type30_table);
+	smbios_tables.push_back(type31_table);
+	smbios_tables.push_back(type32_table);
+	smbios_tables.push_back(type33_table);
+	smbios_tables.push_back(type34_table);
+	smbios_tables.push_back(type35_table);
+	smbios_tables.push_back(type36_table);
+	smbios_tables.push_back(type37_table);
+	smbios_tables.push_back(type38_table);
+	smbios_tables.push_back(type39_table);
+	smbios_tables.push_back(type40_table);
+	smbios_tables.push_back(type41_table);
+#pragma endregion
 }
 
 void SmbiosMember::InitialType0Table()
@@ -261,5 +309,197 @@ void SmbiosMember::InitialType17Table()
 		{"Logical_Size",                                MemberProp(VAL_TYPE, 0x4C, 8, false)},
 		{"Extended_Speed",                              MemberProp(VAL_TYPE, 0x54, 4, false)},
 		{"Extended_Configured_Memory_Speed",            MemberProp(VAL_TYPE, 0x58, 4, false)},*/
+	};
+}
+
+void SmbiosMember::InitialType18Table()
+{
+	type18_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType19Table()
+{
+	type19_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType20Table()
+{
+	type20_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType21Table()
+{
+	type21_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType22Table()
+{
+	type22_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType23Table()
+{
+	type23_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType24Table()
+{
+	type24_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType25Table()
+{
+	type25_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType26Table()
+{
+	type26_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType27Table()
+{
+	type27_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType28Table()
+{
+	type28_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType29Table()
+{
+	type29_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType30Table()
+{
+	type30_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType31Table()
+{
+	type31_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType32Table()
+{
+	type32_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType33Table()
+{
+	type33_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType34Table()
+{
+	type34_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType35Table()
+{
+	type35_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType36Table()
+{
+	type36_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType37Table()
+{
+	type37_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType38Table()
+{
+	type38_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType39Table()
+{
+	type39_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType40Table()
+{
+	type40_table =
+	{
+
+	};
+}
+
+void SmbiosMember::InitialType41Table()
+{
+	type41_table =
+	{
+
 	};
 }
