@@ -88,8 +88,8 @@ extern "C"
 	AAEONSMBIOS_API bool AaeonSmbiosGetMemInfo(SmbiosType smbios_table_number, const char* member_name, SmbiosMemberInfo* member_info);
 	AAEONSMBIOS_API void AaeonSmbiosWrite(WriteSmbiosMember* member_info, UCHAR input_data[]);
 
-	AAEONSMBIOS_API vector<SmbiosTable> AaeonSmbiosGetAllSmbiosTables();
+	/*AAEONSMBIOS_API vector<SmbiosTable> AaeonSmbiosGetAllSmbiosTables();
 	AAEONSMBIOS_API bool AaeonSmbiosGetSmbiosTable(int type, WORD handle, SmbiosTable& smbios_table);
-	AAEONSMBIOS_API bool AaeonSmbiosUpdateSmbiosTableData(int type, WORD handle, string& key, vector<BYTE> data);
+	AAEONSMBIOS_API bool AaeonSmbiosUpdateSmbiosTableData(int type, WORD handle, string& key, vector<BYTE> data);*/
 	AAEONSMBIOS_API void AaeonSmbiosRead();
 }
