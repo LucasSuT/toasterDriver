@@ -51,51 +51,6 @@ void SMBIOS::GenerateJson()
 	out.close();
 }
 
-vector<SmbiosTable> SMBIOS::GetAllSmbiosTables(void) const
-{
-	return vec;
-}
-
-bool SMBIOS::GetSmbiosTable(int type, WORD handle, SmbiosTable& smbios_table) const
-{
-	for (SmbiosTable table : vec)
-	{
-		if (table.Type() == type && table.Handle() == handle)
-		{
-			smbios_table = table;
-			return true;
-		}
-	}
-	return false;
-}
-
-bool SMBIOS::UpdateTableData(int type, WORD handle, string key, vector<BYTE> data)
-{
-	for (SmbiosTable& table : vec)
-	{
-		if (table.Type() == type && table.Handle() == handle)
-		{
-			map<string, SmbiosData>::iterator it;
-			it = table.Map().find(key);
-			if (it != table.Map().end())
-			{
-				it->second.SetData(data);
-			}
-			return true;
-		}
-	}
-	return false;
-}
-
-bool SMBIOS::GetData(int type, WORD handle, string key, vector<BYTE>& data)
-{
-	SmbiosTable st;
-	if (!GetSmbiosTable(type, handle, st))return false;
-	SmbiosData sd = st.Query(key);
-	data = sd.Data();
-	return true;
-}
-
 SMBIOS* SMBIOS::getInstance(void)
 {
 	static SMBIOS* pInstance = NULL;
