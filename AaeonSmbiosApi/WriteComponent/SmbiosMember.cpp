@@ -167,7 +167,33 @@ void SmbiosMember::InitialType4Table()
 {
 	type4_table =
 	{
-
+		{"socket_designation",        MemberProp(STR_TYPE, 0x4,  1, false)},
+		{"processor_type",            MemberProp(VAL_TYPE, 0x5,  1, false)},
+		{"processor_family",          MemberProp(VAL_TYPE, 0x6,  1, false)},
+		{"processor_manufacturer",    MemberProp(STR_TYPE, 0x7,  1, false)},
+		{"processor_id",              MemberProp(VAL_TYPE, 0x8,  8, false)},
+		{"processor_version",         MemberProp(STR_TYPE, 0x10, 1, false)},
+		{"voltage",                   MemberProp(VAL_TYPE, 0x11, 1, false)},
+		{"external_clock",            MemberProp(VAL_TYPE, 0x12, 2, false)},
+		{"max_speed",                 MemberProp(VAL_TYPE, 0x14, 2, false)},
+		{"current_speed",             MemberProp(VAL_TYPE, 0x16, 2, false)},
+		{"status",                    MemberProp(VAL_TYPE, 0x18, 1, false)},
+		{"processor_upgrade",         MemberProp(VAL_TYPE, 0x19, 1, false)},
+		{"l1_cache_handle",           MemberProp(VAL_TYPE, 0x1A, 2, false)},
+		{"l2_cache_handle",           MemberProp(VAL_TYPE, 0x1C, 2, false)},
+		{"l3_cache_handle",           MemberProp(VAL_TYPE, 0x1E, 2, false)},
+		{"serial_number",             MemberProp(STR_TYPE, 0x20, 1, true)},
+		{"asset_tag",                 MemberProp(STR_TYPE, 0x21, 1, true)},
+		{"part_number",               MemberProp(STR_TYPE, 0x22, 1, true)},
+		{"core_count",                MemberProp(VAL_TYPE, 0x23, 1, false)},
+		{"core_enabled",              MemberProp(VAL_TYPE, 0x24, 1, false)},
+		{"thread_count",              MemberProp(VAL_TYPE, 0x25, 1, false)},
+		{"processor_characteristics", MemberProp(VAL_TYPE, 0x26, 2, false)},
+		{"processor_family_2",        MemberProp(VAL_TYPE, 0x28, 2, false)},
+		{"core_count_2",              MemberProp(VAL_TYPE, 0x2A, 2, false)},
+		{"core_enabled_2",            MemberProp(VAL_TYPE, 0x2C, 2, false)},
+		{"thread_count_2",            MemberProp(VAL_TYPE, 0x2E, 2, false)},
+		{"thread_enabled",            MemberProp(VAL_TYPE, 0x30, 2, false)}
 	};
 }
 
@@ -191,7 +217,18 @@ void SmbiosMember::InitialType7Table()
 {
 	type7_table =
 	{
-
+		{"socket_designation",     MemberProp(STR_TYPE, 0x4,  1, false)},
+		{"cache_configuration",    MemberProp(VAL_TYPE, 0x5,  2, false)},
+		{"maximum_cache_size",     MemberProp(VAL_TYPE, 0x7,  2, false)},
+		{"installed_size",         MemberProp(VAL_TYPE, 0x9,  2, false)},
+		{"supported_sram_type",    MemberProp(VAL_TYPE, 0xB,  2, false)},
+		{"current_sram_type",      MemberProp(VAL_TYPE, 0xD,  2, false)},
+		{"cache_speed",            MemberProp(VAL_TYPE, 0xF,  1, false)},
+		{"error_correction_type",  MemberProp(VAL_TYPE, 0x10, 1, false)},
+		{"system_cache_type",      MemberProp(VAL_TYPE, 0x11, 1, false)},
+		{"associativity",          MemberProp(VAL_TYPE, 0x12, 1, false)},
+		{"maximum_cache_size_2",   MemberProp(VAL_TYPE, 0x13, 4, false)},
+		{"installed_cache_size_2", MemberProp(VAL_TYPE, 0x17, 4, false)}
 	};
 }
 
@@ -199,7 +236,12 @@ void SmbiosMember::InitialType8Table()
 {
 	type8_table =
 	{
-
+		{"internal_reference_designator", MemberProp(STR_TYPE, 0x4, 1, false)},
+		{"internal_connector_type",       MemberProp(VAL_TYPE, 0x5, 1, false)},
+		{"external_reference_designator", MemberProp(STR_TYPE, 0x6, 1, false)},
+		{"external_connector_type",       MemberProp(VAL_TYPE, 0x7, 1, false)},
+		{"port_type",                     MemberProp(VAL_TYPE, 0x8, 1, false)},
+		
 	};
 }
 
@@ -207,7 +249,24 @@ void SmbiosMember::InitialType9Table()
 {
 	type9_table =
 	{
-
+		{"Slot_Designation",                           MemberProp(STR_TYPE, 0x4,  1, false)},
+		{"Slot_Type",                                  MemberProp(VAL_TYPE, 0x5,  1, false)},
+		{"Slot_Data_Bus_Width",                        MemberProp(VAL_TYPE, 0x6,  1, false)},
+		{"Current_Usage",                              MemberProp(VAL_TYPE, 0x7,  1, false)},
+		{"Slot_Length",                                MemberProp(VAL_TYPE, 0x8,  1, false)},
+		{"Slot_ID",                                    MemberProp(VAL_TYPE, 0x9,  1, false)},
+		{"Slot_Characteristics_1",                     MemberProp(VAL_TYPE, 0xB,  1, false)},
+		{"Slot_Characteristics_2",                     MemberProp(VAL_TYPE, 0xC,  1, false)},
+		{"Segment_Group_Number",                       MemberProp(VAL_TYPE, 0xD,  1, false)},
+		{"Bus_Number",                                 MemberProp(VAL_TYPE, 0xF,  1, false)},
+		{"Device/Function_Number",                     MemberProp(VAL_TYPE, 0x10, 1, false)},
+		{"Data_Bus_Width",                             MemberProp(VAL_TYPE, 0x11, 1, false)},
+		{"Peer(S / B / D / F / Width)_grouping_count", MemberProp(VAL_TYPE, 0x12, 1, false)},
+		{"Peer(S / B / D / F / Width)_groups",         MemberProp(VAL_TYPE, 0x13, 1, false)},
+		{"Slot_Information",                           MemberProp(VAL_TYPE, 0x13, 1, false)},
+		{"Slot_Physical Width",                        MemberProp(VAL_TYPE, 0x14, 1, false)},
+		{"Slot_Pitch",                                 MemberProp(VAL_TYPE, 0x15, 1, false)},
+		{"Slot_Height",                                MemberProp(VAL_TYPE, 0x17, 1, false)},
 	};
 }
 
@@ -215,7 +274,9 @@ void SmbiosMember::InitialType10Table()
 {
 	type10_table =
 	{
-
+		{"Number_of_onboard_device", MemberProp(VAL_TYPE, 0x4,  1, false)},
+		{"Devicen_Type",             MemberProp(VAL_TYPE, 0x4,  1, false)},
+		{"Description_String",       MemberProp(STR_TYPE, 0x5,  1, false)},
 	};
 }
 
@@ -223,7 +284,7 @@ void SmbiosMember::InitialType11Table()
 {
 	type11_table =
 	{
-		{"count", MemberProp(VAL_TYPE, 0x04, 1, false)},
+		{"count",  MemberProp(VAL_TYPE,     0x04, 1, false)},
 		{"string", MemberProp(NUM_STR_TYPE, 0x00, 1, true)}
 	};
 }
@@ -232,14 +293,18 @@ void SmbiosMember::InitialType12Table()
 {
 	type12_table =
 	{
-
+		{"count",  MemberProp(VAL_TYPE,     0x04, 1, false)},
+		{"string", MemberProp(NUM_STR_TYPE, 0x00, 1, true)}
 	};
 }
 void SmbiosMember::InitialType13Table()
 {
 	type13_table =
 	{
-
+		{"Installable_Languages", MemberProp(VAL_TYPE, 0x4,  1, false)},
+		{"Flags",                 MemberProp(VAL_TYPE, 0x5,  1, false)},
+		{"Reserved",              MemberProp(VAL_TYPE, 0x6,  15, false)},
+		{"Current_Language",      MemberProp(VAL_TYPE, 0x15, 1, false)}
 	};
 }
 void SmbiosMember::InitialType14Table()

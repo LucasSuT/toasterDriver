@@ -86,17 +86,33 @@ typedef struct _TYPE_3_ {
 
 typedef struct _TYPE_4_ {
 	SMBIOSHEADER Header;
-	UCHAR	SocketDesignation;
-	UCHAR	Type;
-	UCHAR	Family;
-	UCHAR	Manufacturer;
-	ULONG64 ID;
-	UCHAR	Version;
-	UCHAR	Voltage;
-	UINT16	ExtClock;
-	UINT16	MaxSpeed;
-	UINT16	CurrentSpeed;
-	// Todo, Here
+	UCHAR	socket_designation;
+	UCHAR	processor_type;
+	UCHAR	processor_family;
+	UCHAR	processor_manufacturer;
+	ULONG64 processor_id;
+	UCHAR	processor_version;
+	UCHAR	voltage;
+	UINT16	external_clock;
+	UINT16	max_speed;
+	UINT16	current_speed;
+	UCHAR   status;
+	UCHAR   processor_upgrade;
+	UINT16  l1_cache_handle;
+	UINT16  l2_cache_handle;
+	UINT16  l3_cache_handle;
+	UCHAR   serial_number;
+	UCHAR   asset_tag;
+	UCHAR   part_number;
+	UCHAR   core_count;
+	UCHAR   core_enabled;
+	UCHAR   thread_count;
+	UINT16  processor_characteristics;
+	UINT16  processor_family_2;
+	UINT16  core_count_2;
+	UINT16  core_enabled_2;
+	UINT16  thread_count_2;
+	UINT16  thread_enabled;
 
 } ProcessorInfo, * PProcessorInfo;
 

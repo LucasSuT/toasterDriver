@@ -3,6 +3,7 @@
 #include "ParserType1.h"
 #include "ParserType2.h"
 #include "ParserType3.h"
+#include "ParserType4.h"
 #include "ParserType11.h"
 #include "ParserType16.h"
 #include "ParserType17.h"
@@ -39,6 +40,12 @@ public:
 			case 3:
 			{
 				s = new ParserType3();
+				return s;
+				break;
+			}
+			case 4:
+			{
+				s = new ParserType4();
 				return s;
 				break;
 			}
