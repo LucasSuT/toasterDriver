@@ -132,22 +132,74 @@ typedef struct _TYPE_6_ {
 
 typedef struct _TYPE_7_ {
 	SMBIOSHEADER Header;
-	UCHAR	SocketDesignation;
-	UINT16	Configuration;
-	UINT16	MaxSize;
-	UINT16	InstalledSize;
-	UINT16	SupportSRAMType;
-	UINT16	CurrentSRAMType;
-	UCHAR	Speed;
-	UCHAR	ErrorCorrectionType;
-	UCHAR	SystemCacheType;
-	UCHAR	Associativity;
+	UCHAR	socket_designation;
+	UINT16	cache_configuration;
+	UINT16	maximum_cache_size;
+	UINT16	installed_size;
+	UINT16	supported_sram_type;
+	UINT16	current_sram_type;
+	UCHAR	cache_speed;
+	UCHAR	error_correction_type;
+	UCHAR	system_cache_type;
+	UCHAR	associativity;
+	ULONG32	maximum_cache_size_2;
+	ULONG32	installed_cache_size_2;
 } CacheInfo, * PCacheInfo;
+
+typedef struct _TYPE_8_ {
+	SMBIOSHEADER Header;
+	UCHAR	internal_reference_designator;
+	UCHAR	internal_connector_type;
+	UCHAR	external_reference_designator;
+	UCHAR	external_connector_type;
+	UCHAR	port_type;
+} PortConnectorInfo, * PPortConnectorInfo;
+
+typedef struct _TYPE_9_ {
+	SMBIOSHEADER Header;
+	UCHAR	slot_designation;
+	UCHAR	slot_type;
+	UCHAR	slot_data_bus_width;
+	UCHAR	current_usage;
+	UCHAR	slot_length;
+	UINT16	slot_id;
+	UCHAR	slot_characteristics_1;
+	UCHAR	slot_characteristics_2;
+	UINT16	segment_group_number;
+	UCHAR	bus_number;
+	UCHAR	device_function_number;
+	UCHAR	data_bus_width;
+	UCHAR   peer_grouping_count;
+	UCHAR   peer_groups;
+	UCHAR   slot_information;
+	UCHAR   slot_physical_width;
+	UINT16  slot_pitch;
+	UCHAR   slot_height;
+} SystemSlots, * PSystemSlots;
+
+typedef struct _TYPE_10_ {
+	SMBIOSHEADER Header;
+	UCHAR	devicen_type;
+	UCHAR	description_string;
+} OnBoardDevicesInfo, * POnBoardDevicesInfo;
 
 typedef struct _TYPE_11_ {
 	SMBIOSHEADER Header;
-	UCHAR	Count;
+	UCHAR	count;
 } OemString, * POemString;
+
+typedef struct _TYPE_12_ {
+	SMBIOSHEADER Header;
+	UCHAR	count;
+} SystemConfigurationOptions, * PSystemConfigurationOptions;
+
+typedef struct _TYPE_13_ {
+	SMBIOSHEADER Header;
+	UCHAR	installable_languages;
+	UCHAR	flags;
+	UCHAR	reserved[15];
+	UCHAR	current_language;
+} BIOSLanguageInfo, * PBIOSLanguageInfo;
 
 typedef struct _TYPE_16_ {
 	SMBIOSHEADER Header;

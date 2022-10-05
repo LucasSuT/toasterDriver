@@ -249,24 +249,24 @@ void SmbiosMember::InitialType9Table()
 {
 	type9_table =
 	{
-		{"Slot_Designation",                           MemberProp(STR_TYPE, 0x4,  1, false)},
-		{"Slot_Type",                                  MemberProp(VAL_TYPE, 0x5,  1, false)},
-		{"Slot_Data_Bus_Width",                        MemberProp(VAL_TYPE, 0x6,  1, false)},
-		{"Current_Usage",                              MemberProp(VAL_TYPE, 0x7,  1, false)},
-		{"Slot_Length",                                MemberProp(VAL_TYPE, 0x8,  1, false)},
-		{"Slot_ID",                                    MemberProp(VAL_TYPE, 0x9,  1, false)},
-		{"Slot_Characteristics_1",                     MemberProp(VAL_TYPE, 0xB,  1, false)},
-		{"Slot_Characteristics_2",                     MemberProp(VAL_TYPE, 0xC,  1, false)},
-		{"Segment_Group_Number",                       MemberProp(VAL_TYPE, 0xD,  1, false)},
-		{"Bus_Number",                                 MemberProp(VAL_TYPE, 0xF,  1, false)},
-		{"Device/Function_Number",                     MemberProp(VAL_TYPE, 0x10, 1, false)},
-		{"Data_Bus_Width",                             MemberProp(VAL_TYPE, 0x11, 1, false)},
-		{"Peer(S / B / D / F / Width)_grouping_count", MemberProp(VAL_TYPE, 0x12, 1, false)},
-		{"Peer(S / B / D / F / Width)_groups",         MemberProp(VAL_TYPE, 0x13, 1, false)},
-		{"Slot_Information",                           MemberProp(VAL_TYPE, 0x13, 1, false)},
-		{"Slot_Physical Width",                        MemberProp(VAL_TYPE, 0x14, 1, false)},
-		{"Slot_Pitch",                                 MemberProp(VAL_TYPE, 0x15, 1, false)},
-		{"Slot_Height",                                MemberProp(VAL_TYPE, 0x17, 1, false)},
+		{"slot_designation",       MemberProp(STR_TYPE, 0x4,  1, false)},
+		{"slot_type",              MemberProp(VAL_TYPE, 0x5,  1, false)},
+		{"slot_data_bus_width",    MemberProp(VAL_TYPE, 0x6,  1, false)},
+		{"current_usage",          MemberProp(VAL_TYPE, 0x7,  1, false)},
+		{"slot_length",            MemberProp(VAL_TYPE, 0x8,  1, false)},
+		{"slot_id",                MemberProp(VAL_TYPE, 0x9,  2, false)},
+		{"slot_characteristics_1", MemberProp(VAL_TYPE, 0xB,  1, false)},
+		{"slot_characteristics_2", MemberProp(VAL_TYPE, 0xC,  1, false)},
+		{"segment_group_number",   MemberProp(VAL_TYPE, 0xD,  2, false)},
+		{"bus_number",             MemberProp(VAL_TYPE, 0xF,  1, false)},
+		{"device_function_number", MemberProp(VAL_TYPE, 0x10, 1, false)},
+		{"data_bus_width",         MemberProp(VAL_TYPE, 0x11, 1, false)},
+		{"peer_grouping_count",    MemberProp(VAL_TYPE, 0x12, 1, false)},
+		{"peer_groups",            MemberProp(VAL_TYPE, 0x13, 1, false)},
+		{"slot_information",       MemberProp(VAL_TYPE, 0x13, 1, false)},
+		{"slot_physical_width",    MemberProp(VAL_TYPE, 0x14, 1, false)},
+		{"slot_pitch",             MemberProp(VAL_TYPE, 0x15, 2, false)},
+		{"slot_height",            MemberProp(VAL_TYPE, 0x17, 1, false)},
 	};
 }
 
@@ -274,9 +274,9 @@ void SmbiosMember::InitialType10Table()
 {
 	type10_table =
 	{
-		{"Number_of_onboard_device", MemberProp(VAL_TYPE, 0x4,  1, false)},
-		{"Devicen_Type",             MemberProp(VAL_TYPE, 0x4,  1, false)},
-		{"Description_String",       MemberProp(STR_TYPE, 0x5,  1, false)},
+		{"number_of_onboard_device", MemberProp(VAL_TYPE, 0x4,  1, false)},
+		{"devicen_type",             MemberProp(VAL_TYPE, 0x4,  1, false)},
+		{"description_string",       MemberProp(STR_TYPE, 0x5,  1, false)},
 	};
 }
 
@@ -301,10 +301,10 @@ void SmbiosMember::InitialType13Table()
 {
 	type13_table =
 	{
-		{"Installable_Languages", MemberProp(VAL_TYPE, 0x4,  1, false)},
-		{"Flags",                 MemberProp(VAL_TYPE, 0x5,  1, false)},
-		{"Reserved",              MemberProp(VAL_TYPE, 0x6,  15, false)},
-		{"Current_Language",      MemberProp(VAL_TYPE, 0x15, 1, false)}
+		{"installable_languages", MemberProp(VAL_TYPE, 0x4,  1, false)},
+		{"flags",                 MemberProp(VAL_TYPE, 0x5,  1, false)},
+		{"reserved",              MemberProp(VAL_TYPE, 0x6,  15, false)},
+		{"current_language",      MemberProp(STR_TYPE, 0x15, 1, false)}
 	};
 }
 void SmbiosMember::InitialType14Table()

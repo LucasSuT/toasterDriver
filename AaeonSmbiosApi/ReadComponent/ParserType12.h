@@ -1,12 +1,12 @@
 #pragma once
 #include "Parser.h"
 
-class ParserType11 : public Parser
+class ParserType12 : public Parser
 {
 public:
 	SmbiosTable Parse(void* p, nlohmann::ordered_json& json_object)
 	{
-		POemString pBIOS = (POemString)p;
+		PSystemConfigurationOptions pBIOS = (PSystemConfigurationOptions)p;
 		SmbiosTable smbios_table(pBIOS->Header.Type, pBIOS->Header.Handle);
 
 		smbios_table.Add(ToLowerCase("Count"), SmbiosData(true, GetOEMString(p)));
