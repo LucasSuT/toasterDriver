@@ -263,7 +263,7 @@ void SmbiosMember::InitialType9Table()
 		{"data_bus_width",         MemberProp(VAL_TYPE, 0x11, 1, false)},
 		{"peer_grouping_count",    MemberProp(VAL_TYPE, 0x12, 1, false)},
 		{"peer_groups",            MemberProp(VAL_TYPE, 0x13, 1, false)},
-		{"slot_information",       MemberProp(VAL_TYPE, 0x13, 1, false)},
+		{"slot_information",       MemberProp(VAL_TYPE, 0x13, 1, false, true)},
 		{"slot_physical_width",    MemberProp(VAL_TYPE, 0x14, 1, false)},
 		{"slot_pitch",             MemberProp(VAL_TYPE, 0x15, 2, false)},
 		{"slot_height",            MemberProp(VAL_TYPE, 0x17, 1, false)},
@@ -285,7 +285,7 @@ void SmbiosMember::InitialType11Table()
 	type11_table =
 	{
 		{"count",  MemberProp(VAL_TYPE,     0x04, 1, false)},
-		{"string", MemberProp(NUM_STR_TYPE, 0x00, 1, true)}
+		{"string", MemberProp(NUM_STR_TYPE, 0x00, 1, true, true)}
 	};
 }
 
@@ -294,7 +294,7 @@ void SmbiosMember::InitialType12Table()
 	type12_table =
 	{
 		{"count",  MemberProp(VAL_TYPE,     0x04, 1, false)},
-		{"string", MemberProp(NUM_STR_TYPE, 0x00, 1, true)}
+		{"string", MemberProp(NUM_STR_TYPE, 0x00, 1, true, true)}
 	};
 }
 void SmbiosMember::InitialType13Table()
