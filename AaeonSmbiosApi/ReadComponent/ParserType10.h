@@ -6,12 +6,10 @@ class ParserType10 : public Parser
 public:
 	SmbiosTable Parse(void* p, nlohmann::ordered_json& json_object)
 	{
-		POnBoardDevicesInfo pBIOS = (POnBoardDevicesInfo)p;
-		SmbiosTable smbios_table(pBIOS->Header.Type, pBIOS->Header.Handle);
+		PSMBIOSHEADER pBIOS = (PSMBIOSHEADER)p;
+		SmbiosTable smbios_table(pBIOS->Type, pBIOS->Handle);
 
-		// Json Test
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("devicen_type"),       GetJsonString(pBIOS->devicen_type, 1));
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("description_string"), GetJsonString(p, pBIOS->description_string));
+		UpdateJsonObject(json_object, pBIOS->Type, pBIOS->Handle, (UCHAR*)p);
 		
 		return smbios_table;																				             
 	}

@@ -158,7 +158,7 @@ void SmbiosMember::InitialType3Table()
 		{"contained_element_record_length", MemberProp(VAL_TYPE, 0x14, 1, false)},
 		// Below these two properties, please refer to the datasheet.
 		// Because these two properties some info is dynamic.
-		{"contained_elements",              MemberProp(VAL_TYPE, 0x15, 1, false)},
+		{"contained_elements",              MemberProp(VAL_TYPE, 0x15, 1, false, true)},
 		{"sku_number",                      MemberProp(STR_TYPE, 0x15, 1, true)}
 	};
 }
