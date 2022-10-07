@@ -169,11 +169,18 @@
     <ClInclude Include="ReadComponent\Parser.h" />
     <ClInclude Include="ReadComponent\ParserType0.h" />
     <ClInclude Include="ReadComponent\ParserType1.h" />
+    <ClInclude Include="ReadComponent\ParserType10.h" />
     <ClInclude Include="ReadComponent\ParserType11.h" />
+    <ClInclude Include="ReadComponent\ParserType12.h" />
+    <ClInclude Include="ReadComponent\ParserType13.h" />
     <ClInclude Include="ReadComponent\ParserType16.h" />
     <ClInclude Include="ReadComponent\ParserType17.h" />
     <ClInclude Include="ReadComponent\ParserType2.h" />
     <ClInclude Include="ReadComponent\ParserType3.h" />
+    <ClInclude Include="ReadComponent\ParserType4.h" />
+    <ClInclude Include="ReadComponent\ParserType7.h" />
+    <ClInclude Include="ReadComponent\ParserType8.h" />
+    <ClInclude Include="ReadComponent\ParserType9.h" />
     <ClInclude Include="ReadComponent\smbios.h" />
     <ClInclude Include="ReadComponent\SmbiosData.h" />
     <ClInclude Include="ReadComponent\SmbiosStructure.h" />
@@ -194,11 +201,18 @@
     </ClCompile>
     <ClCompile Include="ReadComponent\ParserType0.cpp" />
     <ClCompile Include="ReadComponent\ParserType1.cpp" />
+    <ClCompile Include="ReadComponent\ParserType10.cpp" />
     <ClCompile Include="ReadComponent\ParserType11.cpp" />
+    <ClCompile Include="ReadComponent\ParserType12.cpp" />
+    <ClCompile Include="ReadComponent\ParserType13.cpp" />
     <ClCompile Include="ReadComponent\ParserType16.cpp" />
     <ClCompile Include="ReadComponent\ParserType17.cpp" />
     <ClCompile Include="ReadComponent\ParserType2.cpp" />
     <ClCompile Include="ReadComponent\ParserType3.cpp" />
+    <ClCompile Include="ReadComponent\ParserType4.cpp" />
+    <ClCompile Include="ReadComponent\ParserType7.cpp" />
+    <ClCompile Include="ReadComponent\ParserType8.cpp" />
+    <ClCompile Include="ReadComponent\ParserType9.cpp" />
     <ClCompile Include="ReadComponent\smbios.cpp" />
     <ClCompile Include="ReadComponent\SmbiosTable.cpp" />
     <ClCompile Include="WriteComponent\SmbiosEditor.cpp" />

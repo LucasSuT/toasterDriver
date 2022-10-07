@@ -1,7 +1,7 @@
 #pragma once
 #include "Parser.h"
 
-class ParserType0 : public Parser
+class ParserType12 : public Parser
 {
 public:
 	SmbiosTable Parse(void* p, nlohmann::ordered_json& json_object)
@@ -11,7 +11,11 @@ public:
 
 		UpdateJsonObject(json_object, pBIOS->Type, pBIOS->Handle, (UCHAR*)p);
 
+		/*if ( pBIOS->count)
+		{
+			UpdateJsonObject(json_object, pBIOS->Type, pBIOS->Handle, GetJsonOEMString(p));
+		}*/
+
 		return smbios_table;
 	}
 };
-

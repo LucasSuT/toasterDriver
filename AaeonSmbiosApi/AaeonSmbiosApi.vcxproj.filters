@@ -105,6 +105,27 @@
     <ClInclude Include="ReadComponent\ParserType17.h">
       <Filter>ReadComponent\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ReadComponent\ParserType4.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadComponent\ParserType7.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadComponent\ParserType8.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadComponent\ParserType9.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadComponent\ParserType10.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadComponent\ParserType12.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadComponent\ParserType13.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -150,6 +171,27 @@
       <Filter>ReadComponent\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ReadComponent\ParserType17.cpp">
+      <Filter>ReadComponent\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadComponent\ParserType4.cpp">
+      <Filter>ReadComponent\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadComponent\ParserType7.cpp">
+      <Filter>ReadComponent\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadComponent\ParserType8.cpp">
+      <Filter>ReadComponent\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadComponent\ParserType9.cpp">
+      <Filter>ReadComponent\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadComponent\ParserType10.cpp">
+      <Filter>ReadComponent\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadComponent\ParserType12.cpp">
+      <Filter>ReadComponent\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadComponent\ParserType13.cpp">
       <Filter>ReadComponent\Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,19 +1,18 @@
 #pragma once
-#include <unordered_map>
 #include <vector>
 #include "MemberProp.h"
-
+#include <utility>
+#include <String>
 using std::string;
-using std::unordered_map;
 using std::vector;
-
+using std::pair;
 // SMBIOS Member may be string, value or NUM_STR(Type11,Type12) type.
 #define VAL_TYPE 0
 #define STR_TYPE 1
 #define NUM_STR_TYPE 2
 
 typedef string MemberName;
-typedef unordered_map<MemberName, MemberProp> SmbiosDictionary;
+typedef vector< pair<MemberName, MemberProp> > SmbiosDictionary;
 
 class SmbiosMember
 {

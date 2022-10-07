@@ -121,12 +121,23 @@ public:
 
 		return oem_string;
 	}
-	void UpdateJsonObject(nlohmann::ordered_json& json_object, BYTE type, WORD handle, string key, string value)
+	void UpdateJsonObject(nlohmann::ordered_json& json_object, BYTE type, WORD handle, UCHAR* p)
 	{
+		SmbiosMember* smbios_member = &SmbiosMember::GetInstance();
+		
 		string json_type = "Table_" + to_string(type);
 		string json_handle = "Handle_" + to_string(handle);
-
-		json_object[json_type][json_handle][key] = PackageMemberObject(type, key, value);
+		int length = ((PSMBIOSHEADER)p)->Length;
+		for (const auto& s : smbios_member->smbios_tables[type])
+		{	
+			if (length < s.second.offset_ || s.second.is_extra_processing_ == true)
+				break;
+			if (s.second.data_type_ == VAL_TYPE)
+				json_object[json_type][json_handle][s.first] = PackageMemberObject(type, s.first, GetJsonString(p[s.second.offset_], s.second.length_), s.second);
+			else if(s.second.data_type_ == STR_TYPE)
+				json_object[json_type][json_handle][s.first] = PackageMemberObject(type, s.first, GetJsonString((void*)p, p[s.second.offset_]), s.second);
+			
+		}
 	}
 	void UpdateJsonObject(nlohmann::ordered_json& json_object, BYTE type, WORD handle, nlohmann::ordered_json json_value)
 	{
@@ -154,30 +165,26 @@ private:
 	{
 		return (char*)p + ((PSMBIOSHEADER)p)->Length;
 	}
-	nlohmann::ordered_json PackageMemberObject(BYTE type, string key, string value)
+	nlohmann::ordered_json PackageMemberObject(BYTE type, string key, string value, MemberProp prop)
 	{
 		nlohmann::ordered_json root;
-		SmbiosMemberInfo* member_info = new SmbiosMemberInfo();
-		AaeonSmbiosGetMemInfo((SmbiosType)type, key.c_str(), member_info);
-
 		root = nlohmann::ordered_json::object(
 			{
 				{"value", value},
-				{"data_type", member_info->data_type},
-				{"offset", member_info->offset},
-				{"length", member_info->length},
-				{"can_be_modified", member_info->can_be_modified}
+				{"data_type", prop.data_type_},
+				{"offset", prop.offset_},
+				{"length", prop.length_},
+				{"can_be_modified", prop.can_be_modified_}
 			}
 		);
-
-		delete member_info;
+		
 		return root;
 	}
 	nlohmann::ordered_json PackageOemMemberObject(BYTE type, nlohmann::ordered_json oem_json_value)
 	{
 		nlohmann::ordered_json root;
 		SmbiosMemberInfo* member_info = new SmbiosMemberInfo();
-		AaeonSmbiosGetMemInfo((SmbiosType)type, "string", member_info);
+		//AaeonSmbiosGetMemInfo((SmbiosType)type, "string", member_info);
 
 		for (auto itr = oem_json_value.begin(); itr != oem_json_value.end(); ++itr)
 		{
