@@ -1,7 +1,7 @@
 #pragma once
 #include "Parser.h"
 
-class ParserType11 : public Parser
+class ParserType12 : public Parser
 {
 public:
 	SmbiosTable Parse(void* p, nlohmann::ordered_json& json_object)
@@ -17,7 +17,7 @@ public:
 		unsigned int n = 0;
 		std::istringstream istr1(count);
 		istr1 >> std::hex >> n;
-		if ( n )
+		if (n)
 		{
 			UpdateJsonObject(json_object, pBIOS->Type, pBIOS->Handle, GetJsonOEMString(p));
 		}

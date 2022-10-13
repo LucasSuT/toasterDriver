@@ -5,52 +5,33 @@ class ParserType3 : public Parser
 {
 	SmbiosTable Parse(void* p, nlohmann::ordered_json& json_object)
 	{
-		PSystemEnclosure pBIOS = (PSystemEnclosure)p;
-		SmbiosTable smbios_table(pBIOS->Header.Type, pBIOS->Header.Handle);
+		PSMBIOSHEADER pBIOS = (PSMBIOSHEADER)p;
+		SmbiosTable smbios_table(pBIOS->Type, pBIOS->Handle);
+		string json_type = "Table_" + to_string(pBIOS->Type);
+		string json_handle = "Handle_" + to_string(pBIOS->Handle);
 
-		smbios_table.Add(ToLowerCase("Manufacturer"),                 SmbiosData(true, GetString(p, pBIOS->Manufacturer)));
-		smbios_table.Add(ToLowerCase("Type"),                         SmbiosData(false, ToVector(pBIOS->Type, 1)));
-		smbios_table.Add(ToLowerCase("Version"),                      SmbiosData(true, GetString(p, pBIOS->Version)));
-		smbios_table.Add(ToLowerCase("SerialNumber"),                 SmbiosData(true, GetString(p, pBIOS->SN)));
-		smbios_table.Add(ToLowerCase("AssetTag"),                     SmbiosData(true, GetString(p, pBIOS->AssetTag)));
-		smbios_table.Add(ToLowerCase("BootupState"),                  SmbiosData(false, ToVector(pBIOS->BootupState, 1)));
-		smbios_table.Add(ToLowerCase("PowerSupplyState"),             SmbiosData(false, ToVector(pBIOS->PowerSupplyState, 1)));
-		smbios_table.Add(ToLowerCase("ThermalState"),                 SmbiosData(false, ToVector(pBIOS->ThermalState, 1)));
-		smbios_table.Add(ToLowerCase("SecurityStatus"),               SmbiosData(false, ToVector(pBIOS->SecurityStatus, 1)));
-		smbios_table.Add(ToLowerCase("OemDefined"),                   SmbiosData(false, ToVector(pBIOS->OEMDefine, 4)));
-		smbios_table.Add(ToLowerCase("Height"),                       SmbiosData(false, ToVector(pBIOS->Height, 1)));
-		smbios_table.Add(ToLowerCase("NumberofPowerCords"),           SmbiosData(false, ToVector(pBIOS->NumPowerCord, 1)));
-		smbios_table.Add(ToLowerCase("ContainedElementCount"),        SmbiosData(false, ToVector(pBIOS->ElementCount, 1)));
-		smbios_table.Add(ToLowerCase("ContainedElementRecordLength"), SmbiosData(false, ToVector(pBIOS->ElementRecordLength, 1)));
-		smbios_table.Add(ToLowerCase("ContainedElements"),            SmbiosData(false, ToVector(pBIOS->pElements, 1)));
+		//Stop after ContainedElementRecordLength offset: 0x14
+		UpdateJsonObject(json_object, pBIOS->Type, pBIOS->Handle, (UCHAR*)p);
 
-		// Json Test
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("manufacturer"),                    GetJsonString(p, pBIOS->Manufacturer));
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("type"),                            GetJsonString(pBIOS->Type, 1));
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("version"),                         GetJsonString(p, pBIOS->Version));
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("serial_number"),                   GetJsonString(p, pBIOS->SN));
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("asset_tag"),                       GetJsonString(p, pBIOS->AssetTag));
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("bootup_state"),                    GetJsonString(pBIOS->BootupState, 1));
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("power_supply_state"),              GetJsonString(pBIOS->PowerSupplyState, 1));
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("thermal_state"),                   GetJsonString(pBIOS->ThermalState, 1));
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("security_status"),                 GetJsonString(pBIOS->SecurityStatus, 1));
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("oem_defined"),                     GetJsonString(pBIOS->OEMDefine, 4));
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("height"),                          GetJsonString(pBIOS->Height, 1));
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("number_of_power_cords"),           GetJsonString(pBIOS->NumPowerCord, 1));
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("contained_element_count"),         GetJsonString(pBIOS->ElementCount, 1));
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("contained_element_record_length"), GetJsonString(pBIOS->ElementRecordLength, 1));
-
+		//ContainedElementCount: value
+		string ContainedElementCount = json_object[json_type][json_handle]["contained_element_count"]["value"].get<std::string>();
+		//ContainedElementRecordLength: value
+		string ContainedElementRecordLength = json_object[json_type][json_handle]["contained_element_record_length"]["value"].get<std::string>();
+		unsigned int n = 0, m = 0;
+		std::istringstream istr1(ContainedElementCount);
+		istr1 >> std::hex >> n;
+		std::istringstream istr2(ContainedElementRecordLength);
+		istr2 >> std::hex >> m;
 		// Deal with contained elements
 		// Can have 0 to (ContainedElementCount * ContainedElementRecordLength) contained elements
-		int contained_elements_bytes = pBIOS->ElementCount * pBIOS->ElementRecordLength;
-		int sku_number_offset = 0x15 + contained_elements_bytes;
+		int contained_elements_bytes = n * m;
+		// If contained_elements_bytes == 0, contained_elements does not exist
 		if ( contained_elements_bytes != 0 )
 		{
-			UCHAR* contained_element_offset = (UCHAR*)p + 0x15;
-			UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("contained_elements"), GetJsonString(contained_element_offset, contained_elements_bytes));
+			//contained_elements: vector index = 14
+			UpdateNewLengthJsonObject(json_object, pBIOS->Type, pBIOS->Handle, (UCHAR*)p, 14, contained_elements_bytes);
 		}
-
-		UpdateJsonObject(json_object, pBIOS->Header.Type, pBIOS->Header.Handle, ToLowerCase("sku_number"), GetJsonString(p, *((char*)p + sku_number_offset)));
+		UpdateNewOffsetJsonObject(json_object, pBIOS->Type, pBIOS->Handle, (UCHAR*)p, 15, contained_elements_bytes);
 
 		return smbios_table;
 	}
