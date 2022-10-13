@@ -274,8 +274,8 @@ void SmbiosMember::InitialType10Table()
 {
 	type10_table =
 	{
-		{"devicen_type",             MemberProp(VAL_TYPE, 0x4,  1, false)},
-		{"description_string",       MemberProp(STR_TYPE, 0x5,  1, false)},
+		{"devicen_type",             MemberProp(VAL_TYPE, 0x4,  1, false, true)},
+		{"description_string",       MemberProp(STR_TYPE, 0x5,  1, false, true)},
 	};
 }
 
@@ -311,8 +311,8 @@ void SmbiosMember::InitialType14Table()
 	type14_table =
 	{
 		{"group_name",  MemberProp(STR_TYPE, 0x4,  1, false)},
-		{"item_type",   MemberProp(VAL_TYPE, 0x5,  1, false)},
-		{"item_handle", MemberProp(VAL_TYPE, 0x6,  2, false)}
+		{"item_type",   MemberProp(VAL_TYPE, 0x5,  1, false, true)},
+		{"item_handle", MemberProp(VAL_TYPE, 0x6,  2, false, true)}
 	};
 }
 void SmbiosMember::InitialType15Table()
