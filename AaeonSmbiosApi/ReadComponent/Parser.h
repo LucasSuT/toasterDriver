@@ -82,7 +82,7 @@ public:
 		const char* str = toPointString(p);
 		return LocateStringA(str, offset);
 	}
-	string GetJsonString(UCHAR* s, int size)
+	/*string GetJsonString(UCHAR* s, int size)
 	{
 		stringstream ss;
 		string json_string;
@@ -106,6 +106,24 @@ public:
 		ss << "0x" << hex << s;
 
 		return ss.str();
+	}*/
+	string GetJsonString(UCHAR* s, int size)
+	{
+		stringstream ss;
+		string json_string;
+
+		for (int i = 0; i < size; ++i)
+		{
+			char low = s[i] & 0x0F;
+			char high = (s[i] & 0xF0) >> 4;
+
+			ss << "0x" << hex << (high & 0x0F) << (low & 0x0F) << " ";
+		}
+
+		json_string = ss.str();
+		json_string.pop_back();
+
+		return json_string;
 	}
 	nlohmann::ordered_json GetJsonOEMString(void* p)
 	{
@@ -124,20 +142,91 @@ public:
 	void UpdateJsonObject(nlohmann::ordered_json& json_object, BYTE type, WORD handle, UCHAR* p)
 	{
 		SmbiosMember* smbios_member = &SmbiosMember::GetInstance();
-		
+		SmbiosDictionary smbios_tables = smbios_member->smbios_tables[type];
+		MemberName member_name = "";
+		MemberProp member_prop;
 		string json_type = "Table_" + to_string(type);
 		string json_handle = "Handle_" + to_string(handle);
-		int length = ((PSMBIOSHEADER)p)->Length;
-		for (const auto& s : smbios_member->smbios_tables[type])
+		BYTE length = ((PSMBIOSHEADER)p)->Length;
+		for (const auto& s : smbios_tables)
 		{	
-			if (length < s.second.offset_ || s.second.is_extra_processing_ == true)
-				break;
+			member_name = s.first;
+			member_prop = s.second;
+			if (length <= member_prop.offset_ || member_prop.is_extra_processing_ == true)
+				return;
 			if (s.second.data_type_ == VAL_TYPE)
-				json_object[json_type][json_handle][s.first] = PackageMemberObject(type, s.first, GetJsonString(p[s.second.offset_], s.second.length_), s.second);
+				json_object[json_type][json_handle][member_name] = PackageMemberObject(GetJsonString(&(p[member_prop.offset_]), member_prop.length_), member_prop);
 			else if(s.second.data_type_ == STR_TYPE)
-				json_object[json_type][json_handle][s.first] = PackageMemberObject(type, s.first, GetJsonString((void*)p, p[s.second.offset_]), s.second);
-			
+				json_object[json_type][json_handle][member_name] = PackageMemberObject(GetJsonString((void*)p, p[member_prop.offset_]), member_prop);
 		}
+	}
+	void UpdateNewLengthJsonObject(nlohmann::ordered_json& json_object, BYTE type, WORD handle, UCHAR* p, int index, int new_length)
+	{
+		SmbiosMember* smbios_member = &SmbiosMember::GetInstance();
+		SmbiosDictionary smbios_tables = smbios_member->smbios_tables[type];
+		MemberName member_name = "";
+		MemberProp member_prop;
+		string json_type = "Table_" + to_string(type);
+		string json_handle = "Handle_" + to_string(handle);
+		BYTE length = ((PSMBIOSHEADER)p)->Length;
+
+		member_name = smbios_tables[index].first;
+		member_prop = smbios_tables[index].second;
+		member_prop.length_ = new_length;
+		if (length <= member_prop.offset_)
+			return;
+		if (member_prop.data_type_ == VAL_TYPE)
+			json_object[json_type][json_handle][member_name] = PackageMemberObject(GetJsonString(&(p[member_prop.offset_]), member_prop.length_), member_prop);
+		else if (member_prop.data_type_ == STR_TYPE)
+			json_object[json_type][json_handle][member_name] = PackageMemberObject(GetJsonString((void*)p, p[member_prop.offset_]), member_prop);
+		
+	}
+	void UpdateNewOffsetJsonObject(nlohmann::ordered_json& json_object, BYTE type, WORD handle, UCHAR* p, int index, int add_offset)
+	{
+		SmbiosMember* smbios_member = &SmbiosMember::GetInstance();
+		SmbiosDictionary smbios_tables = smbios_member->smbios_tables[type];
+		MemberName member_name = "";
+		MemberProp member_prop;
+		string json_type = "Table_" + to_string(type);
+		string json_handle = "Handle_" + to_string(handle);
+		BYTE length = ((PSMBIOSHEADER)p)->Length, smbios_tables_size = (BYTE)smbios_tables.size();
+		for (SmbiosDictionary::iterator iter = smbios_tables.begin() + index; iter != smbios_tables.end(); iter++)
+		{
+			member_name = iter->first;
+			member_prop = iter->second;
+			member_prop.offset_ += add_offset;
+			if (length <= member_prop.offset_ || member_prop.is_extra_processing_ == true)
+				return;
+			if (member_prop.data_type_ == VAL_TYPE)
+				json_object[json_type][json_handle][member_name] = PackageMemberObject(GetJsonString(&(p[member_prop.offset_]), member_prop.length_), member_prop);
+			else if (member_prop.data_type_ == STR_TYPE)
+				json_object[json_type][json_handle][member_name] = PackageMemberObject(GetJsonString((void*)p, p[member_prop.offset_]), member_prop);
+		}
+	}
+	void UpdateNewNameJsonObject(nlohmann::ordered_json& json_object, BYTE type, WORD handle, UCHAR* p, int index, int name_number, int add_offset)
+	{
+		SmbiosMember* smbios_member = &SmbiosMember::GetInstance();
+		SmbiosDictionary smbios_tables = smbios_member->smbios_tables[type];
+		MemberName member_name = "";
+		MemberProp member_prop;
+		string json_type = "Table_" + to_string(type);
+		string json_handle = "Handle_" + to_string(handle);
+		BYTE length = ((PSMBIOSHEADER)p)->Length;
+
+		member_name = smbios_tables[index].first + "_" + to_string(name_number);
+		member_prop = smbios_tables[index].second;
+		member_prop.offset_ += add_offset;
+		if (length <= member_prop.offset_)
+			return;
+		if (member_prop.data_type_ == VAL_TYPE)
+		{
+			json_object[json_type][json_handle][member_name] = PackageMemberObject(GetJsonString(&(p[member_prop.offset_]), member_prop.length_), member_prop);
+		}
+		else if (member_prop.data_type_ == STR_TYPE)
+		{
+			json_object[json_type][json_handle][member_name] = PackageMemberObject(GetJsonString((void*)p, p[member_prop.offset_]), member_prop);
+		}
+
 	}
 	void UpdateJsonObject(nlohmann::ordered_json& json_object, BYTE type, WORD handle, nlohmann::ordered_json json_value)
 	{
@@ -165,7 +254,7 @@ private:
 	{
 		return (char*)p + ((PSMBIOSHEADER)p)->Length;
 	}
-	nlohmann::ordered_json PackageMemberObject(BYTE type, string key, string value, MemberProp prop)
+	nlohmann::ordered_json PackageMemberObject(string value, MemberProp prop)
 	{
 		nlohmann::ordered_json root;
 		root = nlohmann::ordered_json::object(
@@ -183,24 +272,24 @@ private:
 	nlohmann::ordered_json PackageOemMemberObject(BYTE type, nlohmann::ordered_json oem_json_value)
 	{
 		nlohmann::ordered_json root;
-		SmbiosMemberInfo* member_info = new SmbiosMemberInfo();
-		//AaeonSmbiosGetMemInfo((SmbiosType)type, "string", member_info);
-
+		SmbiosMember* smbios_member = &SmbiosMember::GetInstance();
+		SmbiosDictionary smbios_tables = smbios_member->smbios_tables[type];
+		//Get string member Prop
+		MemberProp member_prop = smbios_tables[1].second;
 		for (auto itr = oem_json_value.begin(); itr != oem_json_value.end(); ++itr)
 		{
 			nlohmann::ordered_json each_string_object = nlohmann::ordered_json::object(
 				{
 					{"value", *itr},
-					{"data_type", member_info->data_type},
-					{"offset", member_info->offset++},
-					{"length", member_info->length},
-					{"can_be_modified", member_info->can_be_modified}
+					{"data_type", member_prop.data_type_},
+					{"offset", member_prop.offset_++},
+					{"length", member_prop.length_},
+					{"can_be_modified", member_prop.can_be_modified_}
 				}
 			);
 			root[itr.key()] = each_string_object;
 		}
 
-		delete member_info;
 		return root;
 	}
 };

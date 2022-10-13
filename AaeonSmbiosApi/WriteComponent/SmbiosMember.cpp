@@ -262,7 +262,7 @@ void SmbiosMember::InitialType9Table()
 		{"device_function_number", MemberProp(VAL_TYPE, 0x10, 1, false)},
 		{"data_bus_width",         MemberProp(VAL_TYPE, 0x11, 1, false)},
 		{"peer_grouping_count",    MemberProp(VAL_TYPE, 0x12, 1, false)},
-		{"peer_groups",            MemberProp(VAL_TYPE, 0x13, 1, false)},
+		{"peer_groups",            MemberProp(VAL_TYPE, 0x13, 1, false, true)},
 		{"slot_information",       MemberProp(VAL_TYPE, 0x13, 1, false)},
 		{"slot_physical_width",    MemberProp(VAL_TYPE, 0x14, 1, false)},
 		{"slot_pitch",             MemberProp(VAL_TYPE, 0x15, 2, false)},
@@ -274,7 +274,6 @@ void SmbiosMember::InitialType10Table()
 {
 	type10_table =
 	{
-		{"number_of_onboard_device", MemberProp(VAL_TYPE, 0x4,  1, false)},
 		{"devicen_type",             MemberProp(VAL_TYPE, 0x4,  1, false)},
 		{"description_string",       MemberProp(STR_TYPE, 0x5,  1, false)},
 	};
@@ -285,7 +284,7 @@ void SmbiosMember::InitialType11Table()
 	type11_table =
 	{
 		{"count",  MemberProp(VAL_TYPE,     0x04, 1, false)},
-		{"string", MemberProp(NUM_STR_TYPE, 0x00, 1, true)}
+		{"string", MemberProp(NUM_STR_TYPE, 0x00, 1, true, true)}
 	};
 }
 
@@ -294,7 +293,7 @@ void SmbiosMember::InitialType12Table()
 	type12_table =
 	{
 		{"count",  MemberProp(VAL_TYPE,     0x04, 1, false)},
-		{"string", MemberProp(NUM_STR_TYPE, 0x00, 1, true)}
+		{"string", MemberProp(NUM_STR_TYPE, 0x00, 1, true, true)}
 	};
 }
 void SmbiosMember::InitialType13Table()
@@ -331,20 +330,20 @@ void SmbiosMember::InitialType16Table()
 		{"maximum_capacity",                MemberProp(VAL_TYPE, 0x7, 4, false)},
 		{"memory_error_information_handle", MemberProp(VAL_TYPE, 0xB, 2, false)},
 		{"number_of_memory_devices",        MemberProp(VAL_TYPE, 0xD, 2, false)},
-		{"extended_maximum_capacity",       MemberProp(VAL_TYPE, 0xF, 4, false)}
+		{"extended_maximum_capacity",       MemberProp(VAL_TYPE, 0xF, 8, false)}
 	};
 }
 void SmbiosMember::InitialType17Table()
 {
 	type17_table =
 	{
-		{"physical_memory_array_handle",                MemberProp(VAL_TYPE, 0x4, 1, false)},
-		{"memory_error_information_handle",             MemberProp(VAL_TYPE, 0x6, 2, false)},
-		{"total_width",                                 MemberProp(VAL_TYPE, 0x8, 2, false)},
-		{"data_width",                                  MemberProp(VAL_TYPE, 0xA, 1, false)},
-		{"size",                                        MemberProp(VAL_TYPE, 0xC, 2, false)},
-		{"form_factor",                                 MemberProp(VAL_TYPE, 0xE, 2, false)},
-		{"device_set",                                  MemberProp(VAL_TYPE, 0xF, 1, false)},
+		{"physical_memory_array_handle",                MemberProp(VAL_TYPE, 0x4,  2, false)},
+		{"memory_error_information_handle",             MemberProp(VAL_TYPE, 0x6,  2, false)},
+		{"total_width",                                 MemberProp(VAL_TYPE, 0x8,  2, false)},
+		{"data_width",                                  MemberProp(VAL_TYPE, 0xA,  2, false)},
+		{"size",                                        MemberProp(VAL_TYPE, 0xC,  2, false)},
+		{"form_factor",                                 MemberProp(VAL_TYPE, 0xE,  1, false)},
+		{"device_set",                                  MemberProp(VAL_TYPE, 0xF,  1, false)},
 		{"device_locator",                              MemberProp(STR_TYPE, 0x10, 1, false)},
 		{"bank_locator",                                MemberProp(STR_TYPE, 0x11, 1, false)},
 		{"memory_type",                                 MemberProp(VAL_TYPE, 0x12, 1, false)},
@@ -361,7 +360,7 @@ void SmbiosMember::InitialType17Table()
 		{"maximum_voltage",                             MemberProp(VAL_TYPE, 0x24, 2, false)},
 		{"configured_voltage",                          MemberProp(VAL_TYPE, 0x26, 2, false)},
 		//3.6
-		/*{"Memory_Technology",                           MemberProp(VAL_TYPE, 0x28, 1, false)},
+		{"Memory_Technology",                           MemberProp(VAL_TYPE, 0x28, 1, false)},
 		{"Memory_Operating_Mode_Capability",            MemberProp(VAL_TYPE, 0x29, 2, false)},
 		{"Firmware_Version",                            MemberProp(STR_TYPE, 0x2B, 1, false)},
 		{"Module_Manufacturer_ID",                      MemberProp(VAL_TYPE, 0x2C, 2, false)},
@@ -373,7 +372,7 @@ void SmbiosMember::InitialType17Table()
 		{"Cache_Size",                                  MemberProp(VAL_TYPE, 0x44, 8, false)},
 		{"Logical_Size",                                MemberProp(VAL_TYPE, 0x4C, 8, false)},
 		{"Extended_Speed",                              MemberProp(VAL_TYPE, 0x54, 4, false)},
-		{"Extended_Configured_Memory_Speed",            MemberProp(VAL_TYPE, 0x58, 4, false)},*/
+		{"Extended_Configured_Memory_Speed",            MemberProp(VAL_TYPE, 0x58, 4, false)},
 	};
 }
 

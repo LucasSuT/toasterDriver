@@ -19,7 +19,7 @@ public:
 	}
 
 	MemberProp(unsigned char data_type, unsigned char offset, unsigned char length, bool can_be_modified)
-		: data_type_(data_type), offset_(offset), length_(length), can_be_modified_(can_be_modified){}
+		: data_type_(data_type), offset_(offset), length_(length), can_be_modified_(can_be_modified), is_extra_processing_(false){}
 	MemberProp(unsigned char data_type, unsigned char offset, unsigned char length, bool can_be_modified, bool is_extra_processing)
 		: data_type_(data_type), offset_(offset), length_(length), can_be_modified_(can_be_modified), is_extra_processing_(is_extra_processing){}
 };

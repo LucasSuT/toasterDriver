@@ -7,25 +7,31 @@ class ParserType3 : public Parser
 	{
 		PSMBIOSHEADER pBIOS = (PSMBIOSHEADER)p;
 		SmbiosTable smbios_table(pBIOS->Type, pBIOS->Handle);
+		string json_type = "Table_" + to_string(pBIOS->Type);
+		string json_handle = "Handle_" + to_string(pBIOS->Handle);
 
 		//Stop after ContainedElementRecordLength offset: 0x14
 		UpdateJsonObject(json_object, pBIOS->Type, pBIOS->Handle, (UCHAR*)p);
-		//ContainedElementCount: 0x13 value
-		//int n = json_object[pBIOS->Type][pBIOS->Handle]["contained_element_count"]["value"];
-		//ContainedElementRecordLength: 0x14 value
-		//int m = json_object[pBIOS->Type][pBIOS->Handle]["contained_element_record_length"]["value"];
 
+		//ContainedElementCount: value
+		string ContainedElementCount = json_object[json_type][json_handle]["contained_element_count"]["value"].get<std::string>();
+		//ContainedElementRecordLength: value
+		string ContainedElementRecordLength = json_object[json_type][json_handle]["contained_element_record_length"]["value"].get<std::string>();
+		unsigned int n = 0, m = 0;
+		std::istringstream istr1(ContainedElementCount);
+		istr1 >> std::hex >> n;
+		std::istringstream istr2(ContainedElementRecordLength);
+		istr2 >> std::hex >> m;
 		// Deal with contained elements
 		// Can have 0 to (ContainedElementCount * ContainedElementRecordLength) contained elements
-		//int contained_elements_bytes = n * m;
-		//int sku_number_offset = 0x15 + contained_elements_bytes;
-		/*if ( contained_elements_bytes != 0 )
+		int contained_elements_bytes = n * m;
+		// If contained_elements_bytes == 0, contained_elements does not exist
+		if ( contained_elements_bytes != 0 )
 		{
-			UCHAR* contained_element_offset = (UCHAR*)p + 0x15;
-			UpdateJsonObject(json_object, pBIOS->Type, pBIOS->Handle, ToLowerCase("contained_elements"), GetJsonString(contained_element_offset, contained_elements_bytes));
+			//contained_elements: vector index = 14
+			UpdateNewLengthJsonObject(json_object, pBIOS->Type, pBIOS->Handle, (UCHAR*)p, 14, contained_elements_bytes);
 		}
-
-		UpdateJsonObject(json_object, pBIOS->Type, pBIOS->Handle, ToLowerCase("sku_number"), GetJsonString(p, *((char*)p + sku_number_offset)));*/
+		UpdateNewOffsetJsonObject(json_object, pBIOS->Type, pBIOS->Handle, (UCHAR*)p, 15, contained_elements_bytes);
 
 		return smbios_table;
 	}
