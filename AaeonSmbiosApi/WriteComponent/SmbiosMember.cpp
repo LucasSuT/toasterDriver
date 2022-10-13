@@ -134,7 +134,7 @@ void SmbiosMember::InitialType2Table()
 		{"chassis_handle",                      MemberProp(VAL_TYPE, 0xB, 2, false)},
 		{"board_type",                          MemberProp(VAL_TYPE, 0xD, 1, false)},
 		{"number_of_contained_object_handles",  MemberProp(VAL_TYPE, 0xE, 1, false)},
-		{"contained_object_handles",            MemberProp(VAL_TYPE, 0xF, 2, false)}
+		{"contained_object_handles",            MemberProp(VAL_TYPE, 0xF, 2, false, true)}
 	};
 }
 
