@@ -8,6 +8,7 @@ class ParserType2 : public Parser
 		PSMBIOSHEADER pBIOS = (PSMBIOSHEADER)p;
 		SmbiosTable smbios_table(pBIOS->Type, pBIOS->Handle);
 
+		json_object["Table_2"]["name"] = "Baseboard (or Module) Information";
 		UpdateJsonObject(json_object, pBIOS->Type, pBIOS->Handle, (UCHAR*)p);
 
 		// To add "ContainedObjectHandles" this member, need to check "NumberOfContainedObjectHandles"

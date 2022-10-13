@@ -9,11 +9,11 @@ public:
 		PSMBIOSHEADER pBIOS = (PSMBIOSHEADER)p;
 		SmbiosTable smbios_table(pBIOS->Type, pBIOS->Handle);
 
+		json_object["Table_11"]["name"] = "OEM Strings";
 		UpdateJsonObject(json_object, pBIOS->Type, pBIOS->Handle, (UCHAR*)p);
-		string json_type = "Table_" + to_string(pBIOS->Type);
 		string json_handle = "Handle_" + to_string(pBIOS->Handle);
 		//Get Json count value
-		string count = json_object[json_type][json_handle]["count"]["value"];
+		string count = json_object["Table_11"][json_handle]["count"]["value"];
 		unsigned int n = 0;
 		std::istringstream istr1(count);
 		istr1 >> std::hex >> n;

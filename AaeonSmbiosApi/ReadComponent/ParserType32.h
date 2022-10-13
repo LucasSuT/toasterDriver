@@ -9,6 +9,7 @@ public:
 		PSMBIOSHEADER pBIOS = (PSMBIOSHEADER)p;
 		SmbiosTable smbios_table(pBIOS->Type, pBIOS->Handle);
 
+		json_object["Table_32"]["name"] = "System Boot Information";
 		UpdateJsonObject(json_object, pBIOS->Type, pBIOS->Handle, (UCHAR*)p);
 
 		// boot_status: vector index = 1

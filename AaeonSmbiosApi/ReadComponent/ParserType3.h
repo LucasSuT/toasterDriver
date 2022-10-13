@@ -7,16 +7,16 @@ class ParserType3 : public Parser
 	{
 		PSMBIOSHEADER pBIOS = (PSMBIOSHEADER)p;
 		SmbiosTable smbios_table(pBIOS->Type, pBIOS->Handle);
-		string json_type = "Table_" + to_string(pBIOS->Type);
 		string json_handle = "Handle_" + to_string(pBIOS->Handle);
 
+		json_object["Table_3"]["name"] = "System Enclosure or Chassis";
 		//Stop after ContainedElementRecordLength offset: 0x14
 		UpdateJsonObject(json_object, pBIOS->Type, pBIOS->Handle, (UCHAR*)p);
 
 		//ContainedElementCount: value
-		string ContainedElementCount = json_object[json_type][json_handle]["contained_element_count"]["value"].get<std::string>();
+		string ContainedElementCount = json_object["Table_3"][json_handle]["contained_element_count"]["value"].get<std::string>();
 		//ContainedElementRecordLength: value
-		string ContainedElementRecordLength = json_object[json_type][json_handle]["contained_element_record_length"]["value"].get<std::string>();
+		string ContainedElementRecordLength = json_object["Table_3"][json_handle]["contained_element_record_length"]["value"].get<std::string>();
 		unsigned int n = 0, m = 0;
 		std::istringstream istr1(ContainedElementCount);
 		istr1 >> std::hex >> n;

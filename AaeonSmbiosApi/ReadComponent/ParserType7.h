@@ -9,6 +9,7 @@ public:
 		PSMBIOSHEADER pBIOS = (PSMBIOSHEADER)p;
 		SmbiosTable smbios_table(pBIOS->Type, pBIOS->Handle);
 
+		json_object["Table_7"]["name"] = "Cache Information";
 		UpdateJsonObject(json_object, pBIOS->Type, pBIOS->Handle, (UCHAR*)p);
 		return smbios_table;																				             
 	}

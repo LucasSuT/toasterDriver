@@ -10,6 +10,7 @@ public:
 		SmbiosTable smbios_table(pBIOS->Type, pBIOS->Handle);
 		int number_of_onboard_device = (pBIOS->Length - sizeof(SMBIOSHEADER)) / 2;
 		
+		json_object["Table_10"]["name"] = "On Board Devices Information";
 		for (int i = 0; i < number_of_onboard_device; i++)
 		{
 			UpdateNewNameJsonObject(json_object, pBIOS->Type, pBIOS->Handle, (UCHAR*)p, 0, i + 1, i * 2);
