@@ -110,15 +110,19 @@ public:
 	string GetJsonString(UCHAR* s, int size)
 	{
 		stringstream ss;
-		string json_string = "0x";
+		string json_string;
 
-		for (int i = size - 1; i >= 0; --i)
+		for (int i = 0; i < size; ++i)
 		{
 			char low = s[i] & 0x0F;
 			char high = (s[i] & 0xF0) >> 4;
-			ss << hex << (high & 0x0F) << (low & 0x0F);
+
+			ss << "0x" << hex << (high & 0x0F) << (low & 0x0F) << " ";
 		}
-		json_string += ss.str();
+
+		json_string = ss.str();
+		json_string.pop_back();
+
 		return json_string;
 	}
 	nlohmann::ordered_json GetJsonOEMString(void* p)

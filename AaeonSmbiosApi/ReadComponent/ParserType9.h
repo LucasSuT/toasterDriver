@@ -12,7 +12,7 @@ public:
 		string json_handle = "Handle_" + to_string(pBIOS->Handle);
 
 		UpdateJsonObject(json_object, pBIOS->Type, pBIOS->Handle, (UCHAR*)p);
-		//Is peer_groups exist
+		//If peer_grouping_count does not exist
 		if (!json_object[json_type][json_handle].contains("peer_grouping_count"))
 			return smbios_table;
 		else
