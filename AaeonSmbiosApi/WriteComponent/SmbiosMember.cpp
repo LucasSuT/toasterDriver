@@ -500,7 +500,8 @@ void SmbiosMember::InitialType32Table()
 {
 	type32_table =
 	{
-
+		{"reserved",    MemberProp(VAL_TYPE, 0x4,  6, false)},
+		{"boot_status", MemberProp(VAL_TYPE, 0xA,  1, false, true)},
 	};
 }
 
