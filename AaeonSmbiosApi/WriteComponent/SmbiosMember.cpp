@@ -517,7 +517,10 @@ void SmbiosMember::InitialType34Table()
 {
 	type34_table =
 	{
-
+		{"description",  MemberProp(STR_TYPE, 0x4,  1, false)},
+		{"type",         MemberProp(VAL_TYPE, 0x5,  1, false)},
+		{"address",      MemberProp(VAL_TYPE, 0x6,  4, false)},
+		{"address_type", MemberProp(VAL_TYPE, 0xA,  1, false)},
 	};
 }
 
