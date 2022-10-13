@@ -528,7 +528,10 @@ void SmbiosMember::InitialType35Table()
 {
 	type35_table =
 	{
-
+		{"description",              MemberProp(STR_TYPE, 0x4,  1, false)},
+		{"management_device_handle", MemberProp(VAL_TYPE, 0x5,  2, false)},
+		{"component_handle",         MemberProp(VAL_TYPE, 0x7,  2, false)},
+		{"threshold_handle",         MemberProp(VAL_TYPE, 0x9,  2, false)},
 	};
 }
 
