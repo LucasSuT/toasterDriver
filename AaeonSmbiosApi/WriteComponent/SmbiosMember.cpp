@@ -539,7 +539,12 @@ void SmbiosMember::InitialType36Table()
 {
 	type36_table =
 	{
-
+		{"lower_threshold_non_critical",   MemberProp(VAL_TYPE, 0x4,  2, false)},
+		{"upper_threshold_non_critical",   MemberProp(VAL_TYPE, 0x6,  2, false)},
+		{"lower_threshold_critical",       MemberProp(VAL_TYPE, 0x8,  2, false)},
+		{"upper_threshold_critical",       MemberProp(VAL_TYPE, 0xA,  2, false)},
+		{"lower_threshold_nonrecoverable", MemberProp(VAL_TYPE, 0xC,  2, false)},
+		{"upper_threshold_nonrecoverable", MemberProp(VAL_TYPE, 0xE,  2, false)},
 	};
 }
 
