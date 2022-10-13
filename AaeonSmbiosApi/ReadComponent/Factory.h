@@ -14,6 +14,7 @@
 #include "ParserType14.h"
 #include "ParserType16.h"
 #include "ParserType17.h"
+#include "ParserType19.h"
 #include "ParserType29.h"
 #include "ParserType32.h"
 #include "ParserType34.h"
@@ -118,6 +119,12 @@ public:
 			case 17:
 			{
 				s = new ParserType17();
+				return s;
+				break;
+			}
+			case 19:
+			{
+				s = new ParserType19();
 				return s;
 				break;
 			}
