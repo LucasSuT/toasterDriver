@@ -274,8 +274,8 @@ void SmbiosMember::InitialType10Table()
 {
 	type10_table =
 	{
-		{"devicen_type",             MemberProp(VAL_TYPE, 0x4,  1, false)},
-		{"description_string",       MemberProp(STR_TYPE, 0x5,  1, false)},
+		{"devicen_type",             MemberProp(VAL_TYPE, 0x4,  1, false, true)},
+		{"description_string",       MemberProp(STR_TYPE, 0x5,  1, false, true)},
 	};
 }
 
@@ -310,7 +310,9 @@ void SmbiosMember::InitialType14Table()
 {
 	type14_table =
 	{
-
+		{"group_name",  MemberProp(STR_TYPE, 0x4,  1, false)},
+		{"item_type",   MemberProp(VAL_TYPE, 0x5,  1, false, true)},
+		{"item_handle", MemberProp(VAL_TYPE, 0x6,  2, false, true)}
 	};
 }
 void SmbiosMember::InitialType15Table()
@@ -388,7 +390,12 @@ void SmbiosMember::InitialType19Table()
 {
 	type19_table =
 	{
-
+		{"starting_address",          MemberProp(VAL_TYPE, 0x4,  4, false)},
+		{"ending_address",            MemberProp(VAL_TYPE, 0x8,  4, false)},
+		{"memory_array_handle",       MemberProp(VAL_TYPE, 0xC,  2, false)},
+		{"partition_width",           MemberProp(VAL_TYPE, 0xE,  1, false)},
+		{"extended_starting_address", MemberProp(VAL_TYPE, 0xF,  8, false)},
+		{"extended_ending_address",   MemberProp(VAL_TYPE, 0x17, 8, false)}
 	};
 }
 
@@ -396,7 +403,15 @@ void SmbiosMember::InitialType20Table()
 {
 	type20_table =
 	{
-
+		{"starting_address",                   MemberProp(VAL_TYPE, 0x4,   4, false)},
+		{"ending_address",                     MemberProp(VAL_TYPE, 0x8,   4, false)},
+		{"memory_device_handle",               MemberProp(VAL_TYPE, 0xC,   2, false)},
+		{"memory_array_mapped_address_handle", MemberProp(VAL_TYPE, 0xE,   2, false)},
+		{"partition_row_position",             MemberProp(VAL_TYPE, 0x10,  1, false)},
+		{"interleave_position",                MemberProp(VAL_TYPE, 0x11,  1, false)},
+		{"interleaved_data_depth",             MemberProp(VAL_TYPE, 0x12,  1, false)},
+		{"extended_starting_address",          MemberProp(VAL_TYPE, 0x13,  8, false)},
+		{"extended_ending_address",            MemberProp(VAL_TYPE, 0x1B,  8, false)}
 	};
 }
 
@@ -444,7 +459,15 @@ void SmbiosMember::InitialType26Table()
 {
 	type26_table =
 	{
-
+		{"description",         MemberProp(STR_TYPE, 0x4,   1, false)},
+		{"location_and_status", MemberProp(VAL_TYPE, 0x5,   1, false)},
+		{"maximum_value",       MemberProp(VAL_TYPE, 0x6,   2, false)},
+		{"minimum_value",       MemberProp(VAL_TYPE, 0x8,   2, false)},
+		{"resolution",          MemberProp(VAL_TYPE, 0xA,   2, false)},
+		{"tolerance",           MemberProp(VAL_TYPE, 0xC,   2, false)},
+		{"accuracy",            MemberProp(VAL_TYPE, 0xE,   2, false)},
+		{"oem_defined",         MemberProp(VAL_TYPE, 0x10,  4, false)},
+		{"nominal_value",       MemberProp(VAL_TYPE, 0x14,  2, false)}
 	};
 }
 
@@ -452,7 +475,12 @@ void SmbiosMember::InitialType27Table()
 {
 	type27_table =
 	{
-
+		{"temperature_probe_handle", MemberProp(VAL_TYPE, 0x4,   2, false)},
+		{"device_type_and_status",   MemberProp(VAL_TYPE, 0x6,   1, false)},
+		{"cooling_unit_group",       MemberProp(VAL_TYPE, 0x7,   1, false)},
+		{"oem_defined",              MemberProp(VAL_TYPE, 0x8,   4, false)},
+		{"nominal_speed",            MemberProp(VAL_TYPE, 0xC,   2, false)},
+		{"description",              MemberProp(STR_TYPE, 0xE,   1, false)}
 	};
 }
 
@@ -460,7 +488,15 @@ void SmbiosMember::InitialType28Table()
 {
 	type28_table =
 	{
-
+		{"description",         MemberProp(STR_TYPE, 0x4,   1, false)},
+		{"location_and_status", MemberProp(VAL_TYPE, 0x5,   1, false)},
+		{"maximum_value",       MemberProp(VAL_TYPE, 0x6,   2, false)},
+		{"minimum_value",       MemberProp(VAL_TYPE, 0x8,   2, false)},
+		{"resolution",          MemberProp(VAL_TYPE, 0xA,   2, false)},
+		{"tolerance",           MemberProp(VAL_TYPE, 0xC,   2, false)},
+		{"accuracy",            MemberProp(VAL_TYPE, 0xE,   2, false)},
+		{"oem_defined",         MemberProp(VAL_TYPE, 0x10,  4, false)},
+		{"nominal_value",       MemberProp(VAL_TYPE, 0x14,  2, false)}
 	};
 }
 

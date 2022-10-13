@@ -173,6 +173,7 @@
     <ClInclude Include="ReadComponent\ParserType11.h" />
     <ClInclude Include="ReadComponent\ParserType12.h" />
     <ClInclude Include="ReadComponent\ParserType13.h" />
+    <ClInclude Include="ReadComponent\ParserType14.h" />
     <ClInclude Include="ReadComponent\ParserType16.h" />
     <ClInclude Include="ReadComponent\ParserType17.h" />
     <ClInclude Include="ReadComponent\ParserType2.h" />
@@ -210,6 +211,7 @@
     <ClCompile Include="ReadComponent\ParserType11.cpp" />
     <ClCompile Include="ReadComponent\ParserType12.cpp" />
     <ClCompile Include="ReadComponent\ParserType13.cpp" />
+    <ClCompile Include="ReadComponent\ParserType14.cpp" />
     <ClCompile Include="ReadComponent\ParserType16.cpp" />
     <ClCompile Include="ReadComponent\ParserType17.cpp" />
     <ClCompile Include="ReadComponent\ParserType2.cpp" />
