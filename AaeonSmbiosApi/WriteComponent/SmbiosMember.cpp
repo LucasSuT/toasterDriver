@@ -262,8 +262,8 @@ void SmbiosMember::InitialType9Table()
 		{"device_function_number", MemberProp(VAL_TYPE, 0x10, 1, false)},
 		{"data_bus_width",         MemberProp(VAL_TYPE, 0x11, 1, false)},
 		{"peer_grouping_count",    MemberProp(VAL_TYPE, 0x12, 1, false)},
-		{"peer_groups",            MemberProp(VAL_TYPE, 0x13, 1, false)},
-		{"slot_information",       MemberProp(VAL_TYPE, 0x13, 1, false, true)},
+		{"peer_groups",            MemberProp(VAL_TYPE, 0x13, 1, false, true)},
+		{"slot_information",       MemberProp(VAL_TYPE, 0x13, 1, false)},
 		{"slot_physical_width",    MemberProp(VAL_TYPE, 0x14, 1, false)},
 		{"slot_pitch",             MemberProp(VAL_TYPE, 0x15, 2, false)},
 		{"slot_height",            MemberProp(VAL_TYPE, 0x17, 1, false)},
@@ -274,7 +274,6 @@ void SmbiosMember::InitialType10Table()
 {
 	type10_table =
 	{
-		//{"number_of_onboard_device", MemberProp(VAL_TYPE, 0x4,  1, false)},
 		{"devicen_type",             MemberProp(VAL_TYPE, 0x4,  1, false)},
 		{"description_string",       MemberProp(STR_TYPE, 0x5,  1, false)},
 	};
@@ -331,7 +330,7 @@ void SmbiosMember::InitialType16Table()
 		{"maximum_capacity",                MemberProp(VAL_TYPE, 0x7, 4, false)},
 		{"memory_error_information_handle", MemberProp(VAL_TYPE, 0xB, 2, false)},
 		{"number_of_memory_devices",        MemberProp(VAL_TYPE, 0xD, 2, false)},
-		{"extended_maximum_capacity",       MemberProp(VAL_TYPE, 0xF, 4, false)}
+		{"extended_maximum_capacity",       MemberProp(VAL_TYPE, 0xF, 8, false)}
 	};
 }
 void SmbiosMember::InitialType17Table()

@@ -169,7 +169,7 @@ public:
 		member_name = smbios_tables[index].first;
 		member_prop = smbios_tables[index].second;
 		member_prop.length_ = new_length;
-		if (length <= member_prop.offset_ || member_prop.is_extra_processing_ == true)
+		if (length <= member_prop.offset_)
 			return;
 		if (member_prop.data_type_ == VAL_TYPE)
 			json_object[json_type][json_handle][member_name] = PackageMemberObject(GetJsonString(&(p[member_prop.offset_]), member_prop.length_), member_prop);
@@ -212,7 +212,7 @@ public:
 		member_name = smbios_tables[index].first + "_" + to_string(name_number);
 		member_prop = smbios_tables[index].second;
 		member_prop.offset_ += add_offset;
-		if (length <= member_prop.offset_ || member_prop.is_extra_processing_ == true)
+		if (length <= member_prop.offset_)
 			return;
 		if (member_prop.data_type_ == VAL_TYPE)
 		{
