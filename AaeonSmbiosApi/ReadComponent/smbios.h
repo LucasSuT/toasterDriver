@@ -9,9 +9,6 @@ class SMBIOS {
 private:
 	SMBIOS() {}
 	void initialization(void);
-	UINT MajorVersion;
-	UINT MinorVersion;
-	DWORD DMIRevision;
 	vector<SmbiosTable> vec;
 	nlohmann::ordered_json json_object;
 
