@@ -100,7 +100,7 @@ void SMBIOS::initialization(void)
 			json_object["smbios_entry"]["major_version"] = to_string(pDMIData->SMBIOSMajorVersion);
 			json_object["smbios_entry"]["minor_version"] = to_string(pDMIData->SMBIOSMinorVersion);
 			json_object["smbios_entry"]["dmi_revision"] = to_string(pDMIData->DmiRevision);
-			json_object["smbios_entry"]["table_length"] = to_string(nTableLength) + "bytes";
+			json_object["smbios_entry"]["table_length_bytes"] = to_string(nTableLength);
 		}
 	}
 
