@@ -186,6 +186,7 @@
     <ClInclude Include="ReadComponent\ParserType36.h" />
     <ClInclude Include="ReadComponent\ParserType39.h" />
     <ClInclude Include="ReadComponent\ParserType4.h" />
+    <ClInclude Include="ReadComponent\ParserType41.h" />
     <ClInclude Include="ReadComponent\ParserType7.h" />
     <ClInclude Include="ReadComponent\ParserType8.h" />
     <ClInclude Include="ReadComponent\ParserType9.h" />
@@ -226,6 +227,7 @@
     <ClCompile Include="ReadComponent\ParserType36.cpp" />
     <ClCompile Include="ReadComponent\ParserType39.cpp" />
     <ClCompile Include="ReadComponent\ParserType4.cpp" />
+    <ClCompile Include="ReadComponent\ParserType41.cpp" />
     <ClCompile Include="ReadComponent\ParserType7.cpp" />
     <ClCompile Include="ReadComponent\ParserType8.cpp" />
     <ClCompile Include="ReadComponent\ParserType9.cpp" />

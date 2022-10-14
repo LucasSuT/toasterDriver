@@ -150,6 +150,9 @@
     <ClInclude Include="ReadComponent\ParserType39.h">
       <Filter>ReadComponent\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ReadComponent\ParserType41.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -240,6 +243,9 @@
       <Filter>ReadComponent\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ReadComponent\ParserType39.cpp">
+      <Filter>ReadComponent\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadComponent\ParserType41.cpp">
       <Filter>ReadComponent\Source Files</Filter>
     </ClCompile>
   </ItemGroup>

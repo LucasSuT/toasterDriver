@@ -632,6 +632,11 @@ void SmbiosMember::InitialType41Table()
 {
 	type41_table =
 	{
-
+		{"reference_designation",  MemberProp(STR_TYPE, 0x4,  1, false)},
+		{"device_type",            MemberProp(VAL_TYPE, 0x5,  1, false)},
+		{"device_type_instance",   MemberProp(VAL_TYPE, 0x6,  1, false)},
+		{"segment_group_number",   MemberProp(VAL_TYPE, 0x7,  2, false)},
+		{"bus_number",             MemberProp(VAL_TYPE, 0x9,  1, false)},
+		{"device_function_number", MemberProp(VAL_TYPE, 0xA,  1, false)},
 	};
 }
