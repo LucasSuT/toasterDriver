@@ -604,7 +604,19 @@ void SmbiosMember::InitialType39Table()
 {
 	type39_table =
 	{
-
+		{"power_unit_group",             MemberProp(VAL_TYPE, 0x4,   1, false)},
+		{"location",                     MemberProp(STR_TYPE, 0x5,   1, false)},
+		{"device_name",                  MemberProp(STR_TYPE, 0x6,   1, false)},
+		{"manufacturer",                 MemberProp(STR_TYPE, 0x7,   1, false)},
+		{"serial_number",                MemberProp(STR_TYPE, 0x8,   1, false)},
+		{"asset_tag_number",             MemberProp(STR_TYPE, 0x9,   1, false)},
+		{"model_part_number",            MemberProp(STR_TYPE, 0xA,   1, false)},
+		{"revision_level",               MemberProp(STR_TYPE, 0xB,   1, false)},
+		{"max_power_capacity",           MemberProp(VAL_TYPE, 0xC,   2, false)},
+		{"power_supply_characteristics", MemberProp(VAL_TYPE, 0xE,   2, false)},
+		{"input_voltage_probe_handle",   MemberProp(VAL_TYPE, 0x10,  2, false)},
+		{"cooling_device_handle",        MemberProp(VAL_TYPE, 0x12,  2, false)},
+		{"input_current_probe_handle",   MemberProp(VAL_TYPE, 0x14,  2, false)},
 	};
 }
 
