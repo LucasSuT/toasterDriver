@@ -2,7 +2,7 @@
 #include "Parser.h"
 #include "SmbiosStructure.h"
 
-class ParserType19 : public Parser
+class ParserType27 : public Parser
 {
 public:
 };

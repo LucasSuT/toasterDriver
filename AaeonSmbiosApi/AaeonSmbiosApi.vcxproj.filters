@@ -156,6 +156,18 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ReadComponent\ParserType20.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadComponent\ParserType26.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadComponent\ParserType27.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadComponent\ParserType28.h">
+      <Filter>ReadComponent\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -256,5 +268,17 @@
     <ResourceCompile Include="AaeonSmbiosApi.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+    <ClCompile Include="ReadComponent\ParserType20.cpp">
+      <Filter>ReadComponent\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadComponent\ParserType26.cpp">
+      <Filter>ReadComponent\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadComponent\ParserType27.cpp">
+      <Filter>ReadComponent\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadComponent\ParserType28.cpp">
+      <Filter>ReadComponent\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
