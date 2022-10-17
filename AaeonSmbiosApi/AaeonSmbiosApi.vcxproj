@@ -194,6 +194,7 @@
     <ClInclude Include="ReadComponent\SmbiosData.h" />
     <ClInclude Include="ReadComponent\SmbiosStructure.h" />
     <ClInclude Include="ReadComponent\SmbiosTable.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="WriteComponent\MemberProp.h" />
     <ClInclude Include="WriteComponent\SmbiosEditor.h" />
     <ClInclude Include="WriteComponent\SmbiosMember.h" />
@@ -236,6 +237,9 @@
     <ClCompile Include="WriteComponent\SmbiosEditor.cpp" />
     <ClCompile Include="WriteComponent\SmbiosMember.cpp" />
     <ClCompile Include="WriteComponent\UEFIController.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="AaeonSmbiosApi.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
